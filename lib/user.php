@@ -33,13 +33,13 @@ class User {
 				$user->authorizedKeys[] = $entry['authorizedkey'][$i];
 			}
 		}
-		$this->pubkeyauthenticationuser = false;
+		$user->pubkeyauthenticationuser = false;
 		if(count($entry['objectclass']) > 0) {
 			for($i = 0; $i < $entry['objectclass']['count']; $i++) {
 				$objectclass = $entry['objectclass'][$i];
 				error_log("ObjectClass: ".$objectclass);
 				if($objectclass == "pubkeyAuthenticationUser")
-					$this->pubkeyauthenticationuser = true;
+					$user->pubkeyauthenticationuser = true;
 			}
 		}
 		return $user;
