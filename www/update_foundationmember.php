@@ -128,7 +128,12 @@ class UpdateFoundationMember {
   	      "Cc" => $cc,
     	    "Subject" => $subject,
       	);
-	      $content = $mime->get();
+		$params = array(
+			'head_charset' => 'UTF-8',
+			'head_encoding' => 'quoted-printable',
+			'text_charset' => 'UTF-8',
+		);
+	      $content = $mime->get($params);
 	      $headers = $mime->headers($headers);
         $mail = &Mail::factory('smtp');
         $error = $mail->send($recipients, $headers, $content);

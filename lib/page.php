@@ -26,7 +26,7 @@ class Page {
 	 * Process the given input file using the given stylesheet
 	 */
 	function process($filename) {
-		$this->result = domxml_open_file($filename);
+		$this->result->loadXML(file_get_contents($filename));
 		$this->send();
 	}
 
@@ -35,8 +35,6 @@ class Page {
 	 */
 	function send() {
 		/* Grab root node */
-		//$xpath = xpath_new_context($this->result);
-		//$result = xpath_eval($xpath, "/page");
 		$xpath = new DOMXPath($this->result);
 		$result = $xpath->query("/page");
 		if($result->length > 0) {
@@ -57,18 +55,12 @@ class Page {
 		$this->result->xinclude();
 		$xsl_file = new DOMDocument('1.0','UTF-8');
 		$xsl_file->loadXML(file_get_contents($this->stylesheet));
-		//$xsltprocessor = domxml_xslt_stylesheet_file($this->stylesheet);
-		//$xsltprocessor = domxml_xslt_stylesheet_file($this->stylesheet);
 		$xsltprocessor = new XSLTProcessor();
 		$xsltprocessor->importStylesheet($xsl_file);
-		//$result = $xsltprocessor->process($this->result);
-		$result = $xsltprocessor->transformToDoc($this->result);
 		
 		/* Pass the result to the browser */
 		header("Content-Type: text/html");
-		echo "Content-Type: text/html\n\n";
-		//echo $xsltprocessor->result_dump_mem($result);
-		echo $result->saveXML();
+		echo $xsltprocessor->transformToXML($this->result);
 	}
 
 	/**

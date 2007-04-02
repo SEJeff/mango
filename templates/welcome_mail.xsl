@@ -8,7 +8,7 @@
 <xsl:stylesheet version="1.1"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-  <xsl:output method="text" encoding="ISO-8859-1" omit-xml-declaration="yes"/>
+  <xsl:output method="text" encoding="UTF-8" omit-xml-declaration="yes"/>
 
   <xsl:template match="welcomemail">Dear <xsl:value-of select="user/cn"/>,
 

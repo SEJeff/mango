@@ -281,7 +281,12 @@ class UpdateUser {
 				"Cc" => $cc,
 				"Subject" => $subject,
 			);
-			$content = $mime->get();
+			$params = array(
+				'head_charset' => 'UTF-8',
+				'head_encoding' => 'quoted-printable',
+				'text_charset' => 'UTF-8',
+			);
+			$content = $mime->get($params);
 			$headers = $mime->headers($headers);
 			$mail = &Mail::factory('smtp');
 			$error = $mail->send($recipients, $headers, $content);
@@ -318,7 +323,7 @@ class UpdateUser {
 			$authtoken = AuthToken::generate();
 
 			// Prepare mail body template variables
-			$maildom = domxml_new_doc("1.0");
+			$maildom = new DOMDocument('1.0','UTF-8');
 			$mailnode = $maildom->appendChild($maildom->createElement("authtokenmail"));
 			$usernode = $mailnode->appendChild($maildom->createElement("user"));
 			$this->user->add_to_node($maildom, $usernode);
@@ -326,10 +331,11 @@ class UpdateUser {
 			$authtokennode->appendChild($maildom->createTextNode($authtoken));
 
 			// Process the mail body template
-			$stylesheet = domxml_open_file("../templates/authtoken_mail.xsl");
-			$xsltprocessor = domxml_xslt_stylesheet_doc($stylesheet);
-			$body = $xsltprocessor->process($maildom);
-			$body = $xsltprocessor->result_dump_mem($body);
+        	        $stylesheet = new DOMDocument('1.0','UTF-8');
+	                $stylesheet->loadXML(file_get_contents("../templates/authtoken_mail.xsl"));
+			$xsltprocessor = new XSLTProcessor();
+			$xsltprocessor->importStylesheet($stylesheet);
+			$body = $xsltprocessor->transformToXML($maildom);
 		
 			// Put it in a confirmation form
 			$formnode->appendChild($dom->createElement("authorisemail"));
@@ -351,16 +357,17 @@ class UpdateUser {
 			$subject .= "Your GNOME account is ready";
 
 			// Prepare mail body template variables
-			$maildom = domxml_new_doc("1.0");
+			$maildom = new DOMDocument('1.0','UTF-8');
 			$mailnode = $maildom->appendChild($maildom->createElement("welcomemail"));
 			$usernode = $mailnode->appendChild($maildom->createElement("user"));
 			$this->user->add_to_node($maildom, $usernode);
 
 			// Process the mail body template
-			$stylesheet = domxml_open_file("../templates/welcome_mail.xsl");
-			$xsltprocessor = domxml_xslt_stylesheet_doc($stylesheet);
-			$body = $xsltprocessor->process($maildom);
-			$body = $xsltprocessor->result_dump_mem($body);
+			$stylesheet = new DOMDocument('1.0','UTF-8');
+			$stylesheet->loadXML(file_get_contents("../templates/welcome_mail.xsl"));
+			$xsltprocessor = new XSLTProcessor();
+			$xsltprocessor->importStylesheet($stylesheet);
+			$body = $xsltprocessor->transformToXML($maildom);
 
 			// Put it in a confirmation form
 			$formnode->appendChild($dom->createElement("authorisemail"));
