@@ -41,14 +41,14 @@ class NewFoundationMember {
 	
 	function service(&$dom) {
 		// A page node is mandatory
-		$dom->append_child($pagenode = $dom->create_element("page"));
-		$pagenode->set_attribute("title", "New Foundation Member");
+		$dom->appendChild($pagenode = $dom->createElement("page"));
+		$pagenode->setAttribute("title", "New Foundation Member");
 
 		// Security check
 		if(!check_permissions($dom, $pagenode, GROUP)) return;
 
 		// Start the page off		
-		$formnode = $pagenode->append_child($dom->create_element("newfoundationmember"));
+		$formnode = $pagenode->appendChild($dom->createElement("newfoundationmember"));
 
 		// If posting details, attempt to add the new details
 		if($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -66,8 +66,8 @@ class NewFoundationMember {
 		$formerrors = $this->readform();
 		if(count($formerrors) > 0) {
 			foreach($formerrors as $error) {
-				$node = $formnode->append_child($dom->create_element("formerror"));
-				$node->set_attribute("type", $error);
+				$node = $formnode->appendChild($dom->createElement("formerror"));
+				$node->setAttribute("type", $error);
 			}
 			return;
 		}
@@ -75,8 +75,8 @@ class NewFoundationMember {
 		// Attempt MySQL add
 		$result = $this->foundationmember->addmember();
 		if(PEAR::isError($result)) {
-			$node = $formnode->append_child($dom->create_element("error"));
-			$node->append_child($dom->create_text_node($result->getMessage()));
+			$node = $formnode->appendChild($dom->createElement("error"));
+			$node->appendChild($dom->createTextNode($result->getMessage()));
 			return;
 		}
 		
@@ -106,9 +106,9 @@ class NewFoundationMember {
       if(PEAR::isError($error))
         return $error;
 
-			$node = $formnode->append_child($dom->create_element("added"));
+			$node = $formnode->appendChild($dom->createElement("added"));
 			$this->foundationmember->add_to_node($dom, $node);
-			$node = $formnode->append_child($dom->create_element("emailsent"));
+			$node = $formnode->appendChild($dom->createElement("emailsent"));
 			$this->foundationmember = new FoundationMember();
 		}
 

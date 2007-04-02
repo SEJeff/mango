@@ -204,23 +204,23 @@ class FoundationMember {
 	}
 	
 	function add_to_node(&$dom, &$formnode) {
-		$node = $formnode->append_child($dom->create_element("id"));
-		$node->append_child($dom->create_text_node($this->id));
-		$node = $formnode->append_child($dom->create_element("firstname"));
-		$node->append_child($dom->create_text_node($this->firstname));
-		$node = $formnode->append_child($dom->create_element("lastname"));
-		$node->append_child($dom->create_text_node($this->lastname));
-		$node = $formnode->append_child($dom->create_element("email"));
-		$node->append_child($dom->create_text_node($this->email));
-		$node = $formnode->append_child($dom->create_element("comments"));
-		$node->append_child($dom->create_text_node($this->comments));
+		$node = $formnode->appendChild($dom->createElement("id"));
+		$node->appendChild($dom->createTextNode($this->id));
+		$node = $formnode->appendChild($dom->createElement("firstname"));
+		$node->appendChild($dom->createTextNode($this->firstname));
+		$node = $formnode->appendChild($dom->createElement("lastname"));
+		$node->appendChild($dom->createTextNode($this->lastname));
+		$node = $formnode->appendChild($dom->createElement("email"));
+		$node->appendChild($dom->createTextNode($this->email));
+		$node = $formnode->appendChild($dom->createElement("comments"));
+		$node->appendChild($dom->createTextNode($this->comments));
 		DateField::add_to($dom, $formnode, "first_added", $this->first_added);
 		DateField::add_to($dom, $formnode, "last_renewed_on", $this->last_renewed_on);
 		if ($this->resigned_on == null) {
-		  $formnode->append_child($dom->create_element("member"));
+		  $formnode->appendChild($dom->createElement("member"));
 		}
 		if($this->need_to_renew)
-			$node = $formnode->append_child($dom->create_element("need_to_renew"));
+			$node = $formnode->appendChild($dom->createElement("need_to_renew"));
 		DateField::add_to($dom, $formnode, "last_update", $this->last_update);
 	}
 	

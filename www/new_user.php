@@ -60,14 +60,14 @@ class NewUser {
 	
 	function service(&$dom) {
 		// A page node is mandatory
-		$dom->append_child($pagenode = $dom->create_element("page"));
-		$pagenode->set_attribute("title", "New User");
+		$dom->appendChild($pagenode = $dom->createElement("page"));
+		$pagenode->setAttribute("title", "New User");
 
 		// Security check
 		if(!check_permissions($dom, $pagenode, GROUP)) return;
 
 		// Start the page off		
-		$formnode = $pagenode->append_child($dom->create_element("newuser"));
+		$formnode = $pagenode->appendChild($dom->createElement("newuser"));
 
 		// If posting details, attempt to add the new details
 		if($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -78,11 +78,11 @@ class NewUser {
 		$this->user->add_to_node($dom, $formnode);
 		
 		// Add SSH keys with indices
-		$savedkeysnode = $formnode->append_child($dom->create_element("savedkeys"));
+		$savedkeysnode = $formnode->appendChild($dom->createElement("savedkeys"));
 		foreach($this->user->authorizedKeys as $ref => $key) {
-			$keynode = $savedkeysnode->append_child($dom->create_element("key"));
-			$keynode->set_attribute("ref", $ref);
-			$keynode->append_child($dom->create_text_node($key));
+			$keynode = $savedkeysnode->appendChild($dom->createElement("key"));
+			$keynode->setAttribute("ref", $ref);
+			$keynode->appendChild($dom->createTextNode($key));
 		}
 		
 		return;
@@ -93,8 +93,8 @@ class NewUser {
 		$formerrors = $this->readform();
 		if(count($formerrors) > 0) {
 			foreach($formerrors as $error) {
-				$node = $formnode->append_child($dom->create_element("formerror"));
-				$node->set_attribute("type", $error);
+				$node = $formnode->appendChild($dom->createElement("formerror"));
+				$node->setAttribute("type", $error);
 			}
 			return;
 		}
@@ -102,14 +102,14 @@ class NewUser {
 		// Attempt LDAP add
 		$result = $this->user->adduser();
 		if(PEAR::isError($result)) {
-			$node = $formnode->append_child($dom->create_element("error"));
-			$node->append_child($dom->create_text_node($result->getMessage()));
+			$node = $formnode->appendChild($dom->createElement("error"));
+			$node->appendChild($dom->createTextNode($result->getMessage()));
 			return;
 		}
 		
 		// Report success
 		if($result) {
-			$node = $formnode->append_child($dom->create_element("added"));
+			$node = $formnode->appendChild($dom->createElement("added"));
 			$this->user->add_to_node($dom, $node);
 			$this->user = new User();
 		}

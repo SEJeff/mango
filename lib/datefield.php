@@ -20,11 +20,11 @@ class DateField {
 	}
 	
 	function add_to(&$dom, &$node, $id, $timestamp) {
-		$subnode = $node->append_child($dom->create_element($id));
-		$subnode->set_attribute("year", strftime("%Y", $timestamp));
-		$subnode->set_attribute("month", strftime("%m", $timestamp));
-		$subnode->set_attribute("day", strftime("%d", $timestamp));
-		$subnode->append_child($dom->create_text_node(strftime("%a, %d %b %Y", $timestamp)));
+		$subnode = $node->appendChild($dom->createElement($id));
+		$subnode->setAttribute("year", strftime("%Y", $timestamp));
+		$subnode->setAttribute("month", strftime("%m", $timestamp));
+		$subnode->setAttribute("day", strftime("%d", $timestamp));
+		$subnode->appendChild($dom->createTextNode(strftime("%a, %d %b %Y", $timestamp)));
 		return $subnode;
 	}
 }

@@ -379,21 +379,21 @@ class User {
 	}
 	
 	function add_to_node(&$dom, &$formnode) {
-		$node = $formnode->append_child($dom->create_element("uid"));
-		$node->append_child($dom->create_text_node($this->uid));
-		$node = $formnode->append_child($dom->create_element("cn"));
-		$node->append_child($dom->create_text_node($this->cn));
-		$node = $formnode->append_child($dom->create_element("mail"));
-		$node->append_child($dom->create_text_node($this->mail));
-		$node = $formnode->append_child($dom->create_element("description"));
-		$node->append_child($dom->create_text_node($this->description));
+		$node = $formnode->appendChild($dom->createElement("uid"));
+		$node->appendChild($dom->createTextNode($this->uid));
+		$node = $formnode->appendChild($dom->createElement("cn"));
+		$node->appendChild($dom->createTextNode($this->cn));
+		$node = $formnode->appendChild($dom->createElement("mail"));
+		$node->appendChild($dom->createTextNode($this->mail));
+		$node = $formnode->appendChild($dom->createElement("description"));
+		$node->appendChild($dom->createTextNode($this->description));
 		foreach($this->authorizedKeys as $authorizedKey) {
-			$node = $formnode->append_child($dom->create_element("authorizedKey"));
-			$node->append_child($dom->create_text_node($authorizedKey));
+			$node = $formnode->appendChild($dom->createElement("authorizedKey"));
+			$node->appendChild($dom->createTextNode($authorizedKey));
 		}
 		foreach($this->groups as $group) {
-			$node = $formnode->append_child($dom->create_element("group"));
-			$node->set_attribute("cn", $group);
+			$node = $formnode->appendChild($dom->createElement("group"));
+			$node->setAttribute("cn", $group);
 		}
 	}
 	

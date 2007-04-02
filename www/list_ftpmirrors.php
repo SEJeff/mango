@@ -86,14 +86,14 @@ class ListFTPMirrors {
 	
 	function service(&$dom) {
 		// Page node is mandatory
-		$dom->append_child($pagenode = $dom->create_element("page"));
-		$pagenode->set_attribute("title", "List FTP Mirrors");
+		$dom->appendChild($pagenode = $dom->createElement("page"));
+		$pagenode->setAttribute("title", "List FTP Mirrors");
 
 		// Security check
 		if(!check_permissions($dom, $pagenode, GROUP)) return;
 
 		// Start the page off		
-		$listnode = $pagenode->append_child($dom->create_element("listftpmirrors"));
+		$listnode = $pagenode->appendChild($dom->createElement("listftpmirrors"));
 
 		// Check for page change
 		if(isset($_REQUEST['page'])) {
@@ -109,31 +109,31 @@ class ListFTPMirrors {
 		// Gather results for this page
 		$results = $this->ftpmirrors->for_page();
 		if(PEAR::isError($results)) {
-			$node = $listnode->append_child($dom->create_element("error"));
-			$node->append_child($dom->create_text_node($results->getMessage()));
+			$node = $listnode->appendChild($dom->createElement("error"));
+			$node->appendChild($dom->createTextNode($results->getMessage()));
 			return;
 		}
 		
 		// Display results for this page
 		$result = $this->add_entries($dom, $listnode, $results);
 		if(PEAR::isError($result)) {
-			$node = $listnode->append_child($dom->create_element("error"));
-			$node->append_child($dom->create_text_node($result->getMessage()));
+			$node = $listnode->appendChild($dom->createElement("error"));
+			$node->appendChild($dom->createTextNode($result->getMessage()));
 			return;
 		}
 
 		// Display filter settings
-		$filternode = $listnode->append_child($dom->create_element("filter"));
-		$keywordnode = $filternode->append_child($dom->create_element("keyword"));
-		$keywordnode->append_child($dom->create_text_node($this->filter_keyword));
+		$filternode = $listnode->appendChild($dom->createElement("filter"));
+		$keywordnode = $filternode->appendChild($dom->createElement("keyword"));
+		$keywordnode->appendChild($dom->createTextNode($this->filter_keyword));
 
 		// Display navigation information
 		$this->ftpmirrors->add_navinfo_to($dom, $listnode);
 		
 		// Display the initialisation error (to explain a possible lack of results)
 		if(isset($this->error)) {
-			$node = $listnode->append_child($dom->create_element("error"));
-			$node->append_child($dom->create_text_node((PEAR::isError($this->error) ? $this->error->getMessage() : $this->error)));
+			$node = $listnode->appendChild($dom->createElement("error"));
+			$node->appendChild($dom->createTextNode((PEAR::isError($this->error) ? $this->error->getMessage() : $this->error)));
 			unset($this->error);
 		}		
 	}
@@ -148,7 +148,7 @@ class ListFTPMirrors {
 		
 		// Add entries to page
 		foreach($entries as $entry) {
-			$ftpmirrornode = $listnode->append_child($dom->create_element("ftpmirror"));
+			$ftpmirrornode = $listnode->appendChild($dom->createElement("ftpmirror"));
 			$entry->add_to_node($dom, $ftpmirrornode);
 		}
 	}

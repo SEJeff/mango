@@ -188,25 +188,25 @@ class FTPMirror {
 	}
 
 	function add_to_node(&$dom, &$formnode) {
-		$node = $formnode->append_child($dom->create_element("id"));
-		$node->append_child($dom->create_text_node($this->id));
-		$node = $formnode->append_child($dom->create_element("name"));
-		$node->append_child($dom->create_text_node($this->name));
-		$node = $formnode->append_child($dom->create_element("url"));
-		$node->append_child($dom->create_text_node($this->url));
-		$node = $formnode->append_child($dom->create_element("location"));
-		$node->append_child($dom->create_text_node($this->location));
-		$node = $formnode->append_child($dom->create_element("email"));
-		$node->append_child($dom->create_text_node($this->email));
-		$node = $formnode->append_child($dom->create_element("description"));
-		$node->append_child($dom->create_text_node($this->description));
-		$node = $formnode->append_child($dom->create_element("comments"));
-		$node->append_child($dom->create_text_node($this->comments));
+		$node = $formnode->appendChild($dom->createElement("id"));
+		$node->appendChild($dom->createTextNode($this->id));
+		$node = $formnode->appendChild($dom->createElement("name"));
+		$node->appendChild($dom->createTextNode($this->name));
+		$node = $formnode->appendChild($dom->createElement("url"));
+		$node->appendChild($dom->createTextNode($this->url));
+		$node = $formnode->appendChild($dom->createElement("location"));
+		$node->appendChild($dom->createTextNode($this->location));
+		$node = $formnode->appendChild($dom->createElement("email"));
+		$node->appendChild($dom->createTextNode($this->email));
+		$node = $formnode->appendChild($dom->createElement("description"));
+		$node->appendChild($dom->createTextNode($this->description));
+		$node = $formnode->appendChild($dom->createElement("comments"));
+		$node->appendChild($dom->createTextNode($this->comments));
 		if($this->active) {
-			$node = $formnode->append_child($dom->create_element("active"));
+			$node = $formnode->appendChild($dom->createElement("active"));
 		}
-		$node = $formnode->append_child($dom->create_element("last_update"));
-		$node->append_child($dom->create_text_node($this->last_update));
+		$node = $formnode->appendChild($dom->createElement("last_update"));
+		$node->appendChild($dom->createTextNode($this->last_update));
 	}
 	
 	function validate() {

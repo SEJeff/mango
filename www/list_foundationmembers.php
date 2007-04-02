@@ -104,14 +104,14 @@ class ListFoundationMembers {
 	
 	function service(&$dom) {
 		// Page node is mandatory
-		$dom->append_child($pagenode = $dom->create_element("page"));
-		$pagenode->set_attribute("title", "List Foundation Members");
+		$dom->appendChild($pagenode = $dom->createElement("page"));
+		$pagenode->setAttribute("title", "List Foundation Members");
 
 		// Security check
 		if(!check_permissions($dom, $pagenode, GROUP)) return;
 
 		// Start the page off		
-		$listnode = $pagenode->append_child($dom->create_element("listfoundationmembers"));
+		$listnode = $pagenode->appendChild($dom->createElement("listfoundationmembers"));
 
 		// Check for page change
 		if(isset($_REQUEST['page'])) {
@@ -163,9 +163,9 @@ class ListFoundationMembers {
 
 				  if(PEAR::isError($error))
     	      return $error;
-					$node = $listnode->append_child($dom->create_element("emailsent"));
-				  $node = $listnode->append_child($dom->create_element("renewed"));
-				  $listnode->set_attribute("name", $foundationmember->firstname.' '.$foundationmember->lastname);
+					$node = $listnode->appendChild($dom->createElement("emailsent"));
+				  $node = $listnode->appendChild($dom->createElement("renewed"));
+				  $listnode->setAttribute("name", $foundationmember->firstname.' '.$foundationmember->lastname);
 					$reload = true;
 				}
 			}
@@ -178,32 +178,32 @@ class ListFoundationMembers {
 		// Gather results for this page
 		$results = $this->foundationmembers->for_page();
 		if(PEAR::isError($results)) {
-			$node = $listnode->append_child($dom->create_element("error"));
-			$node->append_child($dom->create_text_node($results->getMessage()));
+			$node = $listnode->appendChild($dom->createElement("error"));
+			$node->appendChild($dom->createTextNode($results->getMessage()));
 			return;
 		}
 		
 		// Display results for this page
 		$result = $this->add_entries($dom, $listnode, $results);
 		if(PEAR::isError($result)) {
-			$node = $listnode->append_child($dom->create_element("error"));
-			$node->append_child($dom->create_text_node($result->getMessage()));
+			$node = $listnode->appendChild($dom->createElement("error"));
+			$node->appendChild($dom->createTextNode($result->getMessage()));
 			return;
 		}
 
 		// Display filter settings
-		$filternamenode = $listnode->append_child($dom->create_element("filter_name"));
-		$filternamenode->append_child($dom->create_text_node($this->filter_name));
+		$filternamenode = $listnode->appendChild($dom->createElement("filter_name"));
+		$filternamenode->appendChild($dom->createTextNode($this->filter_name));
 		//TODO select the right one
-		$filteroldnode = $listnode->append_child($dom->create_element("filter_old"));
+		$filteroldnode = $listnode->appendChild($dom->createElement("filter_old"));
 
 		// Display navigation information
 		$this->foundationmembers->add_navinfo_to($dom, $listnode);
 		
 		// Display the initialisation error (to explain a possible lack of results)
 		if(isset($this->error)) {
-			$node = $listnode->append_child($dom->create_element("error"));
-			$node->append_child($dom->create_text_node((PEAR::isError($this->error) ? $this->error->getMessage() : $this->error)));
+			$node = $listnode->appendChild($dom->createElement("error"));
+			$node->appendChild($dom->createTextNode((PEAR::isError($this->error) ? $this->error->getMessage() : $this->error)));
 		}		
 	}
 
@@ -217,8 +217,8 @@ class ListFoundationMembers {
 		
 		// Add entries to page
 		foreach($entries as $entry) {
-			$foundationmembernode = $listnode->append_child($dom->create_element("foundationmember"));
-			$foundationmembernode->set_attribute("member", ($entry->resigned_on == null));
+			$foundationmembernode = $listnode->appendChild($dom->createElement("foundationmember"));
+			$foundationmembernode->setAttribute("member", ($entry->resigned_on == null));
 			$entry->add_to_node($dom, $foundationmembernode);
 		}
 	}

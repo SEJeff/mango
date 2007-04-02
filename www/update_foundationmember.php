@@ -52,14 +52,14 @@ class UpdateFoundationMember {
 	
 	function service(&$dom) {
 		// A page node is mandatory
-		$dom->append_child($pagenode = $dom->create_element("page"));
-		$pagenode->set_attribute("title", "Update Foundation Member '".$this->foundationmember->id."'");
+		$dom->appendChild($pagenode = $dom->createElement("page"));
+		$pagenode->setAttribute("title", "Update Foundation Member '".$this->foundationmember->id."'");
 
 		// Security check
 		if(!check_permissions($dom, $pagenode, GROUP)) return;
 
 		// Start the page off		
-		$formnode = $pagenode->append_child($dom->create_element("updatefoundationmember"));
+		$formnode = $pagenode->appendChild($dom->createElement("updatefoundationmember"));
 
 		// If posting details, attempt to add the new details
 		if($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -71,8 +71,8 @@ class UpdateFoundationMember {
 		
 		// Add initialisation error, if any
 		if(PEAR::isError($this->error)) {
-			$node = $formnode->append_child($dom->create_element("error"));
-			$node->append_child($dom->create_text_node($this->error->getMessage()));
+			$node = $formnode->appendChild($dom->createElement("error"));
+			$node->appendChild($dom->createTextNode($this->error->getMessage()));
 		}
 
 		return;
@@ -94,8 +94,8 @@ class UpdateFoundationMember {
 		$formerrors = $this->readform();
 		if(count($formerrors) > 0) {
 			foreach($formerrors as $error) {
-				$node = $formnode->append_child($dom->create_element("formerror"));
-				$node->set_attribute("type", $error);
+				$node = $formnode->appendChild($dom->createElement("formerror"));
+				$node->setAttribute("type", $error);
 			}
 			return;
 		}
@@ -103,8 +103,8 @@ class UpdateFoundationMember {
 		// Attempt MySQL update
 		$result = $this->foundationmember->update();
 		if(PEAR::isError($result)) {
-			$node = $formnode->append_child($dom->create_element("error"));
-			$node->append_child($dom->create_text_node($result->getMessage()));
+			$node = $formnode->appendChild($dom->createElement("error"));
+			$node->appendChild($dom->createTextNode($result->getMessage()));
 			return;
 		}
 		
@@ -135,13 +135,13 @@ class UpdateFoundationMember {
         if(PEAR::isError($error))
           return $error;
 				
-				$updatednode = $formnode->append_child($dom->create_element('emailsent'));
+				$updatednode = $formnode->appendChild($dom->createElement('emailsent'));
 				
 			}
-				$updatednode = $formnode->append_child($dom->create_element("updated"));
+				$updatednode = $formnode->appendChild($dom->createElement("updated"));
 				foreach($result as $change) {
-				$node = $updatednode->append_child($dom->create_element("change"));
-				$node->set_attribute("id", $change);
+				$node = $updatednode->appendChild($dom->createElement("change"));
+				$node->setAttribute("id", $change);
 			}
 		}
 

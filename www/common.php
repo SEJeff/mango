@@ -7,7 +7,7 @@ require_once("../lib/user.php");
 function check_permissions(&$dom, &$pagenode, $group) {
 	$user = $_SESSION['user'];
 	if(!$user || !is_a($user, "User")) {
-		$pagenode->append_child($dom->create_element("notloggedin"));
+		$pagenode->appendChild($dom->createElement("notloggedin"));
 		return false;
 	}
 	
@@ -16,8 +16,8 @@ function check_permissions(&$dom, &$pagenode, $group) {
 		return true;
 	}
 	
-	$node = $pagenode->append_child($dom->create_element("notauthorised"));
-	$node->set_attribute("group", $group);
+	$node = $pagenode->appendChild($dom->createElement("notauthorised"));
+	$node->setAttribute("group", $group);
 	return false;
 }
 

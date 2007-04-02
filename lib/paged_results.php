@@ -65,17 +65,17 @@ class PagedResults {
 	 * @since 1.0
 	 */
 	function add_navinfo_to(&$dom, &$node) {
-		$node->append_child($pagedresultsnode = $dom->create_element("pagedresults"));
-		$subnode = $pagedresultsnode->append_child($dom->create_element("total_results"));
-		$subnode->append_child($dom->create_text_node(count($this->_results)));
-		$subnode = $pagedresultsnode->append_child($dom->create_element("total_pages"));
-		$subnode->append_child($dom->create_text_node($this->total_pages()));
-		$subnode = $pagedresultsnode->append_child($dom->create_element("result_num"));
-		$subnode->append_child($dom->create_text_node($this->_cursor));
-		$subnode = $pagedresultsnode->append_child($dom->create_element("page_num"));
-		$subnode->append_child($dom->create_text_node($this->page_num()));
-		$subnode = $pagedresultsnode->append_child($dom->create_element("page_size"));
-		$subnode->append_child($dom->create_text_node($this->_page_size));
+		$node->appendChild($pagedresultsnode = $dom->createElement("pagedresults"));
+		$subnode = $pagedresultsnode->appendChild($dom->createElement("total_results"));
+		$subnode->appendChild($dom->createTextNode(count($this->_results)));
+		$subnode = $pagedresultsnode->appendChild($dom->createElement("total_pages"));
+		$subnode->appendChild($dom->createTextNode($this->total_pages()));
+		$subnode = $pagedresultsnode->appendChild($dom->createElement("result_num"));
+		$subnode->appendChild($dom->createTextNode($this->_cursor));
+		$subnode = $pagedresultsnode->appendChild($dom->createElement("page_num"));
+		$subnode->appendChild($dom->createTextNode($this->page_num()));
+		$subnode = $pagedresultsnode->appendChild($dom->createElement("page_size"));
+		$subnode->appendChild($dom->createTextNode($this->_page_size));
 		return $pagedresultsnode;
 	}
 

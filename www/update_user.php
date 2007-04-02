@@ -83,8 +83,8 @@ class UpdateUser {
 	
 	function service(&$dom) {
 		// A page node is mandatory
-		$dom->append_child($pagenode = $dom->create_element("page"));
-		$pagenode->set_attribute("title", "Update User '".$this->user->uid."'");
+		$dom->appendChild($pagenode = $dom->createElement("page"));
+		$pagenode->setAttribute("title", "Update User '".$this->user->uid."'");
 
 		// Security check
 		if(!check_permissions($dom, $pagenode, GROUP)) return;
@@ -95,8 +95,8 @@ class UpdateUser {
 		}
 
 		// Start the page off
-		$formnode = $pagenode->append_child($dom->create_element("updateuser"));
-		$formnode->set_attribute("tab", $this->tab);
+		$formnode = $pagenode->appendChild($dom->createElement("updateuser"));
+		$formnode->setAttribute("tab", $this->tab);
 
 		// If posting details, attempt to add the new details
 		if($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -108,18 +108,18 @@ class UpdateUser {
 		
 		// Add SSH keys with indices
 		if($this->tab == "sshkeys") {
-			$savedkeysnode = $formnode->append_child($dom->create_element("savedkeys"));
+			$savedkeysnode = $formnode->appendChild($dom->createElement("savedkeys"));
 			foreach($this->savedKeys as $ref => $key) {
-				$keynode = $savedkeysnode->append_child($dom->create_element("key"));
-				$keynode->set_attribute("ref", $ref);
-				$keynode->append_child($dom->create_text_node($key));
+				$keynode = $savedkeysnode->appendChild($dom->createElement("key"));
+				$keynode->setAttribute("ref", $ref);
+				$keynode->appendChild($dom->createTextNode($key));
 			}
 		}
 		
 		// Add initialisation error, if any
 		if(PEAR::isError($this->error)) {
-			$node = $formnode->append_child($dom->create_element("error"));
-			$node->append_child($dom->create_text_node($this->error->getMessage()));
+			$node = $formnode->appendChild($dom->createElement("error"));
+			$node->appendChild($dom->createTextNode($this->error->getMessage()));
 		}
 
 		return;
@@ -150,16 +150,16 @@ class UpdateUser {
 
 		// Report an exception
 		if(PEAR::isError($result)) {
-			$node = $formnode->append_child($dom->create_element("error"));
-			$node->append_child($dom->create_text_node($result->getMessage()));
+			$node = $formnode->appendChild($dom->createElement("error"));
+			$node->appendChild($dom->createTextNode($result->getMessage()));
 			return;
 		}
 
 		// Report successes
 		if(is_array($result)) {
 			foreach($result as $change) {
-				$node = $formnode->append_child($dom->create_element("change"));
-				$node->set_attribute("id", $change);
+				$node = $formnode->appendChild($dom->createElement("change"));
+				$node->setAttribute("id", $change);
 			}
 		}
 
@@ -173,8 +173,8 @@ class UpdateUser {
 		$formerrors = $this->user->validate();
 		if(count($formerrors) > 0) {
 			foreach($formerrors as $error) {
-				$node = $formnode->append_child($dom->create_element("formerror"));
-				$node->set_attribute("type", $error);
+				$node = $formnode->appendChild($dom->createElement("formerror"));
+				$node->setAttribute("type", $error);
 			}
 			return;
 		}
@@ -185,7 +185,7 @@ class UpdateUser {
 			return $result;
 
 		// Mark success
-		$updatednode = $formnode->append_child($dom->create_element("updated"));
+		$updatednode = $formnode->appendChild($dom->createElement("updated"));
 
 		return $result;
 	}
@@ -215,7 +215,7 @@ class UpdateUser {
 			return $result;
 
 		// Mark success
-		$updatednode = $formnode->append_child($dom->create_element("updated"));
+		$updatednode = $formnode->appendChild($dom->createElement("updated"));
 
 		return $result;
 	}
@@ -246,7 +246,7 @@ class UpdateUser {
 			return $result;
 
 		// Mark success
-		$updatednode = $formnode->append_child($dom->create_element("updated"));
+		$updatednode = $formnode->appendChild($dom->createElement("updated"));
 
 		return $result;
 	}
@@ -289,7 +289,7 @@ class UpdateUser {
 				return $error;
 
 			// Trigger an 'e-mail sent' page
-			$formnode->append_child($dom->create_element("emailsent"));
+			$formnode->appendChild($dom->createElement("emailsent"));
 
 			// No changes made
 			return;
@@ -319,11 +319,11 @@ class UpdateUser {
 
 			// Prepare mail body template variables
 			$maildom = domxml_new_doc("1.0");
-			$mailnode = $maildom->append_child($maildom->create_element("authtokenmail"));
-			$usernode = $mailnode->append_child($maildom->create_element("user"));
+			$mailnode = $maildom->appendChild($maildom->createElement("authtokenmail"));
+			$usernode = $mailnode->appendChild($maildom->createElement("user"));
 			$this->user->add_to_node($maildom, $usernode);
-			$authtokennode = $mailnode->append_child($maildom->create_element("authtoken"));
-			$authtokennode->append_child($maildom->create_text_node($authtoken));
+			$authtokennode = $mailnode->appendChild($maildom->createElement("authtoken"));
+			$authtokennode->appendChild($maildom->createTextNode($authtoken));
 
 			// Process the mail body template
 			$stylesheet = domxml_open_file("../templates/authtoken_mail.xsl");
@@ -332,15 +332,15 @@ class UpdateUser {
 			$body = $xsltprocessor->result_dump_mem($body);
 		
 			// Put it in a confirmation form
-			$formnode->append_child($dom->create_element("authorisemail"));
-			$fieldnode = $formnode->append_child($dom->create_element("to"));
-			$fieldnode->append_child($dom->create_text_node($to));
-			$fieldnode = $formnode->append_child($dom->create_element("cc"));
-			$fieldnode->append_child($dom->create_text_node($cc));
-			$fieldnode = $formnode->append_child($dom->create_element("subject"));
-			$fieldnode->append_child($dom->create_text_node($subject));
-			$fieldnode = $formnode->append_child($dom->create_element("body"));
-			$fieldnode->append_child($dom->create_text_node($body));
+			$formnode->appendChild($dom->createElement("authorisemail"));
+			$fieldnode = $formnode->appendChild($dom->createElement("to"));
+			$fieldnode->appendChild($dom->createTextNode($to));
+			$fieldnode = $formnode->appendChild($dom->createElement("cc"));
+			$fieldnode->appendChild($dom->createTextNode($cc));
+			$fieldnode = $formnode->appendChild($dom->createElement("subject"));
+			$fieldnode->appendChild($dom->createTextNode($subject));
+			$fieldnode = $formnode->appendChild($dom->createElement("body"));
+			$fieldnode->appendChild($dom->createTextNode($body));
 
 			return;
 		}
@@ -352,8 +352,8 @@ class UpdateUser {
 
 			// Prepare mail body template variables
 			$maildom = domxml_new_doc("1.0");
-			$mailnode = $maildom->append_child($maildom->create_element("welcomemail"));
-			$usernode = $mailnode->append_child($maildom->create_element("user"));
+			$mailnode = $maildom->appendChild($maildom->createElement("welcomemail"));
+			$usernode = $mailnode->appendChild($maildom->createElement("user"));
 			$this->user->add_to_node($maildom, $usernode);
 
 			// Process the mail body template
@@ -363,15 +363,15 @@ class UpdateUser {
 			$body = $xsltprocessor->result_dump_mem($body);
 
 			// Put it in a confirmation form
-			$formnode->append_child($dom->create_element("authorisemail"));
-			$fieldnode = $formnode->append_child($dom->create_element("to"));
-			$fieldnode->append_child($dom->create_text_node($to));
-			$fieldnode = $formnode->append_child($dom->create_element("cc"));
-			$fieldnode->append_child($dom->create_text_node($cc));
-			$fieldnode = $formnode->append_child($dom->create_element("subject"));
-			$fieldnode->append_child($dom->create_text_node($subject));
-			$fieldnode = $formnode->append_child($dom->create_element("body"));
-			$fieldnode->append_child($dom->create_text_node($body));
+			$formnode->appendChild($dom->createElement("authorisemail"));
+			$fieldnode = $formnode->appendChild($dom->createElement("to"));
+			$fieldnode->appendChild($dom->createTextNode($to));
+			$fieldnode = $formnode->appendChild($dom->createElement("cc"));
+			$fieldnode->appendChild($dom->createTextNode($cc));
+			$fieldnode = $formnode->appendChild($dom->createElement("subject"));
+			$fieldnode->appendChild($dom->createTextNode($subject));
+			$fieldnode = $formnode->appendChild($dom->createElement("body"));
+			$fieldnode->appendChild($dom->createTextNode($body));
 
 			return;
 		}

@@ -41,14 +41,14 @@ class NewFTPMirror {
 	
 	function service(&$dom) {
 		// A page node is mandatory
-		$dom->append_child($pagenode = $dom->create_element("page"));
-		$pagenode->set_attribute("title", "New FTP Mirror");
+		$dom->appendChild($pagenode = $dom->createElement("page"));
+		$pagenode->setAttribute("title", "New FTP Mirror");
 
 		// Security check
 		if(!check_permissions($dom, $pagenode, GROUP)) return;
 
 		// Start the page off		
-		$formnode = $pagenode->append_child($dom->create_element("newftpmirror"));
+		$formnode = $pagenode->appendChild($dom->createElement("newftpmirror"));
 
 		// If posting details, attempt to add the new details
 		if($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -66,8 +66,8 @@ class NewFTPMirror {
 		$formerrors = $this->readform();
 		if(count($formerrors) > 0) {
 			foreach($formerrors as $error) {
-				$node = $formnode->append_child($dom->create_element("formerror"));
-				$node->set_attribute("type", $error);
+				$node = $formnode->appendChild($dom->createElement("formerror"));
+				$node->setAttribute("type", $error);
 			}
 			return;
 		}
@@ -75,14 +75,14 @@ class NewFTPMirror {
 		// Attempt MySQL add
 		$result = $this->ftpmirror->addmirror();
 		if(PEAR::isError($result)) {
-			$node = $formnode->append_child($dom->create_element("error"));
-			$node->append_child($dom->create_text_node($result->getMessage()));
+			$node = $formnode->appendChild($dom->createElement("error"));
+			$node->appendChild($dom->createTextNode($result->getMessage()));
 			return;
 		}
 		
 		// Report success
 		if($result) {
-			$node = $formnode->append_child($dom->create_element("added"));
+			$node = $formnode->appendChild($dom->createElement("added"));
 			$this->ftpmirror->add_to_node($dom, $node);
 			$this->ftpmirror = new FTPMirror();
 		}

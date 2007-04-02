@@ -97,15 +97,15 @@ class Page {
 		/* If user registered in session, add info */
 		$user = $_SESSION['user'];
 		if(isset($user) && is_a($user, "User") && !isset($_REQUEST['logout'])) {
-			$pagenode->appendChild($usernode = $dom->create_element("user"));
-			$usernode->appendChild($node = $dom->create_element("cn"));
-			$node->appendChild($dom->create_text_node($user->cn));
+			$pagenode->appendChild($usernode = $dom->createElement("user"));
+			$usernode->appendChild($node = $dom->createElement("cn"));
+			$node->appendChild($dom->createTextNode($user->cn));
 
 			/* Add group information too */
 			$groups = $_SESSION['groups'];
 			if(isset($groups) && is_array($groups)) {
 				foreach($groups as $group) {
-					$groupnode = $pagenode->appendChild($dom->create_element("group"));
+					$groupnode = $pagenode->appendChild($dom->createElement("group"));
 					$groupnode->setAttribute("cn", $group);
 				}
 			}

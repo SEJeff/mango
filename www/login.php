@@ -16,7 +16,7 @@ class Login {
 		$form = $rootnode->appendChild($dom->createElement("loginform"));
 		if(PEAR::isError($pe)) {
 			$node = $form->appendChild($dom->createElement("exception"));
-			$node->appendChild($dom->create_text_node($pe->getMessage()));
+			$node->appendChild($dom->createTextNode($pe->getMessage()));
 		}
 		if($failed)
 			$form->setAttribute("failed", "true");

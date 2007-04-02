@@ -98,14 +98,14 @@ class ListUsers {
 	
 	function service(&$dom) {
 		// Page node is mandatory
-		$dom->append_child($pagenode = $dom->create_element("page"));
-		$pagenode->set_attribute("title", "List Users");
+		$dom->appendChild($pagenode = $dom->createElement("page"));
+		$pagenode->setAttribute("title", "List Users");
 
 		// Security check
 		if(!check_permissions($dom, $pagenode, GROUP)) return;
 
 		// Start the page off		
-		$listnode = $pagenode->append_child($dom->create_element("listusers"));
+		$listnode = $pagenode->appendChild($dom->createElement("listusers"));
 
 		// Check for page change
 		if(isset($_REQUEST['page'])) {
@@ -121,38 +121,38 @@ class ListUsers {
 		// Gather results for this page
 		$results = $this->users->for_page();
 		if(PEAR::isError($results)) {
-			$node = $listnode->append_child($dom->create_element("error"));
-			$node->append_child($dom->create_text_node($results->getMessage()));
+			$node = $listnode->appendChild($dom->createElement("error"));
+			$node->appendChild($dom->createTextNode($results->getMessage()));
 			return;
 		}
 
 		// Display results for this page
 		$result = $this->add_entries($dom, $listnode, $results);
 		if(PEAR::isError($result)) {
-			$node = $listnode->append_child($dom->create_element("error"));
-			$node->append_child($dom->create_text_node($result->getMessage()));
+			$node = $listnode->appendChild($dom->createElement("error"));
+			$node->appendChild($dom->createTextNode($result->getMessage()));
 			return;
 		}
 
 		// Display filter settings
-		$filternode = $listnode->append_child($dom->create_element("filter"));
-		$subnode = $filternode->append_child($dom->create_element("keyword"));
-		$subnode->append_child($dom->create_text_node($this->filter_keyword));
+		$filternode = $listnode->appendChild($dom->createElement("filter"));
+		$subnode = $filternode->appendChild($dom->createElement("keyword"));
+		$subnode->appendChild($dom->createTextNode($this->filter_keyword));
 
 		// Display navigation information
 		$this->users->add_navinfo_to($dom, $listnode);
 		
 		// Display the initialisation error (to explain a possible lack of results)
 		if(isset($this->error)) {
-			$node = $listnode->append_child($dom->create_element("error"));
-			$node->append_child($dom->create_text_node((PEAR::isError($this->error) ? $this->error->getMessage() : $this->error)));
+			$node = $listnode->appendChild($dom->createElement("error"));
+			$node->appendChild($dom->createTextNode((PEAR::isError($this->error) ? $this->error->getMessage() : $this->error)));
 		}
 
 		// Display a passed-in error message
 		if(isset($_REQUEST['errmsg'])) {
 			$errmsg = $_REQUEST['errmsg'];
-			$node = $listnode->append_child($dom->create_element("error"));
-			$node->append_child($dom->create_text_node($errmsg));
+			$node = $listnode->appendChild($dom->createElement("error"));
+			$node->appendChild($dom->createTextNode($errmsg));
 		}
 	}
 
@@ -164,13 +164,13 @@ class ListUsers {
 				
 		// Add entries to page
 		for($i = 0; $i < $entries['count']; $i++) {
-			$usernode = $listnode->append_child($dom->create_element("user"));
-			$usernode->append_child($node = $dom->create_element("uid"));
-			$node->append_child($dom->create_text_node($entries[$i]['uid'][0]));
-			$usernode->append_child($node = $dom->create_element("name"));
-			$node->append_child($dom->create_text_node($entries[$i]['cn'][0]));
-			$usernode->append_child($node = $dom->create_element("email"));
-			$node->append_child($dom->create_text_node($entries[$i]['mail'][0]));
+			$usernode = $listnode->appendChild($dom->createElement("user"));
+			$usernode->appendChild($node = $dom->createElement("uid"));
+			$node->appendChild($dom->createTextNode($entries[$i]['uid'][0]));
+			$usernode->appendChild($node = $dom->createElement("name"));
+			$node->appendChild($dom->createTextNode($entries[$i]['cn'][0]));
+			$usernode->appendChild($node = $dom->createElement("email"));
+			$node->appendChild($dom->createTextNode($entries[$i]['mail'][0]));
 		}
 	}
 }
