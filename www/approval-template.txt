@@ -1,0 +1,28 @@
+Dear <member>,
+
+We are pleased to inform you that you are now part of the GNOME
+Foundation Membership. You are now eligible to become a candidate
+for election and to vote in the annual Board of Directors elections
+held each November. You have been subscribed to the foundation-announce
+mailing list, where all the major GNOME Foundation announcements are
+sent. It is a low volume list and does not allow subscribers to post
+emails. If you would like to read the archives you can do so here:
+    http://mail.gnome.org/mailman/listinfo/foundation-announce
+
+You are also encouraged to subscribe to the foundation-list mailing
+list. It is open to the public (even non-members) and is used to discuss
+any issue relating to the GNOME Foundation. This is the place for you to
+suggest ideas and voice your opinions on issues pertaining to the GNOME
+Foundation. To subscribe or read the archives, go to:
+    http://mail.gnome.org/mailman/listinfo/foundation-list
+
+For more information about the GNOME Foundation, visit the GNOME
+Foundation's web page at:
+    http://foundation.gnome.org
+
+Thanks for your contributions to GNOME.
+
+Sincerely,
+
+The GNOME Foundation Membership Committee
+

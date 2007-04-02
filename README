@@ -1,0 +1,9 @@
+Mango web front-end to the GNOME LDAP and MySQL databases
+-----
+
+This package contains a simple, but extensible admin front-end for managing the gnome.org LDAP and MySQL databases. It's been carved out of some larger PHP projects I've been working on. It does quite a bit already, but it doesn't wash the dishes for you just yet.
+
+Why 'mango'? As you may know, naming a piece of software is one of the hardest things in software development (for me anyway). I happened to be eating a mango while trying to think of a name. I figured I could explain it to people as 'My Administration Nahdtang for Gnome.Org', which is lame, and nobody will realise that Nahdtang is Thai for Window. Still, it doesn't really matter if it's name stands for anything or not, as long is it has a unique name so it won't get confused with other systems that do a similar thing. Anyway, 'mango' is kind of a cool word. Enough said.
+
+--
+Ross Golder <ross@golder.org>

@@ -1,0 +1,22 @@
+Mango System Requirements
+-------------------------
+
+The GNOME sysadmin team need a better way to manage the data in the organisation's LDAP database and some of the mySQL databases.
+
+In particular, the accounts manager needs to be able to:
+
+- Add new users to the LDAP server.
+- Locate existing users (by login, name or e-mail address)
+- Update user's SSH keys, or contact details.
+- Add/remove users to/from particular groups (e.g. gnomecvs, ftpadmin etc)
+- Send one of the standard e-mail templates, pre-populated, with a 'accounts@gnome.org' reply-to address set ;-)
+
+Additionally, the mirrors list manager needs to be able to:
+
+- List all known active/inactive mirrors.
+- Add/update/remove mirrors in the mirrors database.
+- Regenerate a central 'mirrors.xml' file somewhere, and trigger an XSLT process to generate 'mirrors.html' (or something like that) to keep the live mirrors list page up-to-date.
+
+This system needs to be able to authenticate the above types of user and allow them to perform their duties. In the future, there may be other classes of user (e.g. foundation membership administration).
+
+For bonus points, there should be a set of publicly accessible forms to allow people to request a CVS account, request a change of SSH key or contact details etc, which will pre-check certain inputs and send a copy of the request by e-mail to both the requestor (for reference/to identify abuse) and to accounts@gnome.org (to process the request). In the future, these processes can be automated even further etc.

@@ -1,0 +1,331 @@
+/*
+ * Main Mango CSS stylesheet
+ */
+
+table.filters, table.navigation, table.results, table.form {
+	width: 100%;
+	background: #dfd;
+	border: solid black 1px;
+}
+
+table.results th {
+	text-align: left;
+}
+table.results tr.row-0 {
+	background: #eee;
+}
+table.results tr.row-1 {
+	background: #cfc;
+}
+table.results tr.inactive {
+	background: #fcc;
+}
+table.formtabs td {
+	background: #eee;
+	border-top: solid black 1px;
+	border-left: solid black 1px;
+	border-right: solid black 1px;
+	padding: 3px;
+}
+table.formtabs td.selected {
+	background: #cfc;
+}
+table.formtabs a {
+	text-decoration: none;
+}
+table.form {
+	padding: 5px;
+}
+table.form th {
+	text-align: right;
+	vertical-align: top;
+}
+
+table.form th.formerror {
+	font-weight: bold;
+	color: #f00;
+}
+table caption {
+	display: none;
+}
+
+p.error, div.error {
+	width: 100%;
+	background: #f44;
+}
+
+.new-record-link {
+	float: right;
+}
+
+span.smallprint {
+	font-size: 9pt;
+}
+
+table.results a {
+	text-decoration: none;
+	font-weight: bold;
+}
+
+a.button {
+	text-decoration: none;
+	color: black;
+	font-size: 9pt;
+	font-weight: bold;
+	border: outset 2px;
+	background: #a0a0a0;
+	padding: 3px;
+}
+
+textarea.mailbody {
+	font-size: 9pt;
+}
+
+/*
+* The rest just ripped off from www.gnome.org, with the url() links made absolute
+*/
+
+/* Basic tags */
+body {
+	margin: 0px;
+	background-color: white;
+	font-family: sans-serif;
+	color: black;
+}
+
+#body {
+	margin: 90px 230px 0px 10px;
+	padding: 0px;
+}
+
+a img {
+	border: 0px;
+}
+
+/* Anchors */
+a {
+	color: #0000ff;
+}
+
+a:visited {
+	color: #551a8b;
+}
+
+a:active {
+	color: #ff0000;
+}
+
+/* Basic classes */
+
+.none { /* to add paragraph spacing to various elements for ttys */
+	margin: 0px;
+	padding: 0px;
+}
+
+.invisible { /* stuff that should appear when this css isn't used */
+	margin: 0px;
+	border: 0px;
+	padding: 0px;
+	height: 0px;
+	visibility: hidden;
+}
+
+.left {
+	margin: 10px;
+	padding: 0px;
+	float: left;
+}
+
+.right {
+	margin: 10px;
+	padding: 0px;
+	float: right;
+}
+
+.center {
+	text-align: center;
+}
+
+/* Common page elements: Header, footer, etc. */
+
+#logo {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	border: 0px;
+	z-index: 10;
+
+	background: url("http://www.gnome.org/img/logo/text-64") no-repeat;
+	width: 64px;
+	height: 64px;
+}
+
+#logo a img {
+	width: 64px;
+	height: 64px;
+}
+
+#hdr {
+	position: absolute;
+	z-index: 5;
+
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	width: 100%;
+	height: 48px;
+
+	text-align: right;
+
+	background: url("http://www.gnome.org/img/hdr/hills01.jpg") no-repeat;
+	background-color: #e3ffc3;
+	border-bottom: 1px solid #807d74;
+}
+
+#banner {
+	position: absolute;
+	z-index: 10;
+
+	top: 0px;
+	right: 0px;
+	border: 0px;
+
+	width: 300px;
+	height: 48px;
+
+	background: url("http://www.gnome.org/img/spacer") no-repeat;
+}
+
+#banner a img {
+	width: 300px;
+	height: 48px;
+}
+
+#hdrNav {
+	position: absolute;
+	top: 54px;
+	left: 0px;
+
+	margin-left: 84px;
+	text-align: left;
+	vertical-align: middle;
+	font-size: small;
+}
+
+#hdrNav a {
+	color: #000000;
+}
+
+#hdrTitle {
+	height: 48px;
+	padding: 10px 10px 0px 0px;
+	font-weight: bold;
+}
+
+
+/* Search thingy */
+
+#search {
+	font-size: small;
+	margin-bottom: 10px;
+	padding: 10px;
+	background-color: #dddddd;
+}
+
+#search input {
+	border: 1px solid #666666;
+	background-color: #ffffff;
+
+	vertical-align: middle;
+}
+
+
+/* Sidebar */
+
+#sidebar {
+	position: absolute;
+	top: 90px;
+	right: 0px;
+	width: 210px;
+
+	/*margin-right: 10px;*/
+	padding-right: 10px;
+	padding-bottom: 0px;
+	border-left: 1px dashed #dddddd;
+	background-color: #ffffff;
+}
+
+#sidebar p {
+	margin-top: 0px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+#sidebar p.section {
+	text-align: center;
+	font-weight: bold;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	color: #999999;
+	background-color: #eeeeee;
+}
+
+#sidebar ul {
+  margin: 0em;
+  margin-bottom: 15px;
+  padding-left: 10px;
+  padding-right: 10px;
+  list-style-type: none;
+}
+
+#sidebar ul ul {
+  padding-left: 2em;
+  padding-right: 0em;
+  list-style-type: square;
+}
+
+
+/* Copyright footer */
+
+#copyright {
+	text-align: center;
+	font-size: small;
+	clear: both;
+
+	margin-top: 10px;
+	padding: 5px 0px 5px 0px;
+	color: #aaaaaa;
+}
+
+#copyright a {
+	color: #aaaaff;
+}
+
+#copyright a:visited {
+	color: #ffaaaa;
+}
+
+
+/* News Sections */
+
+p.newsitem {
+	clear: left;
+	margin-bottom: 20px;
+}
+
+p.newsitem img.newsicon {
+	float: left;
+	margin: 0px 10px 10px 10px;
+	border: 0px;
+}
+
+
+/* Generic Classes */
+
+div.code {
+	background-color: #e0e0e0;
+	color: #000000;
+	white-space: pre;
+	font-family: monospace;
+}
+

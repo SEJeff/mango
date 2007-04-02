@@ -1,0 +1,21 @@
+Roughly:
+
+1) Set up the virtualhost
+
+Create a new entry in /etc/hosts:
+
+127.0.0.123  mango.gnome.local
+
+You can use whatever you want for the IP and hostname, as long as Apache will respond to it. Next, add a virtualhost file in your Apache sites dir (/etc/httpd/sites.d for RedHat, /etc/apache/sites-available for Debian/Ubuntu).
+
+<VirtualHost 127.0.0.123:80>
+ServerName mango.gnome.local
+DocumentRoot /where/you/checked/out/mango/www
+</VirtualHost>
+
+Restart Apache for changes to take effect.
+
+2) Copy 'config-example.xml' to 'config.xml' and configure to taste. 
+
+3) Connect to http://mango.gnome.local/ (or whatever you set it up to be) and off you go.
+

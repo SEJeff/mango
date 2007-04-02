@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<config>
+  <mode>development</mode>
+  <base_url>http://mango.gnome.org</base_url>
+  <secure_url>https://mango.gnome.org</secure_url>
+  <mirrors_db_url>mysql://gnome:gnome@localhost.localdomain:3306/gnome</mirrors_db_url>
+  <membership_db_url>mysql://gnome:gnome@localhost.localdomain:3306/gnome</membership_db_url>
+  <smtp_url>smtp://localhost/</smtp_url>
+  <ldap_url>ldap://localhost/</ldap_url>
+  <ldap_binddn>cn=Manager,dc=gnome,dc=org</ldap_binddn>
+  <ldap_bindpw>nottelling</ldap_bindpw>
+  <ldap_basedn>dc=gnome,dc=org</ldap_basedn>
+  <ldap_users_basedn>ou=people,dc=gnome,dc=org</ldap_users_basedn>
+  <ldap_groups_basedn>ou=groups,dc=gnome,dc=org</ldap_groups_basedn>
+  <support_email>rossg@gnome.org</support_email>
+  <session_path>/var/lib/mango/sessions</session_path>
+</config>

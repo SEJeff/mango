@@ -1,0 +1,103 @@
+2006-10-10  Ross Golder  <ross@golder.org>
+	
+	* lib/authtoken.php: Added.
+	* lib/mysql.php: Minor variable renaming.
+	* lib/page.php: Remove unnecessary warning/error suppression.
+	* lib/config.php: Also check for '/var/www/mango/config.xml'.
+	* lib/foundationmember.php: No need for 'emaillink' stuff.
+	* www/*.xsl, www/default.css: Cosmetic updates.
+	* www/list_users.php: Unified/simplified filter keyword search.
+	* www/update_user.php: Broke into tabs and added form to assist in
+	  sending of templated e-mails.
+	* templates/authtoken_mail.xsl: Added.
+	* templates/welcome_mail.xsl: Added.
+
+2005-12-11  Ross Golder  <ross@golder.org>
+	
+	* www/page.xsl, www/*user*.php: Added access for members of the
+	  'accounts' group.
+
+2005-09-29  Ross Golder  <ross@golder.org>
+	
+	* lib/user.php: Setting SSH key(s) and group(s) wasn't working
+	  when adding a new user.
+
+2005-09-28  Ross Golder  <ross@golder.org>
+	
+	* lib/user.php: Added 'which_homedir' function.
+	* lib/user.php: Added 'which_shell' function.
+
+2005-08-30  Ross Golder  <ross@golder.org>
+	
+	* www/update_user.xsl, www/new_user.xsl: Re-arrange order of auth
+	  key upload/textarea. Added link to update from 'user added' message.
+	* www/update_user.php, www/new_user.xsl: De-duplicate keys and ignore
+	  empty keys.
+	* www/new_user.php, lib/users.php: Fixed uploading SSH keys when
+	  adding new users.
+	* lib/users.php: Add/remove 'pubkeyAuthenticationUser' class as necessary.
+	* lib/users.php: Add/remove homedirectory and shell as necessary (on
+	  joining/leaving ftpadmin group).
+	* lib/users.php: Lowered high watermark for fetching next UID to 10000 to
+	  stop it creating users with insanely high UIDs.
+
+2005-08-28  Ross Golder  <ross@golder.org>
+	
+	* www/list_users.php: Fix bad re-use of $node variable.
+	* www/default.css: Add 'tr.inactive' class selector.
+	* lib/foundationmember.php: Added 'first_added' field.
+	* lib/datefield.php: New utility class.
+	* lib/paged_results.php: Fixed bad re-use of $node variable.
+	* lib/mysql.php: New date-escaping functions.
+	* bin/convert_members.csv.py: The script I used to convert the
+	  CSV data Vincent supplied with the original membership.
+	* sql/foundationmembers.sql: Added to complement Vuntz's data and
+	  scripts for foundation membership management.
+	* sql/ftpmirrors.sql: Added for reference.
+	* config.xml: No need for this under version control - there's a template
+	  version there anyway.
+	* lib/config.php: Add 'session_path' config variable (for CGI use).
+	* www/index.php, www/login.php: Use 'common.php' like the rest.
+
+2005-08-24  Ross Golder  <ross@golder.org>
+
+	* www/*.php: Add shebangs as page scripts are to be CGI-executable.
+
+2005-08-17  Ross Golder  <ross@golder.org>
+
+	* www/page.xsl, www/login.xsl: Added links to foundation membership
+	  scripts for sysadmin and 'vuntz' groupies :)
+
+2005-08-17  Vincent Untz  <vuntz@gnome.org>
+
+	* lib/foundationmember.php, www/*foundationmember*.[php|xsl]: New
+	  stuff for managing the foundation members database.
+
+2005-08-01  Ross Golder  <ross@golder.org>
+
+	* www/new_user.*: Add ability to upload SSH key (copied from
+	  update page).
+	* lib/user.php: Fixed a bug where lastname was added as description.
+	* secure/login.*: Moved to 'www/'. We're gonna host it all on https.
+	* secure/: Redundant, removed.
+	* www/index.xsl, www/page.xsl: Replaced 'secureurl' links with 'baseurl'
+	  links.
+	* www/login.xsl, lib/config.php, lib/page.php: Removed traces of
+	  'secureurl'.
+	* www/page.xsl: Fix broken 'mirrors' link at top of each page.
+	* www/list_ftpmirrors.*: Made filter apply to useful fields.
+	* www/lists.xml: New file for storing static lists.
+	* www/new_ftpmirror.xsl, www/update_ftpmirror.xsl: Made location
+	  field a listbox, usins lists.xml.
+	  
+2005-07-29  Ross Golder  <ross@golder.org>
+
+	* secure/common.xsl: Replaced testing URL with live one.
+	* www/update_user.xsl: Truncate displayed SSH keys for comfort.
+
+2005-07-28  Ross Golder  <ross@golder.org>
+
+	* Created initial ChangeLog.
+	* Added 'redirect' argument to login/page to save a click or two.
+
+
