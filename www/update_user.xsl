@@ -149,7 +149,7 @@
           <xsl:attribute name="checked"/>
          </xsl:if>
         </input>
-        <span> CVS account</span>
+        <span> SVN account</span>
        </div>
        <div>
         <input type="checkbox" name="group-ftpadmin">
