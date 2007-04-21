@@ -334,6 +334,24 @@ class UpdateUser {
 			return $this->_create_email_dom($dom, $formnode, 'welcomemail', 'welcome_mail',
 							$to, $cc, $subject);
 		}
+
+		// Check for 'auth token' action trigger
+		if(isset($_POST['sendwelcomeshell'])) {
+			// Send a copy to the RT ticket
+			$subject .= "Your GNOME account is ready";
+
+			return $this->_create_email_dom($dom, $formnode, 'shellmail', 'welcome_mail_shell',
+							$to, $cc, $subject);
+		}
+
+		// Check for 'auth token' action trigger
+		if(isset($_POST['sendwelcomealias'])) {
+			// Send a copy to the RT ticket
+			$subject .= "Your GNOME email alias is ready";
+
+			return $this->_create_email_dom($dom, $formnode, 'aliasmail', 'welcome_mail_alias',
+							$to, $cc, $subject);
+		}
 	}
 
 
