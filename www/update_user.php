@@ -301,7 +301,7 @@ class UpdateUser {
 		}
 
 		// Prepare an e-mail
-		$to = $this->user->cn." <".$this->user->mail.">";
+		$to = '"' . $this->user->cn .'" <' . $this->user->mail . '>';
 		$cc = "";
 		$subject = "";
 
@@ -322,33 +322,8 @@ class UpdateUser {
 			// Generate an authentication token
 			$authtoken = AuthToken::generate();
 
-			// Prepare mail body template variables
-			$maildom = new DOMDocument('1.0','UTF-8');
-			$mailnode = $maildom->appendChild($maildom->createElement("authtokenmail"));
-			$usernode = $mailnode->appendChild($maildom->createElement("user"));
-			$this->user->add_to_node($maildom, $usernode);
-			$authtokennode = $mailnode->appendChild($maildom->createElement("authtoken"));
-			$authtokennode->appendChild($maildom->createTextNode($authtoken));
-
-			// Process the mail body template
-        	        $stylesheet = new DOMDocument('1.0','UTF-8');
-	                $stylesheet->loadXML(file_get_contents("../templates/authtoken_mail.xsl"));
-			$xsltprocessor = new XSLTProcessor();
-			$xsltprocessor->importStylesheet($stylesheet);
-			$body = $xsltprocessor->transformToXML($maildom);
-		
-			// Put it in a confirmation form
-			$formnode->appendChild($dom->createElement("authorisemail"));
-			$fieldnode = $formnode->appendChild($dom->createElement("to"));
-			$fieldnode->appendChild($dom->createTextNode($to));
-			$fieldnode = $formnode->appendChild($dom->createElement("cc"));
-			$fieldnode->appendChild($dom->createTextNode($cc));
-			$fieldnode = $formnode->appendChild($dom->createElement("subject"));
-			$fieldnode->appendChild($dom->createTextNode($subject));
-			$fieldnode = $formnode->appendChild($dom->createElement("body"));
-			$fieldnode->appendChild($dom->createTextNode($body));
-
-			return;
+			return $this->_create_email_dom($dom, $formnode, 'authtokenmail', 'authtoken_mail',
+							$to, $cc, $subject, array('authtoken' => $authtoken));
 		}
 
 		// Check for 'auth token' action trigger
@@ -356,33 +331,50 @@ class UpdateUser {
 			// Send a copy to the RT ticket
 			$subject .= "Your GNOME account is ready";
 
-			// Prepare mail body template variables
-			$maildom = new DOMDocument('1.0','UTF-8');
-			$mailnode = $maildom->appendChild($maildom->createElement("welcomemail"));
-			$usernode = $mailnode->appendChild($maildom->createElement("user"));
-			$this->user->add_to_node($maildom, $usernode);
-
-			// Process the mail body template
-			$stylesheet = new DOMDocument('1.0','UTF-8');
-			$stylesheet->loadXML(file_get_contents("../templates/welcome_mail.xsl"));
-			$xsltprocessor = new XSLTProcessor();
-			$xsltprocessor->importStylesheet($stylesheet);
-			$body = $xsltprocessor->transformToXML($maildom);
-
-			// Put it in a confirmation form
-			$formnode->appendChild($dom->createElement("authorisemail"));
-			$fieldnode = $formnode->appendChild($dom->createElement("to"));
-			$fieldnode->appendChild($dom->createTextNode($to));
-			$fieldnode = $formnode->appendChild($dom->createElement("cc"));
-			$fieldnode->appendChild($dom->createTextNode($cc));
-			$fieldnode = $formnode->appendChild($dom->createElement("subject"));
-			$fieldnode->appendChild($dom->createTextNode($subject));
-			$fieldnode = $formnode->appendChild($dom->createElement("body"));
-			$fieldnode->appendChild($dom->createTextNode($body));
-
-			return;
+			return $this->_create_email_dom($dom, $formnode, 'welcomemail', 'welcome_mail',
+							$to, $cc, $subject);
 		}
 	}
+
+
+	function _create_email_dom(&$dom, &$formnode, $mailnodename, $template,
+				   $to, $cc, $subject, $extra_mailnodes = NULL) {
+
+		// Prepare mail body template variables
+		$maildom = new DOMDocument('1.0','UTF-8');
+		$mailnode = $maildom->appendChild($maildom->createElement($mailnodename));
+		$usernode = $mailnode->appendChild($maildom->createElement("user"));
+		$this->user->add_to_node($maildom, $usernode);
+		
+		if (!is_null($extra_mailnodes)) {
+			foreach ($extra_mailnodes as $key=>$value) {
+				$node = $mailnode->appendChild($maildom->createElement($key));
+				$node->appendChild($maildom->createTextNode($value));
+			}
+		}
+
+
+		// Process the mail body template
+		$stylesheet = new DOMDocument('1.0','UTF-8');
+		$stylesheet->loadXML(file_get_contents("../templates/$template.xsl"));
+		$xsltprocessor = new XSLTProcessor();
+		$xsltprocessor->importStylesheet($stylesheet);
+		$body = $xsltprocessor->transformToXML($maildom);
+
+		// Put it in a confirmation form
+		$formnode->appendChild($dom->createElement("authorisemail"));
+		$fieldnode = $formnode->appendChild($dom->createElement("to"));
+		$fieldnode->appendChild($dom->createTextNode($to));
+		$fieldnode = $formnode->appendChild($dom->createElement("cc"));
+		$fieldnode->appendChild($dom->createTextNode($cc));
+		$fieldnode = $formnode->appendChild($dom->createElement("subject"));
+		$fieldnode->appendChild($dom->createTextNode($subject));
+		$fieldnode = $formnode->appendChild($dom->createElement("body"));
+		$fieldnode->appendChild($dom->createTextNode($body));
+
+		return;
+	}
+
 }
 
 require_once("common.php");
