@@ -34,7 +34,7 @@
     </xsl:otherwise>
    </xsl:choose>
 
-   <form method="post" action="login.php">
+   <form method="post" action="login.php" name="f">
     <input type="hidden" name="action" value="login"/>
     <xsl:if test="boolean(@redirect)">
      <input type="hidden" name="redirect" value="{@redirect}"/>
@@ -51,6 +51,9 @@
     </table>
     <input type="submit" value="Login" />
    </form>
+   <script language="JavaScript">
+     document.forms['f'].login.focus();
+   </script>
 
    <!-- TODO: Think of a way of resetting forgotten passwords safely
    <xsl:if test="boolean(@failed)">
