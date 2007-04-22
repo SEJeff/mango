@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<!DOCTYPE html [
- <!ENTITY middot "&#183;">
-]>
-
 <xsl:stylesheet version="1.1"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
@@ -12,7 +8,7 @@
   <xsl:variable name="script" select="'update_user.php'"/>
 
   <xsl:template name="breadcrumb">
-   &middot; <a href="/list_users.php">Users</a>
+   · <a href="/list_users.php">Users</a>
   </xsl:template>
   
   <xsl:template match="updateuser">

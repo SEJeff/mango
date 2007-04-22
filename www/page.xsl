@@ -2,10 +2,6 @@
 
 <!-- $Id: page.xsl,v 1.22 2004/03/27 03:35:25 rossg Exp $ -->
 
-<!DOCTYPE html [
- <!ENTITY middot "&#183;">
-]>
-
 <xsl:stylesheet version="1.1"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
@@ -37,12 +33,12 @@
        <xsl:call-template name="breadcrumb"/>
       </xsl:if>
       <xsl:if test="not(boolean(/page/group))">
-       <a href="http://www.gnome.org/">GNOME</a> &middot; 
-       <a href="http://sysadmin.gnome.org/start/stable/">Sysadmin</a> ::
-       <a href="http://developer.gnome.org/">Developers</a> ::
-       <a href="http://foundation.gnome.org/">Foundation</a> ::
-       <a href="http://cvs.gnome.org/">CVS</a> ::
-       <a href="http://mail.gnome.org/">Mail</a> ::
+       <a href="http://www.gnome.org/">GNOME</a> ·
+       <a href="http://sysadmin.gnome.org/start/stable/">Sysadmin</a> ·
+       <a href="http://developer.gnome.org/">Developers</a> ·
+       <a href="http://foundation.gnome.org/">Foundation</a> ·
+       <a href="http://svn.gnome.org/">SVN</a> ·
+       <a href="http://mail.gnome.org/">Mail</a> ·
        <a href="http://www.gnome.org/contact/">Contact</a>
       </xsl:if>
      </div>

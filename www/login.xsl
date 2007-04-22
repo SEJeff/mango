@@ -2,10 +2,6 @@
 
 <!-- $Id: login.xsl,v 1.2 2004/03/12 12:50:38 rossg Exp $ -->
 
-<!DOCTYPE html [
- <!ENTITY middot "&#183;">
-]>
-
 <!--
   ** This is just an example template. Still waiting on the final design.
   -->
@@ -18,7 +14,7 @@
    <xsl:variable name="script" value="'login.php'"/>
 
    <xsl:template name="breadcrumb">
-    &middot; <a href="{$script}">Login</a>
+    · <a href="{$script}">Login</a>
    </xsl:template>
     
    <xsl:template match="loginform">
