@@ -202,6 +202,13 @@ class UpdateUser {
 			if(empty($key) || substr($key, 0, 3) != "ssh") continue;
 			$this->user->authorizedKeys[] = $key;
 		}
+		foreach($_POST as $key => $value) {
+			if(substr($key, 0, 14) == "authorizedKey-") {
+				$i = substr($key, 14);
+				if(!empty($this->savedKeys[$i]))
+					$this->user->authorizedKeys[] = $this->savedKeys[$i];
+			}
+		}
 
 		// Deduplicate keys
 		$this->user->authorizedKeys = array_unique($this->user->authorizedKeys);
@@ -228,11 +235,6 @@ class UpdateUser {
 		foreach($_POST as $key => $value) {
 			if(substr($key, 0, 6) == "group-") {
 				$this->user->groups[] = substr($key, 6);
-			}
-			if(substr($key, 0, 14) == "authorizedKey-") {
-				$i = substr($key, 14);
-				if(!empty($this->savedKeys[$i]))
-					$this->user->authorizedKeys[] = $this->savedKeys[$i];
 			}
 		}
 
