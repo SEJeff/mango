@@ -238,6 +238,9 @@ class UpdateUser {
 			}
 		}
 
+		// SECURITY: Make sure the FORM submission only contained the groups allowed to be changed
+		$this->user->groups = array_intersect($this->user->groups, $AFFECTEDGROUPS);
+
 		// Mix other groups back in
 		if(is_array($this->othergroups))
 			$this->user->groups = array_merge($this->user->groups, $this->othergroups);
