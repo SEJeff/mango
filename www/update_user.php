@@ -19,7 +19,9 @@ $AFFECTEDGROUPS = array(
 	"bugzilla",
 	"artweb",
 	"mailusers",
-	"accounts"
+	"accounts",
+	"buildmaster",
+	"buildslave"
 );
 
 class UpdateUser {
@@ -229,6 +231,7 @@ class UpdateUser {
 	
 	function process_groups_tab(&$dom, &$formnode) {	
 		global $checkforgroups;
+		global $AFFECTEDGROUPS;
 
 		// Read form and validate
 		$this->user->groups = array();

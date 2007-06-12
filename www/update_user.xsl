@@ -140,76 +140,92 @@
       </th>
       <td>
        <div>
-        <input type="checkbox" name="group-gnomecvs">
+        <input type="checkbox" name="group-gnomecvs" id="group-gnomecvs">
          <xsl:if test="boolean(group[@cn='gnomecvs'])">
           <xsl:attribute name="checked"/>
          </xsl:if>
         </input>
-        <span> SVN account</span>
+        <label for="group-gnomecvs">SVN account</label>
        </div>
        <div>
-        <input type="checkbox" name="group-ftpadmin">
+        <input type="checkbox" name="group-ftpadmin" id="group-ftpadmin">
          <xsl:if test="boolean(group[@cn='ftpadmin'])">
           <xsl:attribute name="checked"/>
          </xsl:if>
         </input>
-        <span> FTP upload</span>
+        <label for="group-ftpadmin">FTP upload</label>
        </div>
        <div>
-        <input type="checkbox" name="group-gnomeweb">
+        <input type="checkbox" name="group-gnomeweb" id="group-gnomeweb">
          <xsl:if test="boolean(group[@cn='gnomeweb'])">
           <xsl:attribute name="checked"/>
          </xsl:if>
         </input>
-        <span> Web admin</span>
+        <label for="group-gnomeweb">Web admin</label>
        </div>
        <div>
-        <input type="checkbox" name="group-bugzilla">
+        <input type="checkbox" name="group-bugzilla" id="group-bugzilla">
          <xsl:if test="boolean(group[@cn='bugzilla'])">
           <xsl:attribute name="checked"/>
          </xsl:if>
         </input>
-        <span> Bugzilla dude(/dudess)</span>
+        <label for="group-bugzilla">Bugzilla dude(/dudess)</label>
        </div>
        <div>
-        <input type="checkbox" name="group-accounts">
+        <input type="checkbox" name="group-accounts" id="group-accounts">
          <xsl:if test="boolean(group[@cn='accounts'])">
           <xsl:attribute name="checked"/>
          </xsl:if>
         </input>
-        <span> Accounts team dude(/dudess)</span>
+        <label for="group-accounts">Accounts team dude(/dudess)</label>
        </div>
        <div>
-        <input type="checkbox" name="group-membctte">
+        <input type="checkbox" name="group-membctte" id="group-membctte">
          <xsl:if test="boolean(group[@cn='membctte'])">
           <xsl:attribute name="checked"/>
          </xsl:if>
         </input>
-        <span> Membership committee dude(/dudess)</span>
+        <label for="group-membctte">Membership committee dude(/dudess)</label>
        </div>
        <div>
-        <input type="checkbox" name="group-sysadmin">
+        <input type="checkbox" name="group-sysadmin" id="group-sysadmin">
          <xsl:if test="boolean(group[@cn='sysadmin'])">
           <xsl:attribute name="checked"/>
          </xsl:if>
         </input>
-        <span> Sysadmin team dude(/dudess)</span>
+        <label for="group-sysadmin">Sysadmin team dude(/dudess)</label>
        </div>
        <div>
-        <input type="checkbox" name="group-artweb">
+        <input type="checkbox" name="group-buildmaster" id="group-buildmaster">
+         <xsl:if test="boolean(group[@cn='buildmaster'])">
+          <xsl:attribute name="checked"/>
+         </xsl:if>
+        </input>
+        <label for="group-buildmaster">Build master account</label>
+       </div>
+       <div>
+        <input type="checkbox" name="group-buildslave" id="group-buildslave">
+         <xsl:if test="boolean(group[@cn='buildslave'])">
+          <xsl:attribute name="checked"/>
+         </xsl:if>
+        </input>
+	<label for="group-buildslave">Build slave account</label>>
+       </div>
+       <div>
+        <input type="checkbox" name="group-artweb" id="group-artweb">
          <xsl:if test="boolean(group[@cn='artweb'])">
           <xsl:attribute name="checked"/>
          </xsl:if>
         </input>
-        <span> Artweb admin</span>
+        <label for="group-artweb">Artweb admin</label>
        </div>
        <div>
-        <input type="checkbox" name="group-mailusers">
+        <input type="checkbox" name="group-mailusers" id="group-mailusers">
          <xsl:if test="boolean(group[@cn='mailusers'])">
           <xsl:attribute name="checked"/>
          </xsl:if>
         </input>
-        <span> Has a cool 'gnome.org' mail alias</span>
+        <label for="group-mailusers">Has a cool 'gnome.org' mail alias</label>
        </div>
       </td>
      </tr>
