@@ -152,7 +152,7 @@
           <xsl:attribute name="checked"/>
          </xsl:if>
         </input>
-	<label for="group-buildslave">Build slave account</label>>
+	<label for="group-buildslave">Build slave account</label>
        </div>
        <div>
         <input type="checkbox" name="group-artweb" id="group-artweb">
