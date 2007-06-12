@@ -8,6 +8,18 @@ define('STYLESHEET', 'new_user.xsl');
 define('SESSIONID', 'new_user');
 define('GROUP', 'accounts');
 
+$AFFECTEDGROUPS = array(
+	"gnomecvs",
+	"ftpadmin",
+	"gnomeweb",
+	"bugzilla",
+	"artweb",
+	"mailusers",
+	"accounts",
+	"buildmaster",
+	"buildslave"
+);
+
 class NewUser {
 	// Stage
 
@@ -119,6 +131,7 @@ class NewUser {
 	
 	function readform() {
 		global $checkforgroups;
+		global $AFFECTEDGROUPS;
 
 		// Save any keys from the last form		
 		$this->savedKeys = $user->authorizedKeys;
@@ -134,6 +147,8 @@ class NewUser {
 			if(substr($key, 0, 6) == "group-") {
 				$this->user->groups[] = substr($key, 6);
 			}
+                	// SECURITY: Make sure the FORM submission only contained the groups allowed to be changed
+			$this->user->groups = array_intersect($this->user->groups, $AFFECTEDGROUPS);
 			if(substr($key, 0, 14) == "authorizedKey-") {
 				$i = substr($key, 14);
 				if(!empty($this->savedKeys[$i]))
