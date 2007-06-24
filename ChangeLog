@@ -1,3 +1,8 @@
+2007-06-24  Olav Vitters  <olav@bkor.dhs.org>
+
+	* lib/user.php: Validate uid (1-12 chars of a-z; no caps). Validate
+	email address (regexp taken from Bugzilla).
+
 2006-10-10  Ross Golder  <ross@golder.org>
 	
 	* lib/authtoken.php: Added.

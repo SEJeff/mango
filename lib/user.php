@@ -399,12 +399,12 @@ class User {
 	
 	function validate() {
 		$errors = array();
-		if(empty($this->uid)) {
+		if(empty($this->uid) || !preg_match("/^[a-z]{1,12}$/", $this->uid)) {
 			$errors[] = "uid";
 		}
 		if(empty($this->cn))
 			$errors[] = "cn";
-		if(empty($this->mail))
+		if(empty($this->mail) || !preg_match("/^[\w\.\+\-=]+@[\w\.\-]+\.[\w\-]+$/", $this->mail))
 			$errors[] = "mail";
 		return $errors;
 	}
