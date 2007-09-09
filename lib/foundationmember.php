@@ -17,7 +17,7 @@ class FoundationMember {
 	var $need_to_renew;
 	var $last_renewed_on;
 	var $last_update;	
-  var $resigned_on;   // denotes time when a member retired
+    var $resigned_on;   // denotes time when a member retired
 		
 	function absorb($record) {
 		$member = new FoundationMember();
