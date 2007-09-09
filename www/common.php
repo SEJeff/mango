@@ -10,7 +10,6 @@ function check_permissions(&$dom, &$pagenode, $group) {
 		$pagenode->appendChild($dom->createElement("notloggedin"));
 		return false;
 	}
-	
 	$groups = $_SESSION['groups'];
 	if(isset($groups) && is_array($groups) && in_array($group, $groups)) {
 		return true;

@@ -1,3 +1,7 @@
+2007-09-09  Olav Vitters  <olav@bkor.dhs.org>
+
+	Merge SoC changes r16:41 on the trunk.
+
 2007-06-24  Olav Vitters  <olav@bkor.dhs.org>
 
 	* lib/user.php: Validate uid (1-12 chars of a-z; no caps). Validate

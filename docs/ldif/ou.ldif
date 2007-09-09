@@ -1,0 +1,44 @@
+# Organization Units
+dn: ou=people,dc=example,dc=org
+objectClass: organizationalUnit
+ou: people
+
+dn: ou=groups,dc=example,dc=org
+objectClass: organizationalUnit
+ou: groups
+
+dn: ou=modules,dc=example,dc=org
+objectClass: organizationalUnit
+ou: modules
+
+# Initial User Account
+dn: uid=bcicek,ou=people,dc=example,dc=org
+objectClass: inetOrgPerson
+objectClass: posixAccount
+uid: bcicek
+uidNumber: 6000
+gidNumber: 6000
+cn: Baris Cicek
+sn: Baris Cicek
+mail: baris@teamforce.name.tr
+description: Mango Dev
+loginShell: /bin/bash
+homeDirectory: /home/directory
+userPassword:: e1NNRDV9aGV0QUdsdkZUdGtlSmM1YXpHQnFLRmMvY3NvPQ==
+
+dn: cn=sysadmin,ou=groups,dc=example,dc=org
+objectClass: posixGroup
+cn: sysadmin
+gidNumber: 600
+memberUid: bcicek
+
+# sample module info
+dn: cn=mango,ou=modules,dc=example,dc=org
+objectClass: gnomeModule
+objectClass: inetOrgPerson
+cn: mango
+sn: mango
+maintainerUid: bcicek
+description: GNOME LDAP management application
+
+

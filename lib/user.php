@@ -50,11 +50,13 @@ class User {
 		
 		// Process list of UIDs into an LDAP search criteria
 		$ldapcriteria = "";
-		foreach($results as $result) {
+		foreach($results as $key => $result) {
 			$ldapcriteria .= "(uid=".$result.")";
 		}
 		if($ldapcriteria) {
 			$ldapcriteria = "(&(objectClass=posixAccount)(|".$ldapcriteria."))";
+		} else {
+			$ldapcriteria = "(objectClass=posixAccount)";
 		}
 
 		// Connect to LDAP server
@@ -407,6 +409,61 @@ class User {
 		if(empty($this->mail) || !preg_match("/^[\w\.\+\-=]+@[\w\.\-]+\.[\w\-]+$/", $this->mail))
 			$errors[] = "mail";
 		return $errors;
+	}
+	
+	function user_modules ($all = false) { 
+		global $config;
+		
+		$modules = array ();
+		// if all modules including translation based modules
+		if ($all) {
+			$ldapcriteria = "(&(maintainerUid=$this->uid)(objectClass=gnomeModule))";
+		} else { 
+			$ldapcriteria = "(&(maintainerUid=$this->uid)(objectClass=gnomeModule)(!(objectClass=localizationModule)))";
+		}
+		$ldap = LDAPUtil::connectToLDAP();
+		if(PEAR::isError($ldap)) return $ldap;
+		if(!$ldap) {
+			return PEAR::raiseError("LDAP authentication failed");
+		}
+		
+		$result = ldap_search($ldap, $config->ldap_modules_basedn, $ldapcriteria, array('cn'));
+		if(!$result) {
+			return PEAR::raiseError("LDAP search failed: ".ldap_error($ldap));
+		}
+		$entries = ldap_get_entries($ldap, $result);
+		ldap_close ($ldap);
+		return $entries;
+	}
+
+	function user_languages () { 
+		global $config;
+		
+		$modules = array ();
+		$ldapcriteria = "(&(maintainerUid=$this->uid)(objectClass=gnomeModule)(objectClass=localizationModule))";
+		$ldap = LDAPUtil::connectToLDAP();
+		if(PEAR::isError($ldap)) return $ldap;
+		if(!$ldap) {
+			return PEAR::raiseError("LDAP authentication failed");
+		}
+		
+		$result = ldap_search($ldap, $config->ldap_modules_basedn, $ldapcriteria, array('cn', 'localizationTeam'));
+		if(!$result) {
+			return PEAR::raiseError("LDAP search failed: ".ldap_error($ldap));
+		}
+		$entries = ldap_get_entries($ldap, $result);
+		ldap_close ($ldap);
+		return $entries;
+	}
+	
+	function is_maintainer ($module) { 
+		$modules = $this->user_modules(true);
+		for ($i = 0; $i < $modules['count']; $i++) { 
+			if ($modules[$i]['cn'][0] == $module) { 
+				return true;
+			}
+		}
+		return false;
 	}
 }
 

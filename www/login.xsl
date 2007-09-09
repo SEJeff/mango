@@ -26,7 +26,7 @@
      <p class="error">Login failed</p>
     </xsl:when>
     <xsl:otherwise>
-     <p>To access protected services on this website, please log in to identify yourself.</p>
+     <p>To access protected services on this website, please log in to identify yourself. If you want to request a new account click on the '<a href="new_account.php">new account</a>' link.</p>
     </xsl:otherwise>
    </xsl:choose>
 
@@ -44,8 +44,11 @@
       <th>Password</th>
       <td><input type="password" name="password"/></td>
      </tr>
+    <tr>
+      <th><small>(<a href="new_account.php?reload=true">new account</a>)</small></th>
+      <td align="right"><input type="submit" value="Login" /></td>
+    </tr>
     </table>
-    <input type="submit" value="Login" />
    </form>
    <script language="JavaScript">
      document.forms['f'].login.focus();
@@ -94,15 +97,22 @@
     Please select from the following options:
    </p>
    <ul>
-    <xsl:if test="boolean(/page/group[@cn='sysadmin'])">
+    <xsl:if test="boolean(/page/group[@cn='sysadmin']) or boolean(/page/group[@cn='accounts'])">
      <li>
       <a href="{/page/@baseurl}/list_users.php?reload=true">
        LDAP users
       </a>
      </li>
+    </xsl:if>
+    <xsl:if test="boolean(/page/group[@cn='sysadmin'])">
      <li>
       <a href="{/page/@baseurl}/list_ftpmirrors.php?reload=true">
        FTP mirrors
+      </a>
+     </li>
+     <li>
+      <a href="{/page/@baseurl}/list_modules.php?reload=true">
+       GNOME modules
       </a>
      </li>
     </xsl:if>

@@ -51,13 +51,15 @@
     <div id="sidebar">
      <p class="section">Navigation</p>
      <ul>
-      <li><a href="{/page/@baseurl}/login.php">Home</a></li>
+      <li><a href="{/page/@baseurl}">Home</a></li>
       <xsl:if test="boolean(group)">
        <xsl:if test="boolean(group[@cn='accounts']) or boolean(group[@cn='sysadmin'])">
         <li><a href="{/page/@baseurl}/list_users.php">Users</a></li>
+        <li><a href="{/page/@baseurl}/list_accounts.php">Applications</a></li>
        </xsl:if>
        <xsl:if test="boolean(group[@cn='sysadmin'])">
         <li><a href="{/page/@baseurl}/list_ftpmirrors.php">Mirrors</a></li>
+        <li><a href="{/page/@baseurl}/list_modules.php">Modules</a></li>
        </xsl:if>
        <xsl:if test="boolean(group[@cn='membctte'])">
         <li><a href="{/page/@baseurl}/list_foundationmembers.php">Foundation Members</a></li>

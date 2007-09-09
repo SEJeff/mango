@@ -47,7 +47,9 @@ class Page {
 		if(isset($_REQUEST['debugxml'])) {
 			header("Content-Type: application/xml");
 			//header("Content-Type: text/plain");
-			echo $this->result->dump_mem(true);
+			//echo $this->result->html_dump_mem(true);
+			$root = $this->result->document_element();
+			var_dump ($root);
 			return;
 		}
 		
@@ -61,6 +63,8 @@ class Page {
 		/* Pass the result to the browser */
 		header("Content-Type: text/html");
 		echo $xsltprocessor->transformToXML($this->result);
+		
+
 	}
 
 	/**
@@ -87,7 +91,9 @@ class Page {
 		$pagenode->setAttribute("date", strftime("%d %B %y %T %Z"));
 
 		/* If user registered in session, add info */
-		$user = $_SESSION['user'];
+		if (isset ($_SESSION['user']))
+			$user = $_SESSION['user'];
+			
 		if(isset($user) && is_a($user, "User") && !isset($_REQUEST['logout'])) {
 			$pagenode->appendChild($usernode = $dom->createElement("user"));
 			$usernode->appendChild($node = $dom->createElement("cn"));

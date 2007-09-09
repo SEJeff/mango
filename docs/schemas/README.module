@@ -1,0 +1,19 @@
+Currently a new scheme needed for storing module information. Module information should also hold optional fields which should be used for other kind of approvals. Like foundation membership, or translation: 
+
+Proposed scheme is following: 
+objectClass: 
+	gnomeModule
+
+Attributes: 
+	cn: common name for module (ie. gnome-panel, evolution etc.)
+	maintainerUid: uid of the maintainer. This fields can be more than one.
+	
+Attributes (optional):
+	description: description of the module
+objectClass;
+	localizationModule
+
+Attributes:
+	localizationTeam: name of the localization team (ie. turkish)
+Attributes (optional):
+	mailingList: mailing list of the team

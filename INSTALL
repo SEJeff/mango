@@ -17,5 +17,23 @@ Restart Apache for changes to take effect.
 
 2) Copy 'config-example.xml' to 'config.xml' and configure to taste. 
 
-3) Connect to http://mango.gnome.local/ (or whatever you set it up to be) and off you go.
+3) Import docs/ldif/ou.ldif into your ldap directory. You might need to edit
+file for some customization. You can use ldapadd to import it (ldap server 
+should be running):
+	ldapadd -x -W -D "cn=Manager,dc=example,dc=org" -f docs/ldif/ou.ldif
+
+4) You also need Pear in order to run scripts. Necessary php-pear packages are listed below. (Fedora package names, you can find appropriate packages for your
+distro as well): 
+	php-pear-Net-Socket
+	php-pear
+	php-pear-XML-Parser
+	php-pear-Mail-Mime
+	php-pear-XML-Util
+	php-pear-Auth-SASL
+	php-pear-Mail
+	php-pear-HTML-Common
+	php-pear-Net-SMTP
+
+
+5) Connect to http://mango.gnome.local/ (or whatever you set it up to be) and off you go.
 

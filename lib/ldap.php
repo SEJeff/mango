@@ -9,9 +9,7 @@ class LDAPUtil {
 		/* Extract the hostname */
 		$url_parts = parse_url($config->ldap_url);
 		$hostname = $url_parts['host'];
-		
-		/* Determine the DN */
-		$binddn = "uid=".$uid.",".$config->ldap_users_basedn;
+	
 			
 		/* Connect to the LDAP server */
 		$ldap = ldap_connect($hostname);

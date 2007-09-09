@@ -2,6 +2,11 @@
  * Main Mango CSS stylesheet
  */
 
+ 
+li {
+	padding-top: 10px;
+}
+
 table.filters, table.navigation, table.results, table.form {
 	width: 100%;
 	background: #dfd;
@@ -328,4 +333,5 @@ div.code {
 	white-space: pre;
 	font-family: monospace;
 }
+
 

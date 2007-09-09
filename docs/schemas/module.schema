@@ -1,0 +1,25 @@
+
+attributetype ( 1.3.6.1.4.1.3319.5.2 NAME 'maintainerUid'
+	EQUALITY caseExactIA5Match
+        SUBSTR caseExactIA5SubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.3319.6.2 NAME 'localizationTeam'
+	EQUALITY octetStringMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.40 )
+
+attributetype ( 1.3.6.1.4.1.3319.6.3 NAME 'mailingList'
+        EQUALITY caseIgnoreIA5Match
+        SUBSTR caseIgnoreIA5SubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{128} )
+
+objectclass (  1.3.6.1.4.1.3319.5.1 NAME 'gnomeModule' SUP top AUXILIARY
+	DESC 'GNOME module entry which holds maintainer uid'
+	MUST ( cn $ maintainerUid )
+	MAY description )
+
+objectclass (  1.3.6.1.4.1.3319.6.1 NAME 'localizationModule' SUP top AUXILIARY
+	DESC 'Translation module which holds name of the team'
+	MUST localizationTeam
+	MAY mailingList )
+

@@ -1,0 +1,31 @@
+This is the common field conventions to be used as fields:
+
+uid = User Name to be used in LDAP as maintainerUid
+cn = This is the full name (common name) in LDAP
+email = This is the e-mail address of user
+comment = this is the comment to posted for account
+authorizationkeys = This is the ssh public keys
+svn_access = This is field stating that account needs svn access either for translations or codes contributed
+gnomemodule = This is the field stating which gnome module user working on
+translation = This is the field stating which translations user do
+ftp_access = This is field states users ability to change ftp content
+web_access = This is field states users ability to change web content
+bugzilla_access = This is field states users ability to manage bugzilla
+membttce = This is the field states users ability to manage membership database
+art_access = This is field states users ability to chage web art content
+mail_alias = This is field states users to have @gnome.org mail alias
+
+Conventional modules to hold maintainers: 
+
+LDAP Name		Maintainership
+----------------------------------------------
+any_module		SVN Maintainer of gnome module
+translation_language	Language coordinator of an GTP language
+mango_ftp_access	Maintainer for ftp management
+mango_web_access	Maintainer for web management
+mango_bugzilla_access	Maintainer for bugzilla management
+mango_membttce		Chair of membership committee
+mango_art_access	Maintainer of web art
+mango_mail_alias	Account team members
+
+

@@ -1,0 +1,13 @@
+# SSH keys as auxiliary attributes
+attributetype ( 1.3.6.1.4.1.3319.4.5
+        NAME 'authorizedKey'
+        EQUALITY caseExactMatch
+        SUBSTR caseExactSubstringsMatch
+        DESC 'string representation of an authorized SSH public key'
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+objectclass ( 1.3.6.1.4.1.3319.4.4
+        NAME 'pubkeyAuthenticationUser'
+        DESC 'an object which has authorized keys'
+        SUP top
+        AUXILIARY
+        MAY authorizedKey )

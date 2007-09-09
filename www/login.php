@@ -41,7 +41,7 @@ class Login {
 			header("Location: ".$_REQUEST['redirect']);
 			return;
 		}
-		
+
 		$page = new Page(STYLESHEET);
 		$dom =& $page->result;
 		$rootnode = $dom->appendChild($dom->createElement("page"));
@@ -91,7 +91,7 @@ class Login {
 			// Use the connection to grab a copy of our own details
 			$ldapcriteria = "(&(objectClass=posixAccount)(uid=".$login."))";
 			$result = ldap_search($ldap, $config->ldap_users_basedn, $ldapcriteria);
-			if(!$result) {
+			if($result == false) {
 				Login::loginform(true, new PEAR_Error("LDAP search failed: ".ldap_error($ldap)));
 				return;
 			}
@@ -125,7 +125,6 @@ class Login {
 
 			// Finish up
 			ldap_close($ldap);
-
 			// If we get this far, user is authenticated
 			Login::loggedin();
 			return;
