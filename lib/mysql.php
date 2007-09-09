@@ -38,7 +38,7 @@ class MySQLUtil {
 	}
 	
 	function escape_string($string) {
-		return '"'.addslashes($string).'"';
+		return "'" . addslashes($string) . "'";
 	}
 
 	function escape_date($date) {
