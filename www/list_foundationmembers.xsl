@@ -38,10 +38,10 @@
        <a class="button" href="new_foundationmember.php?reload=true">New Member</a>
       </td>
       <td align="right">
-       <xsl:if test="boolean(ftpmirror)">
+       <xsl:if test="boolean(foundationmember)">
         Page <xsl:value-of select="pagedresults/page_num"/> of <xsl:value-of select="pagedresults/total_pages"/>
        </xsl:if>
-       <span class="smallprint">(<xsl:value-of select="pagedresults/total_results"/> mirrors found)</span>
+       <span class="smallprint">(<xsl:value-of select="pagedresults/total_results"/> members found)</span>
        <xsl:if test="pagedresults/page_num &gt; 1">
         <a class="button" href="{$script}?page={pagedresults/page_num - 1}">&lt;&lt; Prev</a>
        </xsl:if>
