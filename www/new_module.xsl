@@ -3,13 +3,11 @@
 <xsl:stylesheet version="1.1"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+  <xsl:param name="libgo.channel">modules</xsl:param>  
+
   <xsl:include href="common.xsl" />
 
   <xsl:variable name="script" select="'new_module.php'"/>
-  
-  <xsl:template name="breadcrumb">
-   · <a href="list_modules.php">GNOME Module List</a>
-  </xsl:template>
 
 <xsl:template match="newmodule">  
 	<xsl:apply-templates select="error"/>

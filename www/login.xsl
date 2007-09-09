@@ -9,14 +9,12 @@
 <xsl:stylesheet version="1.1"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+  <xsl:param name="libgo.channel">login</xsl:param>
+
   <xsl:include href="common.xsl" />
 
    <xsl:variable name="script" value="'login.php'"/>
 
-   <xsl:template name="breadcrumb">
-    · <a href="{$script}">Login</a>
-   </xsl:template>
-    
    <xsl:template match="loginform">
    <xsl:choose>
     <xsl:when test="boolean(exception)">

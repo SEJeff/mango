@@ -5,9 +5,9 @@
 <xsl:stylesheet version="1.1"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-  <xsl:include href="common.xsl" />
+  <xsl:param name="libgo.channel">home</xsl:param></xsl:param>
 
-  <xsl:template name="breadcrumb"/>
+  <xsl:include href="common.xsl" />
 
   <xsl:template match="request">
   <tr><td width="50%" style="border-bottom: 1px dashed black;">

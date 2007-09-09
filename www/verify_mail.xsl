@@ -4,8 +4,6 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <xsl:include href="common.xsl" />
 
-  <xsl:template name="breadcrumb"/>
-  
   <xsl:template match="verify_mail">
     <h1>gnome.org admin</h1>  
   	<xsl:choose>

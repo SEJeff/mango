@@ -3,13 +3,11 @@
 <xsl:stylesheet version="1.1"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+  <xsl:param name="libgo.channel">users</xsl:param> 
+
   <xsl:include href="common.xsl" />
 
   <xsl:variable name="script" select="'list_users.php'"/>
- 
-  <xsl:template name="breadcrumb"> 
-   · <a href="{$script}">Users</a>
-  </xsl:template>
 
   <xsl:template match="listusers">
    <xsl:apply-templates select="error"/>

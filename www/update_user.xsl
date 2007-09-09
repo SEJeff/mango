@@ -3,14 +3,12 @@
 <xsl:stylesheet version="1.1"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+  <xsl:param name="libgo.channel">users</xsl:param>
+  
   <xsl:include href="common.xsl" />
 
   <xsl:variable name="script" select="'update_user.php'"/>
 
-  <xsl:template name="breadcrumb">
-   · <a href="/list_users.php">Users</a>
-  </xsl:template>
-  
   <xsl:template match="updateuser">
    <xsl:apply-templates select="error"/>
    <xsl:if test="boolean(updated)">

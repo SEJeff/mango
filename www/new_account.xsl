@@ -3,11 +3,12 @@
 <xsl:stylesheet version="1.1"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+  <xsl:param name="libgo.channel">accounts</xsl:param>
+
   <xsl:include href="common.xsl" />
 
   <xsl:variable name="script" select="'new_account.php'"/>
 
-  
   <xsl:template match="newaccount">
     
   	<xsl:apply-templates select="formwarning">

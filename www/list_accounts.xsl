@@ -3,14 +3,12 @@
 <xsl:stylesheet version="1.1"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+  <xsl:param name="libgo.channel">accounts</xsl:param>
+
   <xsl:include href="common.xsl" />
 
   <xsl:variable name="script" select="'list_accounts.php'"/>
  
-  <xsl:template name="breadcrumb"> 
-   · <a href="{$script}">Applications</a>
-  </xsl:template>
-
   <xsl:template match="listaccounts">
    <xsl:apply-templates select="error"/>
     <xsl:choose>

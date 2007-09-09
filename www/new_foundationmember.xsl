@@ -3,13 +3,11 @@
 <xsl:stylesheet version="1.1"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+  <xsl:param name="libgo.channel">foundation</xsl:param>  
+
   <xsl:include href="common.xsl" />
 
   <xsl:variable name="script" select="'new_foundationmember.php'"/>
-  
-  <xsl:template name="breadcrumb">
-   · <a href="list_foundationmembers.php">Foundation Members</a>
-  </xsl:template>
 
 <xsl:template match="newfoundationmember">  
 	<xsl:apply-templates select="error"/>

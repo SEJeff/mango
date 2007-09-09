@@ -3,14 +3,12 @@
 <xsl:stylesheet version="1.1"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+  <xsl:param name="libgo.channel">mirrors</xsl:param>
+   
   <xsl:include href="common.xsl" />
 
   <xsl:variable name="script" select="'update_ftpmirror.php'"/>
   
-  <xsl:template name="breadcrumb">
-   · <a href="/list_ftpmirrors.php">Mirrors</a>
-  </xsl:template>
-   
   <xsl:template match="updateftpmirror">
    <xsl:apply-templates select="error"/>
    <xsl:if test="boolean(updated)">
