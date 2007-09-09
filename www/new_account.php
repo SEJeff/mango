@@ -45,19 +45,23 @@ class NewAccount {
 		// A page node is mandatory
 		$dom->appendChild($pagenode = $dom->createElement("page"));
 		$pagenode->setAttribute("title", "New Account");
+
+                // Start the page off
+                $formnode = $pagenode->appendChild($dom->createElement("newaccount"));
+
 		// If posting details, attempt to add the new details
 		if($_SERVER['REQUEST_METHOD'] == 'POST' && !$this->added) {
 			if ($this->process($dom, $formnode)) {
-				$pagenode->appendChild($node = $dom->createElement('account_added'));
+				$formnode->appendChild($dom->createElement('account_added'));
 				$this->added = true;
 				return;
 			}
 		}
 		// Start the page off		
-		$formnode = $pagenode->appendChild($dom->createElement("newaccount"));
 		$result = array ();
 		if ($this->added) 
 		    $formnode->appendChild ($dom->createElement('alreadyadded'));
+
 		$gnomemodules = Module::listmodule($result, "devmodule");
 		$translationmodules = Module::listmodule($result, "translationmodule");
 		$selectednode = '';

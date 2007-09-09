@@ -30,6 +30,17 @@
    </ul>
    </p>
    </xsl:if>
+   <xsl:if test="boolean(account_added)">
+	<p>Your account request has been received. Please check your e-mail,
+	  and visit the link posted to you so as to verify your e-mail address.
+	  Note that, no further action will be handled before your validating
+	  your e-mail address. Once you validate your e-mail address,
+	  responsible maintainer for the abilities you've requested will
+	  process your application. </p>
+	<p>For any further questions, please contact <a
+	    href="mailto:support@gnome.org">support@gnome.org</a>.</p>
+  </xsl:if>
+  <xsl:if test="not(boolean(alreadyadded)) and not(boolean(account_added))">
    <form enctype="multipart/form-data" method="POST" action="{$script}" name="form">
     <input type="hidden" name="mango_token" value="{/page/@token}"/>
     <table class="form">
@@ -211,16 +222,9 @@
     <p>
      <input type="submit" name="request" value="Request Account &gt;&gt;"/>
     </p>
-   </form>
+  </form>
+  </xsl:if>
   </xsl:template>
-
-  <xsl:template match="account_added">
-  	<p>
-  		Your account request has been received. Please check your e-mail, and visit the link posted to you so as to verify your e-mail address. Note that, no further action will be handled before your validating your e-mail address. Once you validate your e-mail address, responsible maintainer for the abilities you've requested will process your application. 
-  </p>
-  <p>For any further questions, please contact <a href="mailto:support@gnome.org">support@gnome.org</a>.</p>
-  </xsl:template>
-  
   <xsl:template match="authorizedKey">
    <xsl:apply-templates/>&#x0d;
   </xsl:template>   

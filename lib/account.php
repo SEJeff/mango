@@ -330,13 +330,13 @@ class Account {
 			
 			// maintainers who will get the e-mail notification for this account
 			$row = mysql_fetch_array ($result);
-			if (isset ($row['svn_access'])) {
+			if (isset ($row['gnomemodule'])) {
 				$ldap_info = array ();
-				$maintainers = Module::get_maintainers($row['svn_access'], $ldap_info);
+				$maintainers = Module::get_maintainers($row['gnomemodule'], $ldap_info);
 				for ($i=0; $i < $maintainers['count']; $i++) { 
 					$ldap_uid = $maintainers[$i]['maintaineruid'][0];
 					for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
-						$mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'module "'.$row['svn_access'].'"'));
+						$mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'module "'.$row['gnomemodule'].'"'));
 						$mime->setTXTBody($mailbody);
 						$content = $mime->get($params);
 						$headers = $mime->headers($headers);

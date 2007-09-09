@@ -1,5 +1,14 @@
 2007-09-09  Olav Vitters  <olav@bkor.dhs.org>
 
+	* lib/account.php: Fix which column name is used to determine SVN
+	module (gnomemodule, not svn_access).
+	* www/new_account.php: Fix errors preventing accounts to be requested.
+	* www/new_account.xsl: Only show the form input when it is a new
+	request, or there was an error with the old one. Hide the error when
+	the request has been submitted (before).
+
+2007-09-09  Olav Vitters  <olav@bkor.dhs.org>
+
 	* lib/ldap.php: Add LDAP escape function and make use of it.
 	* lib/module.php:
 	* lib/user.php:
