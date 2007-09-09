@@ -74,12 +74,12 @@ table.results a {
 }
 
 a.button {
-	text-decoration: none;
-	color: black;
 	font-size: 9pt;
 	font-weight: bold;
-	border: outset 2px;
-	background: #a0a0a0;
+	border-bottom-color: #fcaf3e;
+	border-bottom-style: dashed;
+	border-bottom-width: 2px;
+	margin-right: 3px;
 	padding: 3px;
 }
 
@@ -456,7 +456,7 @@ ul.toc li a:hover {
 
 
 #header {
-	background: #729FCF url(library.png) 15px 10px no-repeat;
+	background: #729FCF url(mango.png) 15px 10px no-repeat;
 	float: left;
 	width: 100%;
 	font-size: 75%;
