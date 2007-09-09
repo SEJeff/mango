@@ -9,7 +9,8 @@ li {
 
 table.filters, table.navigation, table.results, table.form {
 	width: 100%;
-	background: #dfd;
+	background: #eeeeec;
+	border-collapse: collapse;
 	border: solid black 1px;
 }
 
@@ -17,13 +18,13 @@ table.results th {
 	text-align: left;
 }
 table.results tr.row-0 {
-	background: #eee;
+	background: #eeeeec;
 }
 table.results tr.row-1 {
-	background: #cfc;
+	background: white;
 }
-table.results tr.inactive {
-	background: #fcc;
+table.results tr.row-inactive {
+	background: #888a85;
 }
 table.formtabs td {
 	background: #eee;
@@ -33,7 +34,7 @@ table.formtabs td {
 	padding: 3px;
 }
 table.formtabs td.selected {
-	background: #cfc;
+	background: #fcaf3e;
 }
 table.formtabs a {
 	text-decoration: none;

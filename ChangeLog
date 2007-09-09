@@ -1,5 +1,11 @@
 2007-09-09  Olav Vitters  <olav@bkor.dhs.org>
 
+	* www/index.xsl: Show same form as login.xsl.
+	* www/list_accounts.xsl: Fix English.
+	* www/skin/default.css: De-uglify a bit.
+
+2007-09-09  Olav Vitters  <olav@bkor.dhs.org>
+
 	* www/index.xsl: Fix XML validation error.
 	* www/login.php: Redirect to the main page after logging in.
 

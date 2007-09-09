@@ -35,17 +35,33 @@
      <td>
       <xsl:choose>
       <xsl:when test="not(boolean(/page/user))">
-       <h1>gnome.org admin</h1>
        <p>This site hosts Mango, a system to assist GNOME administrative volunteers to maintain the data held in our LDAP and MySQL database (users, groups, mirrors etc).</p>
-       <p>The following public forms have been provided to ease the burden of processing these requests:</p>
-       <ul>
-        <li><a href="/new_account_request.php">Developer account request form (TODO).</a></li>
-        <li><a href="/new_email_request.php">Foundation member '@gnome.org' e-mail request form (TODO).</a></li>
-       </ul>
-       <p>For any further questions, please contact <a href="mailto:support@gnome.org">support@gnome.org</a>.</p>
+       <p>To access protected services on this website, please log in to identify yourself. If you want to request a new account click on the '<a href="new_account.php">new account</a>' link.</p>
+
+       <form method="post" action="login.php" name="f">
+	<input type="hidden" name="action" value="login"/>
+	<input type="hidden" name="mango_token" value="{/page/@token}"/>
+	<table class="login">
+	 <tr>
+	  <th>Login</th>
+	  <td><input type="text" name="login"/></td>
+	 </tr>
+	 <tr>
+	  <th>Password</th>
+	  <td><input type="password" name="password"/></td>
+	 </tr>
+	<tr>
+	  <th><small>(<a href="new_account.php?reload=true">new account</a>)</small></th>
+	  <td align="right"><input type="submit" value="Login" /></td>
+	</tr>
+	</table>
+       </form>
+       <script language="JavaScript">
+	 document.forms['f'].login.focus();
+       </script>
       </xsl:when>
       <xsl:otherwise>
-       You are now logged in as <xsl:value-of select="/page/user/cn"/>.
+       You are logged in as <xsl:value-of select="/page/user/cn"/>.
        <xsl:if test="boolean(/page/maintainer)">
        <hr/>
        <p>

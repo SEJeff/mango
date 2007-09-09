@@ -59,7 +59,7 @@
    </xsl:when>
    <xsl:otherwise>
     <p>
-      There's no pending account request.
+      There are no pending account requests.
     </p>
    </xsl:otherwise>
   </xsl:choose>
