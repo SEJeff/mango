@@ -1,5 +1,10 @@
 2007-09-09  Olav Vitters  <olav@bkor.dhs.org>
 
+	* www/list_accounts.php: Use User::fetchuser to determine who approved
+	the request.
+
+2007-09-09  Olav Vitters  <olav@bkor.dhs.org>
+
 	* lib/account.php: Fix which column name is used to determine SVN
 	module (gnomemodule, not svn_access).
 	* www/new_account.php: Fix errors preventing accounts to be requested.

@@ -118,7 +118,8 @@ class ListAccounts {
 			                 'mail_alias' => 'Mail Alias');
 			$users = array ();
 			foreach ($entry->abilities as $ability) { 
-			    $users[$ability] = User::listusers($this->$ability);
+			    #$users[$ability] = User::listusers($this->$ability);
+			    $users[$ability] = User::fetchuser($entry->$ability);
 			} 
 			$usernode = $listnode->appendChild($dom->createElement("account"));
 			$usernode->appendChild($node = $dom->createElement("uid"));
@@ -133,9 +134,9 @@ class ListAccounts {
 		    foreach ($users as $key=>$user) { 
 				$usernode->appendChild($cnode = $dom->createElement("approvedby"));
 				$cnode->appendChild($node = $dom->createElement('name'));
-				$node->appendChild($dom->createTextNode($user[0]['cn'][0]));
+				$node->appendChild($dom->createTextNode($user->cn));
 				$cnode->appendChild($node = $dom->createElement('email'));
-				$node->appendChild($dom->createTextNode($user[0]['mail'][0]));
+				$node->appendChild($dom->createTextNode($user->mail));
 				$cnode->appendChild($node = $dom->createElement('module'));
 				$node->appendChild($dom->createTextNode($modules[$key]));
 			}
