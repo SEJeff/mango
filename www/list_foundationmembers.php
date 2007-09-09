@@ -43,10 +43,10 @@ class ListFoundationMembers {
         // Perform query
         $criteria = "";
         if(!empty($this->filter_name)) {
-            $sql_filter_name = MySQLUtil::escape_string($this->filter_name);
-            $criteria = " WHERE (firstname LIKE '%$sql_filter_name%'
-                                 OR lastname LIKE '%$sql_filter_name%'
-                                 OR email LIKE '%$sql_filter_name%')";
+            $sql_filter_name = MySQLUtil::escape_string("%".$this->filter_name."%");
+            $criteria = " WHERE (firstname LIKE $sql_filter_name
+                                 OR lastname LIKE $sql_filter_name
+                                 OR email LIKE $sql_filter_name)";
         }
         if (!empty($this->filter_old) &&
             ($this->filter_old == "current" || $this->filter_old == "needrenewal")) {
@@ -130,8 +130,8 @@ class ListFoundationMembers {
             $reload = true;
         }
         // ...other filters...
-        if (isset($_REQUEST['renew'])) {
-            $foundationmember = FoundationMember::fetchmember($_REQUEST['renew']);
+        if (isset($_POST['renew'])) {
+            $foundationmember = FoundationMember::fetchmember($_POST['renew']);
             if(!is_a($foundationmember, "FoundationMember")) {
                 $this->error = $foundationmember;
             } else {

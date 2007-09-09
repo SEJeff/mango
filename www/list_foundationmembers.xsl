@@ -18,11 +18,11 @@
   	  <p>Renewal notification mail has been send to user.</p>
   	</xsl:if>
 
-   <form method="GET" action="{$script}" name="filterform">
     <table class="navigation">
      <caption>Navigation</caption>
      <tr>
       <td>
+      <form method="GET" action="{$script}" name="filterform">
        Search: <input type="text" name="filter_name" value="{filter_name}" onchange="this.form.submit()"/>
        <select name="filter_old" onchange="this.form.submit()">
         <option value="all">All members</option>
@@ -32,6 +32,7 @@
        <noscript>
         <input type="submit" value="&gt; &gt;"/>
        </noscript>
+      </form>
       </td>
       <td align="center">
        <a class="button" href="new_foundationmember.php?reload=true">New Member</a>
@@ -50,7 +51,6 @@
       </td>
      </tr>
     </table>
-   </form>
    <xsl:if test="boolean(foundationmember)">
     <table class="results">
      <caption>Results</caption>
@@ -88,7 +88,14 @@
           <xsl:when test="boolean(member)">
            <a class="button" href="update_foundationmember.php?id={id}">Update</a>
         	<xsl:if test="boolean(need_to_renew)">
-         		<a class="button" href="{$script}?filter_name={filter_name}&amp;filter_old={filter_old}&amp;page={page}&amp;renew={id}">Renew</a>
+		  <form method="POST" action="{$script}" name="filterform" style="display: inline">
+		    <input type="hidden" name="mango_token" value="{/page/@token}"/>
+		    <input type="hidden" name="filter_name" value="{filter_name}"/>
+		    <input type="hidden" name="filter_old" value="{filter_old}"/>
+		    <input type="hidden" name="page" value="{page}"/>
+		    <input type="hidden" name="renew" value="{id}"/>
+		    <input type="submit" value="Renew"/>
+		  </form>
         	</xsl:if>
           </xsl:when>
           <xsl:otherwise>
