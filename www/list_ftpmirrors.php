@@ -40,9 +40,9 @@ class ListFTPMirrors {
 		// Perform query
 		$criteria = "";
 		if(!empty($this->filter_keyword)) {
-			$keyword = $this->filter_keyword;
-			$criteria = " WHERE (name LIKE \"%".$keyword."%\"";
-			$criteria .= " OR url LIKE \"%".$keyword."%\")";
+			$sql_keyword = MySQLUtil::escape_string($this->filter_keyword);
+			$criteria = " WHERE (name LIKE '%$sql_keyword%'";
+			$criteria .= " OR url LIKE '%$sql_keyword%')";
 		}
 		$query = "SELECT id FROM ftpmirrors ".$criteria." ORDER BY location";
 		$result = mysql_query($query, $db);
