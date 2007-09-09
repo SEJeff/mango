@@ -33,9 +33,9 @@ class ListUsers {
 		if(!empty($this->filter_keyword)) {
 			$keyword = $this->filter_keyword;
 			$ldapcriteria .= "(|".
-				"(uid=*".$keyword."*)".
-				"(cn=*".$keyword."*)".
-				"(mail=*".$keyword."*)".
+				"(uid=*".LDAPUtil::ldap_quote($keyword)."*)".
+				"(cn=*".LDAPUtil::ldap_quote($keyword)."*)".
+				"(mail=*".LDAPUtil::ldap_quote($keyword)."*)".
 				")";
 		}
 		if(!empty($ldapcriteria)) {

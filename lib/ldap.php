@@ -32,6 +32,14 @@ class LDAPUtil {
 		/* Return connection handle */
 		return $ldap;
 	}
+
+        function ldap_quote($str) {
+            return str_replace(
+                array( '\\', ' ', '*', '(', ')' ),
+                array( '\\5c', '\\20', '\\2a', '\\28', '\\29' ),
+                $str
+            );
+        }
 }
 
 ?>

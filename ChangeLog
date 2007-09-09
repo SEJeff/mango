@@ -1,5 +1,16 @@
 2007-09-09  Olav Vitters  <olav@bkor.dhs.org>
 
+	* lib/ldap.php: Add LDAP escape function and make use of it.
+	* lib/module.php:
+	* lib/user.php:
+	* www/list_modules.php:
+	* www/list_users.php:
+	* www/login.php:
+	* www/page.xsl:
+	* www/update_user.php:
+
+2007-09-09  Olav Vitters  <olav@bkor.dhs.org>
+
 	* www/index.xsl: Show same form as login.xsl.
 	* www/list_accounts.xsl: Fix English.
 	* www/skin/default.css: De-uglify a bit.

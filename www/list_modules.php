@@ -33,8 +33,8 @@ class ListModules {
 		if(!empty($this->filter_keyword)) {
 			$keyword = $this->filter_keyword;
 			$ldapcriteria .= "(|".
-				"(cn=*".$keyword."*)".
-				"(maintainerUid=*".$keyword."*)".
+				"(cn=*".LDAPUtil::ldap_quote($keyword)."*)".
+				"(maintainerUid=*".LDAPUtil::ldap_quote($keyword)."*)".
 				")";
 		}
 		if(!empty($ldapcriteria)) {

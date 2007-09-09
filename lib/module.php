@@ -51,7 +51,7 @@ class Module {
 		// Process list of CNs into an LDAP search criteria
 		$ldapcriteria = "";
 		foreach($results as $result) {
-			$ldapcriteria .= "(cn=".$result.")";
+			$ldapcriteria .= "(cn=". LDAPUtil::ldap_quote($result).")";
 		}
 		
 		if($ldapcriteria) {
@@ -149,7 +149,7 @@ class Module {
 		}
 
 		// Gather module attributes
-		$ldapcriteria = "(&(objectClass=gnomeModule)(cn=".$cn."))";
+		$ldapcriteria = "(&(objectClass=gnomeModule)(cn=".LDAPUtil::ldap_quote($cn)."))";
 		$result = ldap_search($ldap, $config->ldap_modules_basedn, $ldapcriteria);
 		if(!$result) {
 			$pe = PEAR::raiseError("LDAP search failed: ".ldap_error($ldap));
@@ -294,7 +294,7 @@ class Module {
 		global $config;
 		
 		$modules = array ();
-		$ldapcriteria = "(&(cn=$cn)(objectClass=gnomeModule))";
+		$ldapcriteria = "(&(cn=".LDAPUtil::ldap_quote($cn).")(objectClass=gnomeModule))";
 		$ldap = LDAPUtil::connectToLDAP();
 		if(PEAR::isError($ldap)) return $ldap;
 		if(!$ldap) {
@@ -310,7 +310,7 @@ class Module {
 			$entry_count = $entries['count'];
 			for ($i=0; $i < $entry_count; $i++) { 
 				$entry_uid = $entries[$i]['maintaineruid'][0];
-				$ldapcriteria = "(&(uid=$entry_uid)(objectClass=posixAccount))";
+				$ldapcriteria = "(&(uid=".LDAPUtil::ldap_quote($entry_uid).")(objectClass=posixAccount))";
 				$result = ldap_search($ldap, $config->ldap_basedn, $ldapcriteria, array ('mail', 'cn'));
 				if (!$result) { 
 					return PEAR::raiseError("LDAP search failed: ".ldap_error($ldap));

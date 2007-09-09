@@ -86,7 +86,7 @@ class Login {
 			}
 
 			// Use the connection to grab a copy of our own details
-			$ldapcriteria = "(&(objectClass=posixAccount)(uid=".$login."))";
+			$ldapcriteria = "(&(objectClass=posixAccount)(uid=".LDAPUtil::ldap_quote($login)."))";
 			$result = ldap_search($ldap, $config->ldap_users_basedn, $ldapcriteria);
 			if($result == false) {
 				Login::loginform(true, new PEAR_Error("LDAP search failed: ".ldap_error($ldap)));
@@ -107,7 +107,7 @@ class Login {
 			$_SESSION['user'] = User::absorb($entries[0]);
 
 			// What groups are we in?
-			$ldapcriteria = "(&(objectClass=posixGroup)(memberUid=".$login."))";
+			$ldapcriteria = "(&(objectClass=posixGroup)(memberUid=".LDAPUtil::ldap_quote($login)."))";
 			$result = ldap_search($ldap, $config->ldap_groups_basedn, $ldapcriteria, array('cn'));
 			if(!$result) {
 				Login::loginform(true, new PEAR_Error("LDAP search failed: ".ldap_error($ldap)));

@@ -21,7 +21,7 @@ $AFFECTEDGROUPS = array(
 	"mailusers",
 	"accounts",
 	"buildmaster",
-	"buildslave"
+	"buildslave",
 );
 
 class UpdateUser {

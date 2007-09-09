@@ -51,7 +51,7 @@ class User {
 		// Process list of UIDs into an LDAP search criteria
 		$ldapcriteria = "";
 		foreach($results as $key => $result) {
-			$ldapcriteria .= "(uid=".$result.")";
+			$ldapcriteria .= "(uid=".LDAPUtil::ldap_quote($result).")";
 		}
 		if($ldapcriteria) {
 			$ldapcriteria = "(&(objectClass=posixAccount)(|".$ldapcriteria."))";
@@ -165,7 +165,7 @@ class User {
 		}
 
 		// Gather user attributes
-		$ldapcriteria = "(&(objectClass=posixAccount)(uid=".$uid."))";
+		$ldapcriteria = "(&(objectClass=posixAccount)(uid=".LDAPUtil::ldap_quote($uid)."))";
 		$result = ldap_search($ldap, $config->ldap_users_basedn, $ldapcriteria);
 		if(!$result) {
 			$pe = PEAR::raiseError("LDAP search failed: ".ldap_error($ldap));
@@ -176,7 +176,7 @@ class User {
 		$user = User::absorb($entries[0]);
 		
 		// Gather groups
-		$ldapcriteria = "(&(objectClass=posixGroup)(memberUid=".$uid."))";
+		$ldapcriteria = "(&(objectClass=posixGroup)(memberUid=".LDAPUtil::ldap_quote($uid)."))";
 		$result = ldap_search($ldap, $config->ldap_groups_basedn, $ldapcriteria, array('cn'));
 		if(!$result) {
 			$pe = PEAR::raiseError("LDAP search failed: ".ldap_error($ldap));
