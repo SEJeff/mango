@@ -43,9 +43,10 @@ class ListFoundationMembers {
         // Perform query
         $criteria = "";
         if(!empty($this->filter_name)) {
-            $criteria = " WHERE (firstname LIKE \"%".$this->filter_name."%\"";
-            $criteria .= " OR lastname LIKE \"%".$this->filter_name."%\"";
-            $criteria .= " OR email LIKE \"%".$this->filter_name."%\")";
+            $sql_filter_name = MySQLUtil::escape_string($this->filter_name);
+            $criteria = " WHERE (firstname LIKE '%$sql_filter_name%'
+                                 OR lastname LIKE '%$sql_filter_name%'
+                                 OR email LIKE '%$sql_filter_name%')";
         }
         if (!empty($this->filter_old) &&
             ($this->filter_old == "current" || $this->filter_old == "needrenewal")) {
@@ -61,7 +62,7 @@ class ListFoundationMembers {
             }
             $criteria .= "DATE_SUB(CURDATE(), INTERVAL 2 YEAR) ".$op." last_renewed_on";
         }
-        $query = "SELECT id FROM foundationmembers ".$criteria." ORDER BY lastname, firstname";
+        $query = "SELECT id FROM foundationmembers $criteria ORDER BY lastname, firstname";
         error_log("$query");
         $result = mysql_query($query, $db);
         if(!$result) {
@@ -135,42 +136,44 @@ class ListFoundationMembers {
                 $this->error = $foundationmember;
             } else {
                 $buffer = $foundationmember->renew();
+                
                 if (isset($buffer) && $buffer != "")
                     //TODO is not shown???
                     $this->error = $buffer;
                 else {
-            $membername = $foundationmember->firstname.' '. $foundationmember->lastname;
-            $to =  $foundationmember->email;
-            $cc = 'membership-committee@gnome.org';
-            $subject = "GNOME Foundation Membership - Renewal accepted";
-            $body = file_get_contents('renewal-template.txt');
-            // Replacing member name to template-mail body
-            $body = str_replace('<member>', $membername, $body);
-            $recipients = array ($to, $cc);
-            $mime = new Mail_Mime();
-            $mime->setTXTBody($body);
-            $headers = array(
-            "Reply-To" => "<membership-committee@gnome.org>",
-            "From" => "GNOME Foundation Membership Committee <membership-committee@gnome.org>",
-            "To" => $to,
-            "Cc" => $cc,
-            "Subject" => $subject,
-            );
-        $params = array(
-            'head_charset' => 'UTF-8',
-            'head_encoding' => 'quoted-printable',
-            'text_charset' => 'UTF-8',
-        );
-            $content = $mime->get($params);
-            $headers = $mime->headers($headers);
+                    $membername = $foundationmember->firstname.' '. $foundationmember->lastname;
+                    $to =  $foundationmember->email;
+                    $cc = 'membership-committee@gnome.org';
+                    $subject = "GNOME Foundation Membership - Renewal accepted";
+                    $body = file_get_contents('renewal-template.txt');
+                    // Replacing member name to template-mail body
+                    $body = str_replace('<member>', $membername, $body);
+                    $recipients = array ($to, $cc);
+                    $mime = new Mail_Mime();
+                    $mime->setTXTBody($body);
+                    $headers = array(
+                    "Reply-To" => "<membership-committee@gnome.org>",
+                    "From" => "GNOME Foundation Membership Committee <membership-committee@gnome.org>",
+                    "To" => $to,
+                    "Cc" => $cc,
+                    "Subject" => $subject,
+                    );
+                    $params = array(
+                        'head_charset' => 'UTF-8',
+                        'head_encoding' => 'quoted-printable',
+                        'text_charset' => 'UTF-8',
+                    );
+                    $content = $mime->get($params);
+                    $headers = $mime->headers($headers);
                     $mail = &Mail::factory('smtp');
-              $error = $mail->send($recipients, $headers, $content);
+                    $error = $mail->send($recipients, $headers, $content);
 
-                  if(PEAR::isError($error))
-              return $error;
+                    if(PEAR::isError($error))
+                        return $error;
+                    
                     $node = $listnode->appendChild($dom->createElement("emailsent"));
-                  $node = $listnode->appendChild($dom->createElement("renewed"));
-                  $listnode->setAttribute("name", $foundationmember->firstname.' '.$foundationmember->lastname);
+                    $node = $listnode->appendChild($dom->createElement("renewed"));
+                    $listnode->setAttribute("name", $foundationmember->firstname.' '.$foundationmember->lastname);
                     $reload = true;
                 }
             }
