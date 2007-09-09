@@ -1,5 +1,10 @@
 2007-09-09  Olav Vitters  <olav@bkor.dhs.org>
 
+	* www/index.xsl: Fix XML validation error.
+	* www/login.php: Redirect to the main page after logging in.
+
+2007-09-09  Olav Vitters  <olav@bkor.dhs.org>
+
 	* lib/page.php:
 	* www/common.php:
 	* www/index.xsl:

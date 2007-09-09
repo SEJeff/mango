@@ -37,17 +37,14 @@ class Login {
 	}
 
 	function loggedin() {
+		global $config;
+
 		if(isset($_REQUEST['redirect'])) {
 			header("Location: ".$_REQUEST['redirect']);
 			return;
 		}
-
-		$page = new Page(STYLESHEET);
-		$dom =& $page->result;
-		$rootnode = $dom->appendChild($dom->createElement("page"));
-		$rootnode->setAttribute("title", "Logged in");
-		$rootnode->appendChild($dom->createElement("loggedinpage"));
-		$page->send();
+		
+		header("Location: " . $config->base_url);
 		return;
 	}
 
