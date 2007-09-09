@@ -32,6 +32,7 @@
 
    <form method="post" action="login.php" name="f">
     <input type="hidden" name="action" value="login"/>
+    <input type="hidden" name="mango_token" value="{/page/@token}"/>
     <xsl:if test="boolean(@redirect)">
      <input type="hidden" name="redirect" value="{@redirect}"/>
     </xsl:if>
@@ -74,6 +75,7 @@
 
    <form method="post" action="login.php">
     <input type="hidden" name="action" value="forgottenlogin"/>
+    <input type="hidden" name="mango_token" value="{/page/@token}"/>
     <table class="login">
      <tr>
       <th>E-mail</th>

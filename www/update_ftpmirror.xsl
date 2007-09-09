@@ -18,6 +18,7 @@
     <xsl:apply-templates select="updated/change"/>
    </xsl:if>
    <form enctype="multipart/form-data" method="POST" action="{$script}" name="form">
+    <input type="hidden" name="mango_token" value="{/page/@token}"/>
     <input type="hidden" name="idcheck" value="{id}"/>
     <table class="form">
      <caption>Update mirror '<xsl:value-of select="id"/>'</caption>

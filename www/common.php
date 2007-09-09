@@ -22,3 +22,5 @@ function check_permissions(&$dom, &$pagenode, $group) {
 
 /* Start the session */
 session_start();
+
+Page::validate_post();

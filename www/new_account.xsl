@@ -30,6 +30,7 @@
    </p>
    </xsl:if>
    <form enctype="multipart/form-data" method="POST" action="{$script}" name="form">
+    <input type="hidden" name="mango_token" value="{/page/@token}"/>
     <table class="form">
      <caption>Account request form</caption>
      <tr>

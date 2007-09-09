@@ -17,6 +17,7 @@
     <p>FTP Mirror '<xsl:value-of select="added/id"/>' created.</p>
    </xsl:if>
    <form method="POST" action="{$script}" name="form">
+    <input type="hidden" name="mango_token" value="{/page/@token}"/>
     <table class="form">
      <caption>New FTP mirror form</caption>
      <tr>

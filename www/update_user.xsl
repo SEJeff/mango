@@ -48,6 +48,7 @@
     </tr>
    </table>
    <form enctype="multipart/form-data" method="POST" action="{$script}" name="form">
+    <input type="hidden" name="mango_token" value="{/page/@token}"/>
     <input type="hidden" name="uidcheck" value="{uid}"/>
     <xsl:choose>
      <xsl:when test="@tab='general'">

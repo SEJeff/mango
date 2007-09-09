@@ -54,6 +54,7 @@
        </p>
        <ul>
        <form name="module" method="POST">
+       <input type="hidden" name="mango_token" value="{/page/@token}"/>
        <xsl:for-each select="/page/homepage/module">
        		<xsl:apply-templates match="moduletemplate"/>
        </xsl:for-each>

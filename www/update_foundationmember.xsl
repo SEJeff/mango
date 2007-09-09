@@ -21,6 +21,7 @@
 		<p>Renewal notification mail has been send to user.</p>
 	</xsl:if>
    <form enctype="multipart/form-data" method="POST" action="{$script}" name="form">
+   <input type="hidden" name="mango_token" value="{/page/@token}"/>
     <input type="hidden" name="idcheck" value="{id}"/>
     <table class="form">
      <caption>Update member '<xsl:value-of select="id"/>'</caption>

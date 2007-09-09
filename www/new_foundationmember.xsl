@@ -20,6 +20,7 @@
 		<p>Accepted notice sent.</p>
 	 </xsl:if>
    <form method="POST" action="{$script}" name="form">
+    <input type="hidden" name="mango_token" value="{/page/@token}"/>
     <table class="form">
      <caption>New Foundation Member form</caption>
      <tr>

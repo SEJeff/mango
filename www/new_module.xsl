@@ -17,6 +17,7 @@
     <p>GNOME Module '<xsl:value-of select="added/cn"/>' created.</p>
    </xsl:if>
    <form method="POST" action="{$script}" name="form">
+    <input type="hidden" name="mango_token" value="{/page/@token}"/>
     <table class="form">
      <caption>New GNOME Module form</caption>
      <tr>

@@ -19,7 +19,28 @@ class Page {
 	
 	function Page($stylesheet) {
 		$this->stylesheet = $stylesheet;
-		$this->result = new DOMDocument();;
+		$this->result = new DOMDocument();
+	}
+
+	function validate_post() {
+		// SECURITY: Protect against CSRF (POST only)
+		// Based upon the method used by Michal Cihar (michal@cihar.com), phpMyAdmin (GPL)
+		if($_SERVER['REQUEST_METHOD'] == 'POST') {
+			if (!isset($_POST['mango_token']) || !isset($_SESSION[' token_bits '])
+			    || !is_scalar($_POST['mango_token']) || !((bool) strlen($_POST['mango_token']))
+			    || $_POST['mango_token'] != Page::generate_token())
+			{
+				error_log("1: " . $_POST['mango_token'] . " 2: " . Page::generate_token());
+
+				$keys = array_keys(array_merge((array)$_REQUEST, (array)$_GET, (array)$_POST, (array)$_COOKIE));
+				foreach($keys as $key) {
+					unset($_REQUEST[$key], $_GET[$key], $_POST[$key], $GLOBALS[$key]);
+				}
+
+				$_SERVER['REQUEST_METHOD'] == 'GET';
+			}
+		}
+
 	}
 
 	/**
@@ -86,6 +107,7 @@ class Page {
 		$pagenode->setAttribute("mode", $config->mode);
 		$pagenode->setAttribute("baseurl", $config->base_url);
 		$pagenode->setAttribute("thisurl", $thisurl);
+		$pagenode->setAttribute("token", Page::generate_token());
 
 		/* Add page generation date */
 		$pagenode->setAttribute("date", strftime("%d %B %y %T %Z"));
@@ -132,6 +154,21 @@ class Page {
 	 */
 	function sendRedirect($url) {
 		header("Location: $url");
+	}
+
+	/**
+	 * Generate unique token
+	 *
+	 * @access public
+	 * @since 1.0
+	 */
+	function generate_token() {
+		if (!isset($_SESSION[' token_bits '])) {
+			$_SESSION[' token_bits '] = sha1(uniqid(rand(), true));
+		}
+
+		return $_SESSION[' token_bits '];
+
 	}
 }
 

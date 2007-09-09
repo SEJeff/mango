@@ -1,5 +1,22 @@
 2007-09-09  Olav Vitters  <olav@bkor.dhs.org>
 
+	* lib/page.php:
+	* www/common.php:
+	* www/index.xsl:
+	* www/login.xsl:
+	* www/new_account.xsl:
+	* www/new_foundationmember.xsl:
+	* www/new_ftpmirror.xsl:
+	* www/new_module.xsl:
+	* www/new_user.xsl:
+	* www/update_foundationmember.xsl:
+	* www/update_ftpmirror.xsl:
+	* www/update_module.xsl:
+	* www/update_user.xsl: Protect against CSRF, but only the POSTs. See
+	http://en.wikipedia.org/wiki/Cross-site_request_forgery.
+
+2007-09-09  Olav Vitters  <olav@bkor.dhs.org>
+
 	Merge SoC changes r16:41 on the trunk.
 
 2007-06-24  Olav Vitters  <olav@bkor.dhs.org>
