@@ -1,5 +1,3 @@
 
 * Fix all TODOs in the code
-* Use singleton for database connection; connect on first use
-* Use singleton for ldap connection; connect on first use (important! currently we connect/disconnect way too often!)
 
