@@ -46,7 +46,7 @@ class ListUsers {
 		}
 
 		// Connect to LDAP server
-		$ldap = LDAPUtil::connectToLDAP();
+		$ldap = LDAPUtil::singleton();
 		if(PEAR::isError($ldap)) {
 			$this->error = $ldap;
 			return;
@@ -61,7 +61,6 @@ class ListUsers {
 			return;
 		}
 		$entries = ldap_get_entries($ldap, $result);
-		ldap_close($ldap);
 		
 		// Gather uids
 		for($i = 0; $i < $entries['count']; $i++) {

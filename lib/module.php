@@ -80,7 +80,7 @@ class Module {
 		}
 		
 		// Connect to LDAP server
-		$ldap = LDAPUtil::connectToLDAP();
+		$ldap = LDAPUtil::singleton();
 		if(PEAR::isError($ldap)) return $ldap;
 		if(!$ldap) {
 			return PEAR::raiseError("LDAP authentication failed");
@@ -91,7 +91,6 @@ class Module {
 			return PEAR::raiseError("LDAP search failed: ".ldap_error($ldap));
 		}
 		$entries = ldap_get_entries($ldap, $result);
-		ldap_close($ldap);
 		
 		return $entries;
 	}			
@@ -100,7 +99,7 @@ class Module {
 		global $config;
 		
 		// Connect to LDAP server
-		$ldap = LDAPUtil::connectToLDAP();
+		$ldap = LDAPUtil::singleton();
 		if(PEAR::isError($ldap)) return $ldap;
 		if(!$ldap) {
 			return PEAR::raiseError("LDAP authentication failed");
@@ -128,12 +127,10 @@ class Module {
 		$result = ldap_add($ldap, $dn, $entry);
 		if(!$result) {
 			$pe = PEAR::raiseError("LDAP (module) add failed: ".ldap_error($ldap));
-			ldap_close($ldap);
 			return $pe;
 		}
 
 		// Tidy up		
-		ldap_close($ldap);
 
 		return true;
 	}
@@ -142,7 +139,7 @@ class Module {
 		global $config;
 		
 		// Connect to LDAP server
-		$ldap = LDAPUtil::connectToLDAP();
+		$ldap = LDAPUtil::singleton();
 		if(PEAR::isError($ldap)) return $ldap;
 		if(!$ldap) {
 			return PEAR::raiseError("LDAP authentication failed");
@@ -153,14 +150,12 @@ class Module {
 		$result = ldap_search($ldap, $config->ldap_modules_basedn, $ldapcriteria);
 		if(!$result) {
 			$pe = PEAR::raiseError("LDAP search failed: ".ldap_error($ldap));
-			ldap_close($ldap);
 			return $pe;
 		}
 		$entries = ldap_get_entries($ldap, $result);
 		$module = Module::absorb($entries[0]);
 		
 		// Tidy up		
-		ldap_close($ldap);
 
 		return $module;
 	}
@@ -169,7 +164,7 @@ class Module {
 		global $config;
 		
 		// Connect to LDAP server
-		$ldap = LDAPUtil::connectToLDAP();
+		$ldap = LDAPUtil::singleton();
 		if(PEAR::isError($ldap)) return $ldap;
 		if(!$ldap) {
 			return PEAR::raiseError("LDAP authentication failed");
@@ -232,7 +227,6 @@ class Module {
 			$result = ldap_mod_del($ldap, $dn, $moduledelete);
 			if(!$result) {
 				$pe = PEAR::raiseError("LDAP (attribute) delete failed: ".ldap_error($ldap));
-				ldap_close($ldap);
 				return $pe;
 			}
 		}
@@ -240,13 +234,9 @@ class Module {
 			$result = ldap_modify($ldap, $dn, $modulechanges);
 			if(!$result) {
 				$pe = PEAR::raiseError("LDAP (module) modify failed: ".ldap_error($ldap));
-				ldap_close($ldap);
 				return $pe;
 			}
 		}
-
-		// Tidy up		
-		ldap_close($ldap);
 
 		return $changes;
 	}
@@ -295,7 +285,7 @@ class Module {
 		
 		$modules = array ();
 		$ldapcriteria = "(&(cn=".LDAPUtil::ldap_quote($cn).")(objectClass=gnomeModule))";
-		$ldap = LDAPUtil::connectToLDAP();
+		$ldap = LDAPUtil::singleton();
 		if(PEAR::isError($ldap)) return $ldap;
 		if(!$ldap) {
 			return PEAR::raiseError("LDAP authentication failed");
@@ -321,7 +311,6 @@ class Module {
 				}
 			}
 		}
-		ldap_close ($ldap);
 		return $entries;	
 	}
 }

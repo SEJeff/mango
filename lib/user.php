@@ -60,7 +60,7 @@ class User {
 		}
 
 		// Connect to LDAP server
-		$ldap = LDAPUtil::connectToLDAP();
+		$ldap = LDAPUtil::singleton();
 		if(PEAR::isError($ldap)) return $ldap;
 		if(!$ldap) {
 			return PEAR::raiseError("LDAP authentication failed");
@@ -71,7 +71,6 @@ class User {
 			return PEAR::raiseError("LDAP search failed: ".ldap_error($ldap));
 		}
 		$entries = ldap_get_entries($ldap, $result);
-		ldap_close($ldap);
 		
 		return $entries;
 	}			
@@ -80,7 +79,7 @@ class User {
 		global $config;
 		
 		// Connect to LDAP server
-		$ldap = LDAPUtil::connectToLDAP();
+		$ldap = LDAPUtil::singleton();
 		if(PEAR::isError($ldap)) return $ldap;
 		if(!$ldap) {
 			return PEAR::raiseError("LDAP authentication failed");
@@ -118,7 +117,6 @@ class User {
 		$result = ldap_add($ldap, $dn, $entry);
 		if(!$result) {
 			$pe = PEAR::raiseError("LDAP (user) add failed: ".ldap_error($ldap));
-			ldap_close($ldap);
 			return $pe;
 		}
 
@@ -131,7 +129,6 @@ class User {
 		$result = ldap_add($ldap, $dn, $entry);
 		if(!$result) {
 			$pe = PEAR::raiseError("LDAP (group) add failed: ".ldap_error($ldap));
-			ldap_close($ldap);
 			return $pe;
 		}
 		
@@ -143,13 +140,11 @@ class User {
 			$result = ldap_mod_add($ldap, $dn, $entry);
 			if(!$result) {
 				$pe = PEAR::raiseError("LDAP (groupmember) add failed: ".ldap_error($ldap));
-				ldap_close($ldap);
 				return $pe;
 			}
 		}
 		
 		// Tidy up		
-		ldap_close($ldap);
 
 		return true;
 	}
@@ -158,7 +153,7 @@ class User {
 		global $config;
 		
 		// Connect to LDAP server
-		$ldap = LDAPUtil::connectToLDAP();
+		$ldap = LDAPUtil::singleton();
 		if(PEAR::isError($ldap)) return $ldap;
 		if(!$ldap) {
 			return PEAR::raiseError("LDAP authentication failed");
@@ -169,7 +164,6 @@ class User {
 		$result = ldap_search($ldap, $config->ldap_users_basedn, $ldapcriteria);
 		if(!$result) {
 			$pe = PEAR::raiseError("LDAP search failed: ".ldap_error($ldap));
-			ldap_close($ldap);
 			return $pe;
 		}
 		$entries = ldap_get_entries($ldap, $result);
@@ -180,7 +174,6 @@ class User {
 		$result = ldap_search($ldap, $config->ldap_groups_basedn, $ldapcriteria, array('cn'));
 		if(!$result) {
 			$pe = PEAR::raiseError("LDAP search failed: ".ldap_error($ldap));
-			ldap_close($ldap);
 			return $pe;
 		}
 		$entries = ldap_get_entries($ldap, $result);
@@ -191,7 +184,6 @@ class User {
 		$user->groups = $groups;
 		
 		// Tidy up		
-		ldap_close($ldap);
 
 		return $user;
 	}
@@ -200,7 +192,7 @@ class User {
 		global $config;
 		
 		// Connect to LDAP server
-		$ldap = LDAPUtil::connectToLDAP();
+		$ldap = LDAPUtil::singleton();
 		if(PEAR::isError($ldap)) return $ldap;
 		if(!$ldap) {
 			return PEAR::raiseError("LDAP authentication failed");
@@ -256,7 +248,6 @@ class User {
 			$result = ldap_modify($ldap, $dn, $userchanges);
 			if(!$result) {
 				$pe = PEAR::raiseError("LDAP (user) modify failed: ".ldap_error($ldap));
-				ldap_close($ldap);
 				return $pe;
 			}
 		}
@@ -275,7 +266,6 @@ class User {
 			$result = ldap_mod_del($ldap, $dn, $keychanges);
 			if(!$result) {
 				$pe = PEAR::raiseError("LDAP (user keys) delete failed: ".ldap_error($ldap));
-				ldap_close($ldap);
 				return $pe;
 			}
 			$changes[] = "keysremoved";
@@ -293,7 +283,6 @@ class User {
 			$result = ldap_mod_add($ldap, $dn, $keychanges);
 			if(!$result) {
 				$pe = PEAR::raiseError("LDAP (user keys) add failed: ".ldap_error($ldap));
-				ldap_close($ldap);
 				return $pe;
 			}
 			$changes[] = "keysadded";
@@ -309,7 +298,6 @@ class User {
 				$result = ldap_mod_del($ldap, $dn, $groupchanges);
 				if(!$result) {
 					$pe = PEAR::raiseError("LDAP (group '$group') delete failed: ".ldap_error($ldap));
-					ldap_close($ldap);
 					return $pe;
 				}
 				$changes[] = "left-".$group;
@@ -324,7 +312,6 @@ class User {
 				$result = ldap_mod_add($ldap, $dn, $groupchanges);
 				if(!$result) {
 					$pe = PEAR::raiseError("LDAP (group '$group') add failed: ".ldap_error($ldap));
-					ldap_close($ldap);
 					return $pe;
 				}
 				$changes[] = "joined-".$group;
@@ -332,7 +319,6 @@ class User {
 		}
 		
 		// Tidy up		
-		ldap_close($ldap);
 
 		return $changes;
 	}
@@ -344,7 +330,6 @@ class User {
 		$result = ldap_search($ldap, $config->ldap_users_basedn, "(objectClass=posixAccount)", array("uidNumber", "gidNumber"));
 		if(!$result) {
 			$pe = PEAR::raiseError("LDAP search failed: ".ldap_error($ldap));
-			ldap_close($ldap);
 			return $pe;
 		}
 		$entries = ldap_get_entries($ldap, $result);
@@ -421,7 +406,7 @@ class User {
 		} else { 
 			$ldapcriteria = "(&(maintainerUid=$this->uid)(objectClass=gnomeModule)(!(objectClass=localizationModule)))";
 		}
-		$ldap = LDAPUtil::connectToLDAP();
+		$ldap = LDAPUtil::singleton();
 		if(PEAR::isError($ldap)) return $ldap;
 		if(!$ldap) {
 			return PEAR::raiseError("LDAP authentication failed");
@@ -432,7 +417,6 @@ class User {
 			return PEAR::raiseError("LDAP search failed: ".ldap_error($ldap));
 		}
 		$entries = ldap_get_entries($ldap, $result);
-		ldap_close ($ldap);
 		return $entries;
 	}
 
@@ -441,7 +425,7 @@ class User {
 		
 		$modules = array ();
 		$ldapcriteria = "(&(maintainerUid=$this->uid)(objectClass=gnomeModule)(objectClass=localizationModule))";
-		$ldap = LDAPUtil::connectToLDAP();
+		$ldap = LDAPUtil::singleton();
 		if(PEAR::isError($ldap)) return $ldap;
 		if(!$ldap) {
 			return PEAR::raiseError("LDAP authentication failed");
@@ -452,7 +436,6 @@ class User {
 			return PEAR::raiseError("LDAP search failed: ".ldap_error($ldap));
 		}
 		$entries = ldap_get_entries($ldap, $result);
-		ldap_close ($ldap);
 		return $entries;
 	}
 	

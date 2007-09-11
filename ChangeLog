@@ -1,5 +1,15 @@
 2007-09-11  Olav Vitters  <olav@bkor.dhs.org>
 
+	* lib/ldap.php: Singleton fixes.
+
+	* lib/module.php: Make use of LDAP singleton.
+	* lib/user.php:
+	* www/list_modules.php:
+	* www/list_users.php:
+	* www/new_account.xsl:
+
+2007-09-11  Olav Vitters  <olav@bkor.dhs.org>
+
 	* lib/mysql.php: Use singleton per database URL.
 
 	* lib/account.php: Change files to use MySQL singleton.

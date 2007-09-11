@@ -142,6 +142,7 @@
       		</xsl:for-each>
       	</select>
       </div>
+      <xml:if test="boolean(translation)">
       <div>
        <input onclick="javascript: ontranslationsvnclick(this);" type="checkbox" name="translationsvn" id="translationsvn_id">
          <xsl:if test="boolean(group[@cn='translation'])">
@@ -167,7 +168,7 @@
       			</xsl:element>
       		</xsl:for-each>
       	</select>
-      </div>
+    </div></xml:if>
        <div>
        <input type="checkbox" name="ftp_access">
          <xsl:if test="boolean(group[@cn='ftp_access'])">

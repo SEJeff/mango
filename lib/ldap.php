@@ -41,8 +41,8 @@ class LDAPUtil {
     }
 
     function __destruct() {
-        if (!is_null($this->$handle)) {
-            ldap_close($ldap);
+        if (!is_null($this->handle)) {
+            ldap_close($this->handle);
             $this->handle = null;
         }
     }
