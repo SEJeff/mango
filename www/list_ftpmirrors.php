@@ -27,7 +27,7 @@ class ListFTPMirrors {
 		$this->ftpmirrors = new PagedResults($results);
 		
 		// Get database connection
-		$db = MySQLUtil::connectToMySQL($config->mirrors_db_url);
+		$db = MySQLUtil::singleton($config->mirrors_db_url)->dbh();
 		if(PEAR::isError($db)) {
 			$this->error = $db;
 			return;

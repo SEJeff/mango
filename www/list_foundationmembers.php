@@ -30,11 +30,13 @@ class ListFoundationMembers {
         $this->foundationmembers = new PagedResults($results);
         
         // Get database connection
-        $db = MySQLUtil::connectToMySQL($config->membership_db_url);
+        $db = MySQLUtil::singleton($config->membership_db_url)->dbh();
+
         if(PEAR::isError($db)) {
             $this->error = $db;
             return;
         }
+
         if(!$db) {
             $this->error = PEAR::raiseError("MySQL connection failed unexpectedly");
             return;
@@ -184,7 +186,7 @@ class ListFoundationMembers {
         }
             
         // Gather results for this page
-        $results = $this->foundationmembers->for_page();
+        $results = $this->foundationmembers->for_page(); 
         if(PEAR::isError($results)) {
             $node = $listnode->appendChild($dom->createElement("error"));
             $node->appendChild($dom->createTextNode($results->getMessage()));
@@ -208,11 +210,11 @@ class ListFoundationMembers {
         // Display navigation information
         $this->foundationmembers->add_navinfo_to($dom, $listnode);
         
-        // Display the initialisation error (to explain a possible lack of results)
+        // Display the initialisation error (to explain a possible lack of results) 
         if(isset($this->error)) {
             $node = $listnode->appendChild($dom->createElement("error"));
             $node->appendChild($dom->createTextNode((PEAR::isError($this->error) ? $this->error->getMessage() : $this->error)));
-        }       
+        }
     }
 
     function add_entries(&$dom, &$listnode, &$results) {

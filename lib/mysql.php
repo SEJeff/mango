@@ -4,15 +4,14 @@ require_once("PEAR.php");
 require_once("config.php");
 
 class MySQLUtil {
-    
-    private var $link;
-    
-    function MySQLUtil($db_url = '') { 
-        $this->link = $this->connectToMySQL($db_url);
-    }
-    
-    function connectToMySQL($db_url = '') {
-        global $config;
+    // Hold an instance of the class
+    private static $instance = array();
+    public $handle = null;
+   
+    // A private constructor; prevents direct creation of object
+    private function __construct($db_url)
+    {
+         global $config;
         /* Extract the hostname */
         $url_parts = parse_url($db_url);
         $hostname = $url_parts['host'];
@@ -32,10 +31,44 @@ class MySQLUtil {
         if(!$result) {
             die ("Could not select '$dbname': ".mysql_error($dbh));
         }
+
+        $this->handle = $dbh;
         
-        /* Return connection handle */
-        return $dbh;
+        return $this;
     }
+
+    /* not needed as db connections are closed automatically
+    function __destruct() {
+        if (!is_null($this->handle)) {
+            mysql_close($this->handle);
+            $this->handle = null;
+        }
+    } */
+
+    // The singleton method
+    public static function singleton($db_url)
+    {
+        if (!isset(self::$instance[$db_url])) {
+            $c = __CLASS__;
+            self::$instance[$db_url] = new $c($db_url);
+        }
+
+        return self::$instance[$db_url];
+    }
+   
+    // Prevent users to clone the instance
+    public function __clone()
+    {
+        trigger_error('Clone is not allowed.', E_USER_ERROR);
+    }
+
+//    function MySQLUtil($db_url = '') { 
+//        $this->handle = $this->connectToMySQL($db_url);
+//    }
+    /*
+    function connectToMySQL($db_url = '') {
+
+    } */
     
     function escape_string($string) {
         return "'" . addslashes($string) . "'";
@@ -69,12 +102,16 @@ class MySQLUtil {
         if ($config->debug == 'enabled') { 
             echo "MySQL Query: ".$query."\n";
         }
-        $result = mysql_query ($query, $this->link);
+        $result = mysql_query ($query, $this->handle);
         if (!$result) {
-            die ("Unable to run query: ".mysql_error ($this->link));
+            die ("Unable to run query: ".mysql_error ($this->handle));
         } else { 
             return $result;
         }
+    }
+    
+    public function dbh() {
+        return $this->handle;
     }
 }
 

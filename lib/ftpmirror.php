@@ -37,7 +37,7 @@ class FTPMirror {
 		}
 		
         // Get database connection
-		$db = MySQLUtil::connectToMySQL($config->mirrors_db_url);
+		$db = MySQLUtil::singleton($config->mirrors_db_url)->dbh();
 		if(PEAR::isError($db)) return $db;
 		if(!$db) {
 			return PEAR::raiseError("MySQL connection failed unexpectedly");
@@ -67,7 +67,7 @@ class FTPMirror {
 		global $config;
 		
         // Get database connection
-		$db = MySQLUtil::connectToMySQL($config->mirrors_db_url);
+		$db = MySQLUtil::singleton($config->mirrors_db_url)->dbh();
 		if(PEAR::isError($db)) return $db;
 		if(!$db) {
 			return PEAR::raiseError("MySQL connection failed unexpectedly");
@@ -99,7 +99,7 @@ class FTPMirror {
 		global $config;
 		
         // Get database connection
-		$db = MySQLUtil::connectToMySQL($config->mirrors_db_url);
+		$db = MySQLUtil::singleton($config->mirrors_db_url)->dbh();
 		if(PEAR::isError($db)) return $db;
 		if(!$db) {
 			return PEAR::raiseError("MySQL connection failed unexpectedly");
@@ -172,7 +172,7 @@ class FTPMirror {
 		$query = "UPDATE ftpmirrors SET ".substr($sql, 2)." WHERE id = ".$this->id;
 
         // Get database connection
-		$db = MySQLUtil::connectToMySQL($config->mirrors_db_url);
+		$db = MySQLUtil::singleton($config->mirrors_db_url)->dbh();
 		if(PEAR::isError($db)) return $db;
 		if(!$db) {
 			return PEAR::raiseError("MySQL connection failed unexpectedly");

@@ -85,10 +85,11 @@ class Account {
 	function bring_account () { 
 		global $config;
 	
-		$mysql =  new MySQLUtil($config->accounts_db_url);
+		$mysql =  MySQLUtil::singleton($config->accounts_db_url);
 		$query = "SELECT * FROM account_request WHERE id=".$mysql->escape_string($this->db_id);
 		$result = $mysql->query($query);
 		$row = mysql_fetch_array ($result);
+		$this->abilities = array ();
 		$this->uid = $row['uid'];
 		$this->cn = $row['cn'];
 		$this->email = $row['email'];
@@ -134,7 +135,7 @@ class Account {
 	function add_account () { 
 		global $config;
 		
-		$mysql =  new MySQLUtil($config->accounts_db_url);
+		$mysql =  MySQLUtil::singleton($config->accounts_db_url);
 		$enum_values = array ('Y', 'N', 'A', 'R');
 		$query = 'INSERT INTO account_request SET '.
 					'uid='.$mysql->escape_string($this->uid).','.
@@ -279,7 +280,7 @@ class Account {
 		if (!isset ($_REQUEST['email']) || !isset ($_REQUEST['token'])) { 
 			return PEAR::raiseError('Bogus');
 		}
-		$mysql = new MySQLUtil($config->accounts_db_url);
+		$mysql = MySQLUtil::singleton($config->accounts_db_url);
 		$query = "SELECT id FROM account_request WHERE mail_approved = 'pending' AND email = ".$mysql->escape_string($_REQUEST['email'])." AND verdict = ".$mysql->escape_string('pending');
 		$result = $mysql->query($query);
 		$row = mysql_fetch_row($result);
@@ -482,7 +483,7 @@ class Account {
 	function update_ability ($ability, $approved) { 
 		global $config;
 		
-		$mysql = new MySQLUtil($config->accounts_db_url);
+		$mysql = MySQLUtil::singleton($config->accounts_db_url);
 		if (in_array ($ability, array ('ftp_access', 'web_access', 'bugzilla_access', 'art_access', 'mail_alias')) && $this->$ability == 'Y') {
 			$query = "UPDATE account_request SET $ability = ".$mysql->escape_string($approved)." WHERE id = ".$this->db_id;
 			$result = $mysql->query($query);
@@ -529,7 +530,7 @@ class Account {
 		global $config;
 		
 		$return = array ();
-		$mysql = new MySQLUtil($config->accounts_db_url);
+		$mysql = MySQLUtil::singleton($config->accounts_db_url);
 		switch ($type) { 
 			case "gnomemodule": 
 				$query = "SELECT id FROM account_request WHERE mail_approved = 'approved' AND gnomemodule = ".$mysql->escape_string($arg)." AND maintainer_approved = 'pending'";

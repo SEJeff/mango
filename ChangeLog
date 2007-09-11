@@ -1,3 +1,13 @@
+2007-09-11  Olav Vitters  <olav@bkor.dhs.org>
+
+	* lib/mysql.php: Use singleton per database URL.
+
+	* lib/account.php: Change files to use MySQL singleton.
+	* lib/foundationmember.php:
+	* lib/ftpmirror.php:
+	* www/list_foundationmembers.php:
+	* www/list_ftpmirrors.php:
+
 2007-09-09  Olav Vitters  <olav@bkor.dhs.org>
 
 	* www/list_accounts.php: Use User::fetchuser to determine who approved
