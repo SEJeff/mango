@@ -195,29 +195,34 @@ class Account {
 		
 		if (empty ($this->uid)) { 
 			$error[] = 'uid';
-		}  else {
+                }  elseif (!preg_match("/^[a-z]{1,12}$/", $this->uid)) {
+                        $error[] = 'uid'; # not valid uid
+                } else {
 			$user_array = array ($this->uid);  // User::listusers accepts reference to variable
 			$user = User::listusers($user_array);
 			if ($user['count'] > 0) { 
 				$error[] = 'uid';
 				$error[] = 'existing_uid';
-			}
+                        }
+
 		}
 		if (empty ($this->cn)) { 
 			$error[] = 'cn';
 		}
 		if (empty ($this->email)) { 
-			$error[] = 'mail';
-		}
+			$error[] = 'email';
+                } elseif (!preg_match("/^[\w\.\+\-=]+@[\w\.\-]+\.[\w\-]+$/", $this->email)) {
+                        $errror[] = 'email';
+                }
 		if (empty ($this->comment)) { 
 			$error[] = 'comment';
 		}
 		if (count ($this->authorizationkeys) == 0) { 
 			$error[] = 'keys';
 		}
-		if (!$this->svn_access && !$this->ftp_access && !$this->web_access && !$this->bugzilla_access && !$this->membctte && !$this->art_access && !$this->mail_alias) {
+		if ($this->svn_access == "N" && $this->ftp_access  == "N" && $this->web_access  == "N" && $this->bugzilla_access  == "N" && $this->membctte  == "N" && $this->art_access  == "N" && $this->mail_alias == "N") {
 			$error[] = 'abilities';
-		}
+                }
 		return $error;
 	}
 	

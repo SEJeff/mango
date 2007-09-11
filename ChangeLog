@@ -1,5 +1,9 @@
 2007-09-11  Olav Vitters  <olav@bkor.dhs.org>
 
+	* lib/account.php: Add more input validation (more needed still).
+
+2007-09-11  Olav Vitters  <olav@bkor.dhs.org>
+
 	* lib/page.php: Make debugxml param work.
 	* www/list_accounts.php: Remove commented out code.
 	* www/login.php: Make login.php automatically rediect if already
