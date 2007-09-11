@@ -3,14 +3,19 @@
 require_once("PEAR.php");
 
 class LDAPUtil {
-    function connectToLDAP() {
-        global $config;
+    // Hold an instance of the class
+    private static $instance;
+    private $handle = null;
+   
+    // A private constructor; prevents direct creation of object
+    private function __construct()
+    {
+         global $config;
 
         /* Extract the hostname */
         $url_parts = parse_url($config->ldap_url);
         $hostname = $url_parts['host'];
-    
-            
+
         /* Connect to the LDAP server */
         $ldap = ldap_connect($hostname);
         if(!$ldap) {
@@ -29,17 +34,43 @@ class LDAPUtil {
             return false;
         }
 
+        $this->handle = $ldap;
+
         /* Return connection handle */
         return $ldap;
     }
 
-        function ldap_quote($str) {
-            return str_replace(
-                array( '\\', ' ', '*', '(', ')' ),
-                array( '\\5c', '\\20', '\\2a', '\\28', '\\29' ),
-                $str
-            );
+    function __destruct() {
+        if (!is_null($this->$handle)) {
+            ldap_close($ldap);
+            $this->handle = null;
         }
+    }
+
+    // The singleton method
+    public static function singleton()
+    {
+        if (!isset(self::$instance)) {
+            $c = __CLASS__;
+            self::$instance = new $c;
+        }
+
+        return self::$instance->handle;
+    }
+   
+    // Prevent users to clone the instance
+    public function __clone()
+    {
+        trigger_error('Clone is not allowed.', E_USER_ERROR);
+    }
+
+    function ldap_quote($str) {
+        return str_replace(
+            array( '\\', ' ', '*', '(', ')' ),
+            array( '\\5c', '\\20', '\\2a', '\\28', '\\29' ),
+            $str
+        );
+    }
 }
 
 ?>
