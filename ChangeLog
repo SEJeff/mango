@@ -1,5 +1,12 @@
 2007-09-11  Olav Vitters  <olav@bkor.dhs.org>
 
+	* lib/page.php: Make debugxml param work.
+	* www/list_accounts.php: Remove commented out code.
+	* www/login.php: Make login.php automatically rediect if already
+	logged in (not only just after logging in).
+
+2007-09-11  Olav Vitters  <olav@bkor.dhs.org>
+
 	* templates/authtoken_mail_verification.xsl: Don't use more than 72
 	width.
 	* templates/maintainer_approval.xsl: Better explain the process to the

@@ -118,7 +118,6 @@ class ListAccounts {
 			                 'mail_alias' => 'Mail Alias');
 			$users = array ();
 			foreach ($entry->abilities as $ability) { 
-			    #$users[$ability] = User::listusers($this->$ability);
 			    $users[$ability] = User::fetchuser($entry->$ability);
 			} 
 			$usernode = $listnode->appendChild($dom->createElement("account"));

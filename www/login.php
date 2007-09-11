@@ -53,11 +53,15 @@ class Login {
 
 		/* Logout? */
 		if(isset($_REQUEST['logout'])) {
-		 // Clear session
+                        // Clear session
 			session_unset();
 			Login::logoutform();
 			return;
 		}
+                
+                // Already logged in? Show loggedin form
+                if (isset($_SESSION['user']) && is_a ($_SESSION['user'], 'User'))
+                    Login::loggedin();
 
 		if($_REQUEST['action'] == "login") {
 			if(!isset($_POST['login']) || !isset($_POST['password'])) {
@@ -73,7 +77,7 @@ class Login {
 			$ldap = Login::connectToLDAP($login, $password);
 			if(PEAR::isError($ldap)) {
 				sleep(5);
-			 Login::loginform(true, $ldap);
+			        Login::loginform(true, $ldap);
 				return;
 			}
 
@@ -81,7 +85,7 @@ class Login {
 			if(!$ldap) {
 				//error_log("User '$login' - wrong password (LDAP bind failed).");
 				sleep(5);
-			 Login::loginform(true, new PEAR_Error("Authentication failed"));
+			        Login::loginform(true, new PEAR_Error("Authentication failed"));
 				return;
 			}
 

@@ -67,10 +67,7 @@ class Page {
 		/* Catch debug hook */
 		if(isset($_REQUEST['debugxml'])) {
 			header("Content-Type: application/xml");
-			//header("Content-Type: text/plain");
-			//echo $this->result->html_dump_mem(true);
-			$root = $this->result->document_element();
-			var_dump ($root);
+                        echo $this->result->saveXML();
 			return;
 		}
 		
