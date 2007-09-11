@@ -1,5 +1,12 @@
 2007-09-11  Olav Vitters  <olav@bkor.dhs.org>
 
+	* templates/authtoken_mail_verification.xsl: Don't use more than 72
+	width.
+	* templates/maintainer_approval.xsl: Better explain the process to the
+	maintainer.
+
+2007-09-11  Olav Vitters  <olav@bkor.dhs.org>
+
 	* lib/ldap.php: Singleton fixes.
 
 	* lib/module.php: Make use of LDAP singleton.

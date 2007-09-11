@@ -12,15 +12,17 @@
 
   <xsl:template match="authtokenmail">Dear <xsl:value-of select="account/cn"/>,
 
-In order to confirm your recent GNOME sysadmin or account request, please follow the link below in order to confirm your e-mail address:
+In order to confirm your recent GNOME sysadmin or account request,
+please follow the link below in order to confirm your e-mail address:
 
 <xsl:value-of select="authtokenlink"/>
 
-Please note that, only if you approve your e-mail address your request will be directed to responsible person about your request on approval.
+Please note that your request cannot be processed by the responsible
+person unless you validate your e-mail address. 
 
-Note: This is an automated mail. Please do not respond to this mail. You can send your questions to the accounts team e-mail address. 
---
+Note: This is an automated mail. Please do not respond to this mail. You
+can send your questions to the accounts team e-mail address.
+-- 
 The GNOME Accounts Team
-&lt;accounts@gnome.org&gt;
-  </xsl:template>   
+&lt;accounts@gnome.org&gt;</xsl:template>   
 </xsl:stylesheet>

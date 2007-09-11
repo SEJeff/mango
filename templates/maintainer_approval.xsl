@@ -12,10 +12,21 @@
 
   <xsl:template match="maintainerapproval">Dear <xsl:value-of select="maintainername"/>,
 
-Due to your maintainership of <xsl:value-of select="maintainermodule"/>, you need approve or reject an account request. Please login to your mango account through http://mango.gnome.org and check pending requests listed on your account. If you won't see any pending request, beware that this may be due to another maintainer's process of this request. 
+We've received an account request for <xsl:value-of select="maintainermodule"/>. As
+you are a maintainer, please approve or reject this account request.
+    
+To do so, please login to your mango account through <xsl:value-of select="/page/@baseurl"/> and
+check the pending requests. If you do not see any pending request, this
+is likely due to one of the other maintainers being faster than you.
 
-Note: This is an automated mail. Please do not respond to this mail. You can send your questions to the accounts team e-mail address. 
---
+A request could need the approval of multiple persons. For example, if an
+account is requested for the SVN module gtk+ and for Bugzilla shell access, it
+will require two approvals. After all required approvals have been given, the
+request will be forwarded to the GNOME Accounts team.
+
+Note: This is an automated mail. Please do not respond to this mail. You can
+send your questions to the accounts team e-mail address. 
+-- 
 The GNOME Accounts Team
 &lt;accounts@gnome.org&gt;
   </xsl:template>   
