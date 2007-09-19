@@ -105,7 +105,6 @@ class User {
 		$entry['mail'][] = $this->mail;
 		if(!empty($this->description))
 			$entry['description'][] = $this->description;
-		$entry['gecos'][] = $this->cn;
 		if(count($this->authorizedKeys) > 0) {
 			$entry['objectclass'][] = "pubkeyAuthenticationUser";
 			foreach($this->authorizedKeys as $key) {

@@ -1,5 +1,11 @@
 2007-09-19  Olav Vitters  <olav@bkor.dhs.org>
 
+	* lib/user.php: Don't add a gecos field. It doesn't accept UTF-8, we
+	never update it, and the tools that look at gecos (getent passwd
+	$USER) seem to fall back on cn anyway. Fixes bug #432270.
+
+2007-09-19  Olav Vitters  <olav@bkor.dhs.org>
+
 	* lib/account.php: When fetching the authorizationkeys from the
 	database, split it again on "\n". This as it should always be an
 	array.
