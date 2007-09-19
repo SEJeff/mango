@@ -95,7 +95,7 @@ class Account {
         $this->email = $row['email'];
         $this->mailverified = ($row['mail_approved'] == 'approved') ? true : false;
         $this->comment = $row['comment'];
-        $this->authorizationkeys = $row['authorizationkeys'];
+        $this->authorizationkeys = split("\n", $row['authorizationkeys']);
         $this->gnomemodule = $row['gnomemodule'];
         $this->translation = $row['translation'];
         $this->svn_access = $row['svn_access'];

@@ -1,5 +1,11 @@
 2007-09-19  Olav Vitters  <olav@bkor.dhs.org>
 
+	* lib/account.php: When fetching the authorizationkeys from the
+	database, split it again on "\n". This as it should always be an
+	array.
+
+2007-09-19  Olav Vitters  <olav@bkor.dhs.org>
+
 	* lib/account.php: Inform account owner regarding status changes.
 	Also correct how _send_email is called (bug in previous commit).
 
