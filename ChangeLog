@@ -1,3 +1,10 @@
+2007-09-19  Olav Vitters  <olav@bkor.dhs.org>
+
+	* INSTALL: Expand on the installation section by suggesting that .xsl
+	files should get cache instructions.
+	* lib/page.php: Let the browser do the work of transforming the XML
+	into HTML. This works for Firefox, IE.
+
 2007-09-11  Olav Vitters  <olav@bkor.dhs.org>
 
 	* lib/account.php: Add more input validation (more needed still).

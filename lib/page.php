@@ -20,6 +20,8 @@ class Page {
 	function Page($stylesheet) {
 		$this->stylesheet = $stylesheet;
 		$this->result = new DOMDocument();
+                $node = $this->result->createProcessingInstruction("xml-stylesheet", "href=\"".$this->stylesheet."\" type=\"text/xsl\"");
+                $this->result->appendChild($node);
 	}
 
 	function validate_post() {
@@ -30,8 +32,6 @@ class Page {
 			    || !is_scalar($_POST['mango_token']) || !((bool) strlen($_POST['mango_token']))
 			    || $_POST['mango_token'] != Page::generate_token())
 			{
-				error_log("1: " . $_POST['mango_token'] . " 2: " . Page::generate_token());
-
 				$keys = array_keys(array_merge((array)$_REQUEST, (array)$_GET, (array)$_POST, (array)$_COOKIE));
 				foreach($keys as $key) {
 					unset($_REQUEST[$key], $_GET[$key], $_POST[$key], $GLOBALS[$key]);
@@ -55,14 +55,21 @@ class Page {
 	 * Parse the content with the stylesheet
 	 */
 	function send() {
-		/* Grab root node */
+                /* Grab root node */
+                $dom = $this->result;
 		$xpath = new DOMXPath($this->result);
 		$result = $xpath->query("/page");
 		if($result->length > 0) {
 			$pagenode = $result->item(0);
-			//	HDOM::insertProcessingInstruction($dom, $pagenode, "xml-stylesheet", "href=\"".$xslref."\" type=\"text/xsl\"");
 			$this->_add_dynamic_data($this->result, $pagenode);
 		}
+
+
+                /* Just let the client transform it */
+		header("Content-Type: application/xml");
+                echo $this->result->saveXML();
+                return;
+
 
 		/* Catch debug hook */
 		if(isset($_REQUEST['debugxml'])) {

@@ -11,6 +11,10 @@ You can use whatever you want for the IP and hostname, as long as Apache will re
 <VirtualHost 127.0.0.123:80>
 ServerName mango.gnome.local
 DocumentRoot /where/you/checked/out/mango/www
+ExpiresActive On
+ExpiresByType image/png "access plus 1 week"
+ExpiresByType application/xml "access plus 1 week"
+ExpiresByType text/css "access plus 1 day"
 </VirtualHost>
 
 Restart Apache for changes to take effect.
