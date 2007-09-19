@@ -15,7 +15,7 @@
 We've received an account request for <xsl:value-of select="maintainermodule"/>. As
 you are a maintainer, please approve or reject this account request.
     
-To do so, please login to your mango account through <xsl:value-of select="/page/@baseurl"/> and
+To do so, please login to your mango account through <xsl:value-of select="@baseurl"/> and
 check the pending requests. If you do not see any pending request, this
 is likely due to one of the other maintainers being faster than you.
 

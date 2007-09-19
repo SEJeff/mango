@@ -1,5 +1,21 @@
 2007-09-19  Olav Vitters  <olav@bkor.dhs.org>
 
+	* lib/account.php: (_send_email): Create _send_email function and make
+	a lot of code use that instead of the copy/paste way that seemed to be
+	used. If debug mode is on, send the emails to the support address.
+	(_create_email): Put mode and baseurl config settings as attributes of
+	the root node. This so email templates can reference the site URL.
+
+	* lib/module.php: Don't echo the module changes in debug mode.
+	* lib/mysql.php: Don't echo the SQL in debug mode.
+	* templates/maintainer_approval.xsl: Make baseurl work in the
+	email (see _create_email change).
+	* www/verify_mail.xsl: Add hack to avoid the email address from
+	popping up in the HTML. No idea on the real cause, but added an empty
+	'email' to avoid it.
+
+2007-09-19  Olav Vitters  <olav@bkor.dhs.org>
+
 	* INSTALL: Expand on the installation section by suggesting that .xsl
 	files should get cache instructions.
 	* lib/page.php: Let the browser do the work of transforming the XML

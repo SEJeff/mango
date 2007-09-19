@@ -219,10 +219,6 @@ class Module {
 			$modulechanges['maintainerUid'] = $this->maintainerUids;
 			$changes[] = 'maintainerUids';
 		}
-		if ($config->debug == 'enabled') {
-		          echo "Module Changes:";
-		        var_dump ($modulechanges);
-		}
 		if(count($moduledelete) > 0) {
 			$result = ldap_mod_del($ldap, $dn, $moduledelete);
 			if(!$result) {

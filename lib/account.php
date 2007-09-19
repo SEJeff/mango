@@ -153,37 +153,16 @@ class Account {
 					'mail_alias='.$mysql->escape_enum($this->mail_alias, $enum_values).','.
 					(count ($this->authorizationkeys) > 0 ? 'authorizationkeys='.$mysql->escape_string(join("\n", $this->authorizationkeys)) : '').','.
 					'timestamp='.$mysql->escape_string($this->timestamp);
-		if ($config->debug == 'enabled') { 
-		    $query .= ', mail_approved = "approved"';
-		}	
-		$result = mysql_query ($query, $mysql->link);		
-		$this->db_id = mysql_insert_id($mysql->link);
+                
+                $result = mysql_query ($query, $mysql->dbh());
+		$this->db_id = mysql_insert_id($mysql->dbh());
 		// Create the authentication token 
 		$query = 'INSERT INTO account_token SET request_id = '.$mysql->escape_string($this->db_id).', token = '.$mysql->escape_string($this->token);
-		$result = mysql_query ($query, $mysql->link);		
+		$result = mysql_query ($query, $mysql->dbh());		
 		$authtokenurl = $config->base_url.'/verify_mail.php?token='.$this->token.'&email='.urlencode($this->email);
 		$mailbody = $this->_create_email('authtokenmail', 'authtoken_mail_verification', array ('authtokenlink' => $authtokenurl));
 		$subject = "New account request: mail verification";
-		$mime = new Mail_Mime();
-		$mime->setTXTBody($mailbody);
-		$headers = array(
-			"Reply-To" => "Mango <accounts@gnome.org>",
-			"From" => "Mango <accounts@gnome.org>",
-			"To" => $this->email,
-			"Subject" => $subject,
-		);
-		$params = array(
-			'head_charset' => 'UTF-8',
-			'head_encoding' => 'quoted-printable',
-			'text_charset' => 'UTF-8',
-		);
-		$content = $mime->get($params);
-		$headers = $mime->headers($headers);
-		$mail = &Mail::factory('smtp');
-		if ($config->debug != 'enabled')
-		  $error = $mail->send($this->email, $headers, $content);
-		else 
-		  var_dump ($content);
+                $error = $this->_send_email($mailbody, $this->email, $subject);
 		if(PEAR::isError($error))
 			return $error;
 		else 
@@ -321,18 +300,6 @@ class Account {
 			$result = $mysql->query($query);
 			// prepare mail headers
 			$subject = "New account request: pending approval";
-			$mime = new Mail_Mime();
-			$headers = array(
-				"Reply-To" => "Mango <accounts@gnome.org>",
-				"From" => "Mango <accounts@gnome.org>",
-				"To" => $this->email,
-				"Subject" => $subject,
-			);
-			$params = array(
-				'head_charset' => 'UTF-8',
-				'head_encoding' => 'quoted-printable',
-				'text_charset' => 'UTF-8',
-			);
 			
 			// maintainers who will get the e-mail notification for this account
 			$row = mysql_fetch_array ($result);
@@ -343,11 +310,7 @@ class Account {
 					$ldap_uid = $maintainers[$i]['maintaineruid'][0];
 					for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
 						$mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'module "'.$row['gnomemodule'].'"'));
-						$mime->setTXTBody($mailbody);
-						$content = $mime->get($params);
-						$headers = $mime->headers($headers);
-						$mail = &Mail::factory('smtp');
-						$error = $mail->send($ldap_info[$ldap_uid][$j]['mail'][0], $headers, $content);
+                                                $this->_send_email($mailbody, $ldap_info[$ldap_uid][$j]['mail'][0], $subject);
 						if(PEAR::isError($error))
 							return $error;
 					}
@@ -361,11 +324,7 @@ class Account {
 					$ldap_uid = $maintainers[$i]['maintaineruid'][0];
 					for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
 						$mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => $row['translation']." translations"));
-						$mime->setTXTBody($mailbody);
-						$content = $mime->get($params);
-						$headers = $mime->headers($headers);
-						$mail = &Mail::factory('smtp');
-						$error = $mail->send($ldap_info[$ldap_uid][$j]['mail'][0], $headers, $content);
+                                                $this->_send_email($mailbody, $ldap_info[$ldap_uid][$j]['mail'][0], $subject);
 						if(PEAR::isError($error))
 							return $error;
 					}
@@ -379,10 +338,6 @@ class Account {
 					$ldap_uid = $maintainers[$i]['maintaineruid'][0];
 					for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
 						$mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'ftp administration'));
-						$mime->setTXTBody($mailbody);
-						$content = $mime->get($params);
-						$headers = $mime->headers($headers);
-						$mail = &Mail::factory('smtp');
 						$error = $mail->send($ldap_info[$ldap_uid][$j]['mail'][0], $headers, $content);
 						if(PEAR::isError($error))
 							return $error;
@@ -397,10 +352,6 @@ class Account {
 					$ldap_uid = $maintainers[$i]['maintaineruid'][0];
 					for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
 						$mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'web administration'));
-						$mime->setTXTBody($mailbody);
-						$content = $mime->get($params);
-						$headers = $mime->headers($headers);
-						$mail = &Mail::factory('smtp');
 						$error = $mail->send($ldap_info[$ldap_uid][$j]['mail'][0], $headers, $content);
 						if(PEAR::isError($error))
 							return $error;
@@ -415,10 +366,6 @@ class Account {
 					$ldap_uid = $maintainers[$i]['maintaineruid'][0];
 					for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
 						$mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'bugzilla administration'));
-						$mime->setTXTBody($mailbody);
-						$content = $mime->get($params);
-						$headers = $mime->headers($headers);
-						$mail = &Mail::factory('smtp');
 						$error = $mail->send($ldap_info[$ldap_uid][$j]['mail'][0], $headers, $content);
 						if(PEAR::isError($error))
 							return $error;
@@ -433,10 +380,6 @@ class Account {
 					$ldap_uid = $maintainers[$i]['maintaineruid'][0];
 					for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
 						$mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'membership committee'));
-						$mime->setTXTBody($mailbody);
-						$content = $mime->get($params);
-						$headers = $mime->headers($headers);
-						$mail = &Mail::factory('smtp');
 						$error = $mail->send($ldap_info[$ldap_uid][$j]['mail'][0], $headers, $content);
 						if(PEAR::isError($error))
 							return $error;
@@ -451,10 +394,6 @@ class Account {
 					$ldap_uid = $maintainers[$i]['maintaineruid'][0];
 					for ($j=0; $j < $$ldap_info[$ldap_uid]['count']; $j++) { 
 						$mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'web art administration'));
-						$mime->setTXTBody($mailbody);
-						$content = $mime->get($params);
-						$headers = $mime->headers($headers);
-						$mail = &Mail::factory('smtp');
 						$error = $mail->send($ldap_info[$ldap_uid][$j]['mail'][0], $headers, $content);
 						if(PEAR::isError($error))
 							return $error;
@@ -469,10 +408,6 @@ class Account {
 					$ldap_uid = $maintainers[$i]['maintaineruid'][0];
 					for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
 						$mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'gnome.org mail aliases'));
-						$mime->setTXTBody($mailbody);
-						$content = $mime->get($params);
-						$headers = $mime->headers($headers);
-						$mail = &Mail::factory('smtp');
 						$error = $mail->send($ldap_info[$ldap_uid][$j]['mail'][0], $headers, $content);
 						if(PEAR::isError($error))
 							return $error;
@@ -574,10 +509,13 @@ class Account {
 	}
 	
 	function _create_email($mailnodename, $template, $extra_mailnodes = NULL) {
+                global $config;
 
 		// Prepare mail body template variables
 		$maildom = new DOMDocument('1.0','UTF-8');
 		$mailnode = $maildom->appendChild($maildom->createElement($mailnodename));
+                $mailnode->setAttribute("mode", $config->mode);
+                $mailnode->setAttribute("baseurl", $config->base_url);
 		$usernode = $mailnode->appendChild($maildom->createElement("account"));
 		$this->add_to_node($maildom, $usernode);
 		
@@ -598,5 +536,34 @@ class Account {
 
 		return $body;
 	}
+
+        function _send_email($mailbody, $to, $subject) {
+            global $config;
+
+            $mime = new Mail_Mime();
+            $headers = array(
+                    "Reply-To" => "Mango <accounts@gnome.org>",
+                    "From" => "Mango <accounts@gnome.org>",
+                    "To" => $to,
+                    "Subject" => $subject,
+            );
+            $params = array(
+                    'head_charset' => 'UTF-8',
+                    'head_encoding' => 'quoted-printable',
+                    'text_charset' => 'UTF-8',
+            );
+            $mime->setTXTBody($mailbody);
+            $content = $mime->get($params);
+            $headers = $mime->headers($headers);
+            $mail = &Mail::factory('smtp');
+
+            // DEBUG: Send to support address for debugging purposes
+            if ($config->debug == 'enabled')
+                $to = $config->support_email;
+
+            $error = $mail->send($to, $headers, $content);
+            return $error;
+        }
+
 }
 ?>

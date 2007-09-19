@@ -99,9 +99,6 @@ class MySQLUtil {
     function query ($query) {
         global $config;
         
-        if ($config->debug == 'enabled') { 
-            echo "MySQL Query: ".$query."\n";
-        }
         $result = mysql_query ($query, $this->handle);
         if (!$result) {
             die ("Unable to run query: ".mysql_error ($this->handle));
