@@ -1,5 +1,15 @@
 2007-09-19  Olav Vitters  <olav@bkor.dhs.org>
 
+	* lib/account.php: Inform account owner regarding status changes.
+	Also correct how _send_email is called (bug in previous commit).
+
+	* templates/requestor_status_change.xsl: Add first draft of status
+	change template. This template explains to the requestor what the
+	status change means (next steps). The 'rejected' state could probably
+	be friendlier.
+
+2007-09-19  Olav Vitters  <olav@bkor.dhs.org>
+
 	* lib/account.php: (_send_email): Create _send_email function and make
 	a lot of code use that instead of the copy/paste way that seemed to be
 	used. If debug mode is on, send the emails to the support address.

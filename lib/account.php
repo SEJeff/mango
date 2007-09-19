@@ -310,7 +310,7 @@ class Account {
                     $ldap_uid = $maintainers[$i]['maintaineruid'][0];
                     for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
                         $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'module "'.$row['gnomemodule'].'"'));
-                                                $this->_send_email($mailbody, $ldap_info[$ldap_uid][$j]['mail'][0], $subject);
+                        $this->_send_email($mailbody, $ldap_info[$ldap_uid][$j]['mail'][0], $subject);
                         if(PEAR::isError($error))
                             return $error;
                     }
@@ -324,7 +324,7 @@ class Account {
                     $ldap_uid = $maintainers[$i]['maintaineruid'][0];
                     for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
                         $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => $row['translation']." translations"));
-                                                $this->_send_email($mailbody, $ldap_info[$ldap_uid][$j]['mail'][0], $subject);
+                        $this->_send_email($mailbody, $ldap_info[$ldap_uid][$j]['mail'][0], $subject);
                         if(PEAR::isError($error))
                             return $error;
                     }
@@ -338,7 +338,7 @@ class Account {
                     $ldap_uid = $maintainers[$i]['maintaineruid'][0];
                     for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
                         $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'ftp administration'));
-                        $error = $mail->send($ldap_info[$ldap_uid][$j]['mail'][0], $headers, $content);
+                        $error = $this->_send_email($ldap_info[$ldap_uid][$j]['mail'][0], $headers, $content);
                         if(PEAR::isError($error))
                             return $error;
                     }
@@ -352,7 +352,7 @@ class Account {
                     $ldap_uid = $maintainers[$i]['maintaineruid'][0];
                     for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
                         $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'web administration'));
-                        $error = $mail->send($ldap_info[$ldap_uid][$j]['mail'][0], $headers, $content);
+                        $error = $this->_send_email($ldap_info[$ldap_uid][$j]['mail'][0], $headers, $content);
                         if(PEAR::isError($error))
                             return $error;
                     }
@@ -366,7 +366,7 @@ class Account {
                     $ldap_uid = $maintainers[$i]['maintaineruid'][0];
                     for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
                         $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'bugzilla administration'));
-                        $error = $mail->send($ldap_info[$ldap_uid][$j]['mail'][0], $headers, $content);
+                        $error = $this->_send_email($ldap_info[$ldap_uid][$j]['mail'][0], $headers, $content);
                         if(PEAR::isError($error))
                             return $error;
                     }
@@ -380,7 +380,7 @@ class Account {
                     $ldap_uid = $maintainers[$i]['maintaineruid'][0];
                     for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
                         $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'membership committee'));
-                        $error = $mail->send($ldap_info[$ldap_uid][$j]['mail'][0], $headers, $content);
+                        $error = $this->_send_email($ldap_info[$ldap_uid][$j]['mail'][0], $headers, $content);
                         if(PEAR::isError($error))
                             return $error;
                     }
@@ -394,7 +394,7 @@ class Account {
                     $ldap_uid = $maintainers[$i]['maintaineruid'][0];
                     for ($j=0; $j < $$ldap_info[$ldap_uid]['count']; $j++) { 
                         $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'web art administration'));
-                        $error = $mail->send($ldap_info[$ldap_uid][$j]['mail'][0], $headers, $content);
+                        $error = $this->_send_email($ldap_info[$ldap_uid][$j]['mail'][0], $headers, $content);
                         if(PEAR::isError($error))
                             return $error;
                     }
@@ -408,7 +408,7 @@ class Account {
                     $ldap_uid = $maintainers[$i]['maintaineruid'][0];
                     for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
                         $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'gnome.org mail aliases'));
-                        $error = $mail->send($ldap_info[$ldap_uid][$j]['mail'][0], $headers, $content);
+                        $error = $this->_send_email($ldap_info[$ldap_uid][$j]['mail'][0], $headers, $content);
                         if(PEAR::isError($error))
                             return $error;
                     }
@@ -433,7 +433,7 @@ class Account {
             $query = "UPDATE account_request SET svn_access = ".$mysql->escape_string($approved)." WHERE id = ".$this->db_id;
             $result = $mysql->query($query);
             $this->svn_access = $approved;
-            $this->abilities = $approved;
+            $this->abilities[] = $approved;
         } else {
             return;
         }
@@ -444,12 +444,15 @@ class Account {
             !in_array ($this->web_access, array ('R', 'Y')) &&
             !in_array ($this->art_access, array ('R', 'Y')) &&
             !in_array ($this->bugzilla_access, array ('R', 'Y')) &&
-            !in_array ($this->mail_alias, array ('R', 'Y'))) { 
-                
-                //TODO: send email to accounts@gnome.org
-                //TODO: send email to account owner
-                $query = "UPDATE account_request SET maintainer_approved = 'approved' WHERE id = ".$this->db_id;
-                $result = $mysql->query($query);
+            !in_array ($this->mail_alias, array ('R', 'Y')))
+        { 
+            //TODO: send email to accounts@gnome.org
+            $query = "UPDATE account_request SET maintainer_approved = 'approved' WHERE id = ".$this->db_id;
+            $result = $mysql->query($query);
+
+            # Inform account owner
+            $mailbody = $this->_create_email('statuschange', 'requestor_status_change', array ('status' => 'approved'));
+            $error = $this->_send_email($mailbody, $this->email, 'Status change');
         }
         
         if (in_array ($this->svn_access, array ('R', 'N')) &&
@@ -457,11 +460,15 @@ class Account {
             in_array ($this->web_access, array ('R', 'N')) &&
             in_array ($this->art_access, array ('R', 'N')) &&
             in_array ($this->bugzilla_access, array ('R', 'N')) &&
-            in_array ($this->mail_alias, array ('R', 'N'))) { 
+            in_array ($this->mail_alias, array ('R', 'N')))
+        {
                 
-                //TODO: send email to account owner
-                $query = "UPDATE account_request SET maintainer_approved = 'rejected' WHERE id = ".$this->db_id;
-                $result = $mysql->query($query);
+            $query = "UPDATE account_request SET maintainer_approved = 'rejected' WHERE id = ".$this->db_id;
+            $result = $mysql->query($query);
+                
+            # Inform account owner
+            $mailbody = $this->_create_email('statuschange', 'requestor_status_change', array ('status' => 'rejected'));
+            $error = $this->_send_email($mailbody, $this->email, 'Status change');
         }
         
     }
