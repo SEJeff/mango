@@ -170,29 +170,53 @@ class Account {
     }
     
     function validate () { 
+        global $config;
         $error = array ();
         
         if (empty ($this->uid)) { 
+            // userid should not be empty
             $error[] = 'uid';
-                }  elseif (!preg_match("/^[a-z]{1,12}$/", $this->uid)) {
-                        $error[] = 'uid'; # not valid uid
-                } else {
-            $user_array = array ($this->uid);  // User::listusers accepts reference to variable
-            $user = User::listusers($user_array);
-            if ($user['count'] > 0) { 
+        }  elseif (!preg_match("/^[a-z]{1,12}$/", $this->uid)) {
+            // userid should be all lowercase, max 12 chars
+            $error[] = 'uid'; # not valid uid
+        } else {
+            // Check if there is an LDAP account with this uid
+            $user = User::fetchuser($this->uid);
+            if (!PEAR::isError($user) && !empty($user->uid)) {
                 $error[] = 'uid';
                 $error[] = 'existing_uid';
-                        }
+            } else {
+                // Check for existing account request
+                $mysql = MySQLUtil::singleton($config->accounts_db_url);
 
+                $query = "SELECT 1 FROM account_request WHERE uid = ".$mysql->escape_string($this->uid);
+                $result = $mysql->query($query);
+                $row = mysql_fetch_row($result);
+                if ($row != false) { 
+                    $error[] = 'uid';
+                }
+            }
         }
         if (empty ($this->cn)) { 
             $error[] = 'cn';
         }
         if (empty ($this->email)) { 
             $error[] = 'email';
-                } elseif (!preg_match("/^[\w\.\+\-=]+@[\w\.\-]+\.[\w\-]+$/", $this->email)) {
-                        $errror[] = 'email';
-                }
+        } elseif (!preg_match("/^[\w\.\+\-=]+@[\w\.\-]+\.[\w\-]+$/", $this->email)) {
+            $errror[] = 'email';
+        } else {
+            // TODO: Check for existing LDAP account with this email address
+
+            // Check if existing account request already used this email address
+            $mysql = MySQLUtil::singleton($config->accounts_db_url);
+            $query = "SELECT 1 FROM account_request WHERE email = ".$mysql->escape_string($this->email);
+            $result = $mysql->query($query);
+            $row = mysql_fetch_row($result);
+            if ($row != false) { 
+                $error[] = 'email';
+            }
+        }
+
         if (empty ($this->comment)) { 
             $error[] = 'comment';
         }
@@ -201,7 +225,8 @@ class Account {
         }
         if ($this->svn_access == "N" && $this->ftp_access  == "N" && $this->web_access  == "N" && $this->bugzilla_access  == "N" && $this->membctte  == "N" && $this->art_access  == "N" && $this->mail_alias == "N") {
             $error[] = 'abilities';
-                }
+        }
+
         return $error;
     }
     

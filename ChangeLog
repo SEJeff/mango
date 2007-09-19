@@ -1,3 +1,9 @@
+2007-09-20  Olav Vitters  <olav@bkor.dhs.org>
+
+	* lib/account.php (validate): Add more checks to check if the given
+	account is really valid. Meaning: don't allow a username/email address
+	if there already is an account request for it. 
+
 2007-09-19  Olav Vitters  <olav@bkor.dhs.org>
 
 	* lib/user.php: Don't add a gecos field. It doesn't accept UTF-8, we
