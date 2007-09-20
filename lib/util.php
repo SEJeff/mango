@@ -9,7 +9,7 @@ function is_valid_ssh_pub_key($key) {
 
     # Format should be DSA or RSA
     if ($format != "ssh-dsa" && $format != "ssh-rsa")
-        return false
+        return false;
 
     # Data should be a base64 encoded string
     $certificate = base64_decode($data, true);

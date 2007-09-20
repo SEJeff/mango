@@ -395,10 +395,10 @@ class User {
 			$errors[] = "cn";
 		if(empty($this->mail) || !preg_match("/^[\w\.\+\-=]+@[\w\.\-]+\.[\w\-]+$/", $this->mail))
 			$errors[] = "mail";
-
+                
                 foreach($this->authorizedKeys as $authorizedKey) {
-                    if (!is_valid_ssh_pub_key($authorizedKey) {
-                        $error[] = 'keys';
+                    if (!is_valid_ssh_pub_key($authorizedKey)) {
+                        $errors[] = 'keys';
                         break;
                     }
                 }
