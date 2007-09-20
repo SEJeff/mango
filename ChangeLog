@@ -1,5 +1,11 @@
 2007-09-20  Olav Vitters  <olav@bkor.dhs.org>
 
+	* lib/user.php (validate): Check if the given public SSH keys are valid.
+	* lib/util.php (is_valid_ssh_pub_key): New function. Try to check if
+	the public SSH key is valid. Even checks public key length for RSA.
+
+2007-09-20  Olav Vitters  <olav@bkor.dhs.org>
+
 	* www/new_user.php: Fix annoying bug where new_user.php wouldn't
 	remember the existing SSH keys. This could happen if e.g. there was an
 	error shown and you tried to create the account again.

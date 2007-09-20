@@ -1,6 +1,7 @@
 <?php
 
 require_once("ldap.php");
+require_once("util.php");
 
 class User {
 	// Main attributes
@@ -394,6 +395,14 @@ class User {
 			$errors[] = "cn";
 		if(empty($this->mail) || !preg_match("/^[\w\.\+\-=]+@[\w\.\-]+\.[\w\-]+$/", $this->mail))
 			$errors[] = "mail";
+
+                foreach($this->authorizedKeys as $authorizedKey) {
+                    if (!is_valid_ssh_pub_key($authorizedKey) {
+                        $error[] = 'keys';
+                        break;
+                    }
+                }
+
 		return $errors;
 	}
 	
