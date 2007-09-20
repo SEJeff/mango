@@ -205,15 +205,21 @@ class Account {
         } elseif (!preg_match("/^[\w\.\+\-=]+@[\w\.\-]+\.[\w\-]+$/", $this->email)) {
             $errror[] = 'email';
         } else {
-            // TODO: Check for existing LDAP account with this email address
-
-            // Check if existing account request already used this email address
-            $mysql = MySQLUtil::singleton($config->accounts_db_url);
-            $query = "SELECT 1 FROM account_request WHERE email = ".$mysql->escape_string($this->email);
-            $result = $mysql->query($query);
-            $row = mysql_fetch_row($result);
-            if ($row != false) { 
+            // Check for existing LDAP account with this email address
+            $user = User::fetchuser($this->email, 'mail');
+            if (!PEAR::isError($user) && !empty($user->uid)) {
                 $error[] = 'email';
+                $error[] = 'existing_email';
+            } else {
+                // Check if existing account request already used this email address
+                $mysql = MySQLUtil::singleton($config->accounts_db_url);
+                $query = "SELECT 1 FROM account_request WHERE email = ".$mysql->escape_string($this->email);
+                $result = $mysql->query($query);
+                $row = mysql_fetch_row($result);
+                if ($row != false) { 
+                    $error[] = 'email';
+                    $error[] = 'existing_email';
+                }
             }
         }
 

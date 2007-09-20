@@ -17,10 +17,10 @@
    <xsl:apply-templates select="error"/>
    <script language="javascript"> 
   	function ongnomesvnclick (node) { 
-   		document.getElementById("gnomemodule_id").disabled = !node.checked;
+   		document.getElementById("gnomemodule").disabled = !node.checked;
    	}
    	function ontranslationsvnclick (node) {
-   		document.getElementById("translationmodule_id").disabled = !node.checked;
+   		document.getElementById("translationmodule").disabled = !node.checked;
    	}
    </script>
    <xsl:if test="boolean(alreadyadded)">
@@ -35,8 +35,7 @@
 	  and visit the link posted to you so as to verify your e-mail address.
 	  Note that, no further action will be handled before your validating
 	  your e-mail address. Once you validate your e-mail address,
-	  responsible maintainer for the abilities you've requested will
-	  process your application. </p>
+	  responsible maintainer will process your application.</p>
 	<p>For any further questions, please contact <a
 	    href="mailto:support@gnome.org">support@gnome.org</a>.</p>
   </xsl:if>
@@ -53,9 +52,9 @@
        User Name
       </th>
       <td>
-       <input type="text" name="uid" value="{uid}" size="40"/>
+       <input type="text" name="uid" value="{uid}" size="15"/>
        <xsl:if test="boolean(formerror[@type='existing_uid'])">
-        * This username already exists.
+        * This username is taken.
        </xsl:if>
       </td>
      </tr>
@@ -79,6 +78,9 @@
       </th>
       <td>
        <input type="text" name="email" value="{email}" size="40"/>
+       <xsl:if test="boolean(formerror[@type='existing_email'])">
+        * This email address has already been used.
+       </xsl:if>
       </td>
      </tr>
      <tr>
@@ -86,10 +88,10 @@
        <xsl:if test="boolean(formerror[@type='comment'])">
         <xsl:attribute name="class">formerror</xsl:attribute>
        </xsl:if>
-       Why do you request this account
+       Comments
       </th>
       <td>
-       <textarea name="comment" rows="5" cols="40"><xsl:value-of select="comment"/>
+       <textarea name="comment" rows="5" cols="70">
        	<xsl:value-of select="comment" />
        </textarea>
       </td>
@@ -105,27 +107,27 @@
        <div>Upload public key file (e.g. id_dsa.pub):</div>
        <input type="file" name="keyfile"/>
        <div>Or, cut'n'paste here:</div>
-       <textarea name="newkeys" rows="5"><xsl:apply-templates select="newkeys"/><xsl:value-of select="authorizationkeys" /></textarea>
+       <textarea name="newkeys" rows="3" cols="70"><xsl:apply-templates select="newkeys"/><xsl:value-of select="authorizationkeys" /></textarea>
       </td>
      </tr>
      <tr>
       <th>
-      <xsl:if test="boolean(formerror[@type='abilities'])">
+       <xsl:if test="boolean(formerror[@type='abilities'])">
         <xsl:attribute name="class">formerror</xsl:attribute>
        </xsl:if>
-		Abilities needed
+       Abilities
       </th>
       <td>
        <div>
-        <input onclick="javascript: ongnomesvnclick(this);" type="checkbox" name="gnomesvn" id="gnomesvn_id">
+        <input onclick="javascript: ongnomesvnclick(this);" type="checkbox" name="gnomesvn" id="gnomesvn">
          <xsl:if test="boolean(group[@cn='gnomemodule'])">
           <xsl:attribute name="checked"/>
          </xsl:if>
         </input>
-        <label for="gnomesvn">I need subversion access as coder.</label>
+        <label for="gnomesvn">Developer access to Subversion</label>
        </div>
-       <div><label for="gnomemodule">Work on which module do you need svn account for:</label>
-       	 	<select name="gnomemodule" id="gnomemodule_id">
+       <div>&#160;&#160;&#160;&#160;&#160;&#160;<label for="gnomemodule">GNOME module: </label>
+       	 	<select name="gnomemodule" id="gnomemodule">
        	 	<xsl:if test="boolean(disabled[@input='gnome'])">
        	 		<xsl:attribute name="disabled" />
        	 	</xsl:if>
@@ -144,15 +146,15 @@
       </div>
       <xml:if test="boolean(translation)">
       <div>
-       <input onclick="javascript: ontranslationsvnclick(this);" type="checkbox" name="translationsvn" id="translationsvn_id">
+       <input onclick="javascript: ontranslationsvnclick(this);" type="checkbox" name="translationsvn" id="translationsvn">
          <xsl:if test="boolean(group[@cn='translation'])">
           <xsl:attribute name="checked"/>
          </xsl:if>
         </input>
-        <label for="translationsvn">I need subversion access as translator.</label>
+	<label for="translationsvn">Translator access to Subversion</label><br />
        </div>
-       <div><label for="translation">Which language team are you in:</label>
-       	 	<select name="translation" id="translationmodule_id">
+       <div>&#160;&#160;&#160;&#160;&#160;&#160;<label for="translation">Translation Team: </label>
+       	 	<select name="translation" id="translationmodule">
        	 	<xsl:if test="boolean(disabled[@input='translation'])">
        	 		<xsl:attribute name="disabled" />
        	 	</xsl:if>
@@ -170,53 +172,55 @@
       	</select>
     </div></xml:if>
        <div>
-       <input type="checkbox" name="ftp_access">
+       <input type="checkbox" name="ftp_access" id="ftp_access">
          <xsl:if test="boolean(group[@cn='ftp_access'])">
           <xsl:attribute name="checked"/>
          </xsl:if>
         </input>
-        <label for="ftp_access">I need to upload stuff to FTP.</label> 
+        <label for="ftp_access">Install new modules on ftp.gnome.org</label> 
        </div>
        <div>
-        <input type="checkbox" name="web_access">
-         <xsl:if test="boolean(group[@cn='web_access'])">
-          <xsl:attribute name="checked"/>
-         </xsl:if>
-        </input>
-        <label for="gnomeweb">I need to manage web content.</label>
-       </div>
-       <div>
-        <input type="checkbox" name="bugzilla_access">
-         <xsl:if test="boolean(group[@cn='bugzilla_access'])">
-          <xsl:attribute name="checked"/>
-         </xsl:if>
-        </input>
-        <label for="bugzilla">I need to manage bugzilla.</label>
-       </div>
-       <div>
-        <input type="checkbox" name="membctte">
-         <xsl:if test="boolean(group[@cn='membctte'])">
-          <xsl:attribute name="checked"/>
-         </xsl:if>
-        </input>
-        <label for="membctte">I need to manage GNOME Foundation membership database.</label>
-       </div>
-       <div>
-        <input type="checkbox" name="art_access">
-         <xsl:if test="boolean(group[@cn='art_access'])">
-          <xsl:attribute name="checked"/>
-         </xsl:if>
-        </input>
-        <label for="artweb">I need to manage web graphics content.</label>
-       </div>
-       <div>
-        <input type="checkbox" name="mail_alias">
+        <input type="checkbox" name="mail_alias" id="mail_alias">
          <xsl:if test="boolean(group[@cn='mail_alias'])">
           <xsl:attribute name="checked"/>
          </xsl:if>
         </input>
-        <label for="gnomealias">I need a 'gnome.org' mail alias. (Only for Foundation Members)</label>
+        <label for="mail_alias">'gnome.org' email alias. (Only for Foundation Members)</label>
        </div>
+       <p>Special abilities:
+       <div>
+        <input type="checkbox" name="web_access" id="web_access">
+         <xsl:if test="boolean(group[@cn='web_access'])">
+          <xsl:attribute name="checked"/>
+         </xsl:if>
+        </input>
+        <label for="web_access">Shell access for GNOME websites</label>
+       </div>
+       <div>
+        <input type="checkbox" name="bugzilla_access" id="bugzilla_access">
+         <xsl:if test="boolean(group[@cn='bugzilla_access'])">
+          <xsl:attribute name="checked"/>
+         </xsl:if>
+        </input>
+        <label for="bugzilla_access">Shell access for GNOME Bugzilla</label>
+       </div>
+       <div>
+        <input type="checkbox" name="art_access" id="art_access">
+         <xsl:if test="boolean(group[@cn='art_access'])">
+          <xsl:attribute name="checked"/>
+         </xsl:if>
+        </input>
+        <label for="art_access">Shell access for GNOME art website</label>
+       </div>
+       <div>
+        <input type="checkbox" name="membctte" id="membctte">
+         <xsl:if test="boolean(group[@cn='membctte'])">
+          <xsl:attribute name="checked"/>
+         </xsl:if>
+        </input>
+        <label for="membctte">GNOME Foundation membership committee</label>
+       </div>
+       </p>
       </td>
      </tr>
     </table>

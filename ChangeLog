@@ -1,5 +1,17 @@
 2007-09-20  Olav Vitters  <olav@bkor.dhs.org>
 
+	* lib/account.php (validate): Check if email address hasn't been used
+	by an existing account in LDAP.
+	* lib/user.php (fetchuser): Allow it to fetch a user by any LDAP
+	attribute, defaulting to uid. This will take the first user returned,
+	even if there are multiple.
+	
+	* www/new_account.xsl: Order the abilities to have the most commonly
+	requested abilities at the top, and another section for infrequently
+	requested abilities. Also change simplify the language a bit.
+
+2007-09-20  Olav Vitters  <olav@bkor.dhs.org>
+
 	* lib/account.php (validate): Add more checks to check if the given
 	account is really valid. Meaning: don't allow a username/email address
 	if there already is an account request for it. 

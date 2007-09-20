@@ -148,7 +148,9 @@ class User {
 		return true;
 	}
 
-	function fetchuser($uid) {
+        // by default this searches for 'uid', but can handle other things as well
+        // NOTE: will always pick the first user returned!
+	function fetchuser($search_for, $attribute = "uid") {
 		global $config;
 		
 		// Connect to LDAP server
@@ -159,7 +161,7 @@ class User {
 		}
 
 		// Gather user attributes
-		$ldapcriteria = "(&(objectClass=posixAccount)(uid=".LDAPUtil::ldap_quote($uid)."))";
+		$ldapcriteria = "(&(objectClass=posixAccount)($attribute=".LDAPUtil::ldap_quote($search_for)."))";
 		$result = ldap_search($ldap, $config->ldap_users_basedn, $ldapcriteria);
 		if(!$result) {
 			$pe = PEAR::raiseError("LDAP search failed: ".ldap_error($ldap));
@@ -169,7 +171,7 @@ class User {
 		$user = User::absorb($entries[0]);
 		
 		// Gather groups
-		$ldapcriteria = "(&(objectClass=posixGroup)(memberUid=".LDAPUtil::ldap_quote($uid)."))";
+		$ldapcriteria = "(&(objectClass=posixGroup)(memberUid=".LDAPUtil::ldap_quote($this->uid)."))";
 		$result = ldap_search($ldap, $config->ldap_groups_basedn, $ldapcriteria, array('cn'));
 		if(!$result) {
 			$pe = PEAR::raiseError("LDAP search failed: ".ldap_error($ldap));
