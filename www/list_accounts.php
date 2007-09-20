@@ -121,6 +121,8 @@ class ListAccounts {
 			    $users[$ability] = User::fetchuser($entry->$ability);
 			} 
 			$usernode = $listnode->appendChild($dom->createElement("account"));
+			$usernode->appendChild($node = $dom->createElement("db_id"));
+			$node->appendChild($dom->createTextNode($entry->db_id));
 			$usernode->appendChild($node = $dom->createElement("uid"));
 			$node->appendChild($dom->createTextNode($entry->uid));
 			$usernode->appendChild($node = $dom->createElement("name"));

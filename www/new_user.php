@@ -3,6 +3,7 @@
 
 require_once("../lib/page.php");
 require_once("../lib/user.php");
+require_once("../lib/account.php");
 
 define('STYLESHEET', 'new_user.xsl');
 define('SESSIONID', 'new_user');
@@ -25,18 +26,28 @@ class NewUser {
 
     // Details for the user being created
     var $user;
-    
+
+    // Details of the account request
+    var $account;
+
     // Remember existing SSH keys between requests
     var $savedKeys;
     
     // Mail template to use
     var $mailbody;
 
-    function NewUser() {
+    function NewUser($accountid = null) {
         $this->user = new User();
         $this->savedKeys = array();
         $this->sendemail = true;
         $this->mailbody = "";
+
+        if (is_null($accountid)) {
+            $this->account = null; # optional
+        } else {
+            $this->account = new Account($accountid);
+            $this->account->fill_user($this->user);
+        }
     }
 
     function init_mailbody() {
@@ -49,7 +60,8 @@ class NewUser {
         // Check session for previous instance
         $container = $_SESSION[SESSIONID];
         if(!is_a($container, "NewUser") || isset($_REQUEST['reload'])) {
-            $container = new NewUser();
+            $container = isset($_REQUEST['account']) ?
+                         new NewUser($_REQUEST['account']) : new NewUser();
             $_SESSION[SESSIONID] = $container;
         }
 
@@ -118,7 +130,13 @@ class NewUser {
             $node->appendChild($dom->createTextNode($result->getMessage()));
             return;
         }
-        
+
+        // If this user was created upon an account request, 
+        // update the status of that account
+        if (!is_null($this->account)) {
+            $this->account->update_verdict('approved');
+        }
+
         // Report success
         if($result) {
             $node = $formnode->appendChild($dom->createElement("added"));

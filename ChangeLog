@@ -1,5 +1,28 @@
 2007-09-20  Olav Vitters  <olav@bkor.dhs.org>
 
+	Initial user creation from account request.
+
+	* lib/account.php: (update_verdict): New function, updates the verdict
+	column in the database. It will be 'approved' upon account creation
+	and rejected otherwise. The latter still needs to be implemented.
+	(fill_user): New function, fill in a user object instance from the
+	fields in the account.
+	* templates/requestor_status_change.xsl: Prevent unintended spaces in
+	the email.
+	* www/list_accounts.php: Add db_id to the XML, so we can link to
+	new_user.php and mention the account id.
+	* www/list_accounts.xsl: Link to new_user.php for the actual account
+	creation.
+	* www/new_user.php: Load an account instance when account parameter is
+	used. Also check for this instance in adduser and update the account
+	to approved using update_verdict.
+	* www/new_user.xsl: Show when the SSH key has an error.
+
+	* lib/util.php (is_valid_ssh_pub_key): DSA keys actually have ssh-dss
+	as format specifier, not ssh-dsa.
+
+2007-09-20  Olav Vitters  <olav@bkor.dhs.org>
+
 	* lib/user.php (validate): Check if the given public SSH keys are valid.
 	* lib/util.php (is_valid_ssh_pub_key): New function. Try to check if
 	the public SSH key is valid. Even checks public key length for RSA.

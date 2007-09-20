@@ -503,6 +503,16 @@ class Account {
         }
         
     }
+
+    function update_verdict($verdict) {
+        global $config;
+
+        // TODO: Inform the user in case of a rejection verdict
+
+        $mysql = MySQLUtil::singleton($config->accounts_db_url);
+        $query = "UPDATE account_request SET verdict = " . $mysql->escape_string($verdict) . " WHERE maintainer_approved = 'approved' AND id = ".$this->db_id;
+        $result = $mysql->query($query);
+    }
     
     function get_pending_actions ($type = 'gnomemodule', $arg = '') { 
         global $config;
@@ -535,7 +545,7 @@ class Account {
                 $query = "SELECT id FROM account_request WHERE mail_approved = 'approved' AND mail_alias = 'Y'";
                 break;
             case "accountsteam":
-                $query = "SELECT id FROM account_request WHERE maintainer_approved = 'approved'";
+                $query = "SELECT id FROM account_request WHERE maintainer_approved = 'approved' AND verdict = 'pending'";
                 break;
         }
         $result = $mysql->query($query);
@@ -547,7 +557,7 @@ class Account {
     }
     
     function _create_email($mailnodename, $template, $extra_mailnodes = NULL) {
-                global $config;
+        global $config;
 
         // Prepare mail body template variables
         $maildom = new DOMDocument('1.0','UTF-8');
@@ -575,33 +585,52 @@ class Account {
         return $body;
     }
 
-        function _send_email($mailbody, $to, $subject) {
-            global $config;
+    function _send_email($mailbody, $to, $subject) {
+        global $config;
 
-            $mime = new Mail_Mime();
-            $headers = array(
-                    "Reply-To" => "Mango <accounts@gnome.org>",
-                    "From" => "Mango <accounts@gnome.org>",
-                    "To" => $to,
-                    "Subject" => $subject,
-            );
-            $params = array(
-                    'head_charset' => 'UTF-8',
-                    'head_encoding' => 'quoted-printable',
-                    'text_charset' => 'UTF-8',
-            );
-            $mime->setTXTBody($mailbody);
-            $content = $mime->get($params);
-            $headers = $mime->headers($headers);
-            $mail = &Mail::factory('smtp');
+        $mime = new Mail_Mime();
+        $headers = array(
+                "Reply-To" => "Mango <accounts@gnome.org>",
+                "From" => "Mango <accounts@gnome.org>",
+                "To" => $to,
+                "Subject" => $subject,
+        );
+        $params = array(
+                'head_charset' => 'UTF-8',
+                'head_encoding' => 'quoted-printable',
+                'text_charset' => 'UTF-8',
+        );
+        $mime->setTXTBody($mailbody);
+        $content = $mime->get($params);
+        $headers = $mime->headers($headers);
+        $mail = &Mail::factory('smtp');
 
-            // DEBUG: Send to support address for debugging purposes
-            if ($config->debug == 'enabled')
-                $to = $config->support_email;
+        // DEBUG: Send to support address for debugging purposes
+        if ($config->debug == 'enabled')
+            $to = $config->support_email;
 
-            $error = $mail->send($to, $headers, $content);
-            return $error;
-        }
+        $error = $mail->send($to, $headers, $content);
+        return $error;
+    }
 
+    function fill_user($user) {
+        $user->uid = $this->uid;
+        $user->cn = $this->cn;
+        $user->mail = $this->email;
+        $user->authorizedKeys = $this->authorizationkeys;
+
+        # TODO: Should set description to a small log (mention who approved the 
+        # various requests)
+
+        if (in_array("svn_access", $this->abilities)) {$user->groups[] = 'gnomecvs';}
+        if (in_array("web_access", $this->abilities)) {$user->groups[] = 'gnomeweb';}
+        if (in_array("bugzilla_access", $this->abilities)) {$user->groups[] = 'bugzilla';}
+        if (in_array("art_access", $this->abilities)) {$user->groups[] = 'artweb';}
+        if (in_array("membctte", $this->abilities)) {$user->groups[] = 'membctte';}
+        if (in_array("mail_alias", $this->abilities)) {$user->groups[] = 'mailusers';}
+        $users->groups = array_unique($user->groups);
+
+        #if ($this->svn_access == "N" && $this->ftp_access  == "N" && $this->web_access  == "N" && $this->bugzilla_access  == "N" && $this->membctte  == "N" && $this->art_access  == "N" && $this->mail_alias == "N") {
+    }
 }
 ?>

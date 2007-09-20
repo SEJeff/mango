@@ -47,7 +47,7 @@
         <xsl:apply-templates select="createdon"/>
        </td>
        <td valign="top">
-        	<input type="submit" value="Add" /><input type="submit" value="Reject" />
+	 <a class="button" href="new_user.php?reload=true&amp;account={db_id}">New user</a><input type="submit" value="Reject" />
        </td>
       </tr>
      </xsl:for-each>

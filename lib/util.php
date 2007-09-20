@@ -8,7 +8,7 @@ function is_valid_ssh_pub_key($key) {
     list($format, $data, $comment) = explode(" ", $key, 3);
 
     # Format should be DSA or RSA
-    if ($format != "ssh-dsa" && $format != "ssh-rsa")
+    if ($format != "ssh-dss" && $format != "ssh-rsa")
         return false;
 
     # Data should be a base64 encoded string
