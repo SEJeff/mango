@@ -134,7 +134,7 @@ class NewUser {
         global $AFFECTEDGROUPS;
 
         // Save any keys from the last form     
-        $this->savedKeys = $user->authorizedKeys;
+        $this->savedKeys = $this->user->authorizedKeys;
         
         // Read details from form
         $this->user->uid = $_POST['uid'];
