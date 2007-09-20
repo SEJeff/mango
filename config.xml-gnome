@@ -17,5 +17,4 @@
   <token_salt>nottelling</token_salt>
   <support_email>rossg@gnome.org</support_email>
   <session_path>/var/lib/mango/sessions</session_path>
-  <debug>disabled</debug>
 </config>

@@ -62,8 +62,6 @@ class SiteConfig {
 	// Session save path
 	var $session_path;
 
-	// Debug
-	var $debug;
 	/*
 	 * Constructor. Modify configuration stuff here.
 	 */
@@ -174,13 +172,7 @@ class SiteConfig {
 		// Session save path
 		if($node->nodeType == XML_ELEMENT_NODE && $node->tagName == "session_path")
 			$this->session_path = $children->item(0)->textContent;
-
-		// Debug status
-		if($node->nodeType == XML_ELEMENT_NODE && $node->tagName == "debug")
-			$this->debug = $children->item(0)->textContent;
-
 	}
-
 }
 
 // Set global config variable

@@ -606,7 +606,7 @@ class Account {
         $mail = &Mail::factory('smtp');
 
         // DEBUG: Send to support address for debugging purposes
-        if ($config->debug == 'enabled')
+        if ($config->mode != 'live')
             $to = $config->support_email;
 
         $error = $mail->send($to, $headers, $content);

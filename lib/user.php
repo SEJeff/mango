@@ -145,7 +145,6 @@ class User {
 		}
 		
 		// Tidy up		
-
 		return true;
 	}
 
@@ -324,6 +323,59 @@ class User {
 
 		return $changes;
 	}
+
+        function inform_user(&$changes) {
+                global $config;
+
+                if (count($changes) == 0) return false;
+
+                // Prepare mail body template variables
+                $maildom = new DOMDocument('1.0','UTF-8');
+                $mailnode = $maildom->appendChild($maildom->createElement('user_instructions'));
+                $usernode = $mailnode->appendChild($maildom->createElement("user"));
+                $this->add_to_node($maildom, $usernode);
+
+                // Report successes
+                foreach($changes as $change) {
+                        $node = $mailnode->appendChild($maildom->createElement("change"));
+                        $node->setAttribute("id", $change);
+                }
+
+                // Process the mail body template
+                $stylesheet = new DOMDocument('1.0','UTF-8');
+                $stylesheet->loadXML(file_get_contents("../templates/user_instructions.xsl"));
+                $xsltprocessor = new XSLTProcessor();
+                $xsltprocessor->importStylesheet($stylesheet);
+                $body = $xsltprocessor->transformToXML($maildom);
+                
+                if (empty($body))
+                    return;
+
+                $subject = in_array('newuser', $changes) ?
+                           'Your new GNOME LDAP account' :
+                           'Changes to your GNOME LDAP account';
+
+                $mime = new Mail_Mime();
+                $mime->setTXTBody($body);
+                $headers = array(
+                        "Reply-To" => "Mango <accounts@gnome.org>",
+                        "From" => "Mango <accounts@gnome.org>",
+                        "To" => $this->mail,
+                        "Subject" => $subject,
+                );
+                $params = array(
+                        'head_charset' => 'UTF-8',
+                        'head_encoding' => 'quoted-printable',
+                        'text_charset' => 'UTF-8',
+                );
+                $content = $mime->get($params);
+                $headers = $mime->headers($headers);
+                $mail = &Mail::factory('smtp');
+                $recipient = ($config->mode == 'live') ? $this->email : $config->support_email;
+                $error = $mail->send($recipient, $headers, $content);
+
+                return $error;
+        }
 
 	function _next_uidnumber(&$ldap) {
 		global $config;

@@ -260,15 +260,6 @@
         <li>
          <input type="submit" name="sendauthtoken" value="Send authentication token &gt; &gt;"/>
         </li>
-        <li>
-         <input type="submit" name="sendwelcome" value="Send welcome (SVN account) &gt; &gt;"/>
-        </li>
-        <li>
-         <input type="submit" name="sendwelcomeshell" value="Send welcome (shell account) &gt; &gt;"/>
-        </li>
-        <li>
-         <input type="submit" name="sendwelcomealias" value="Send welcome (email alias) &gt; &gt;"/>
-        </li>
        </ul>
       </td>
      </tr>

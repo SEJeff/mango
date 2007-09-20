@@ -137,6 +137,10 @@ class NewUser {
             $this->account->update_verdict('approved');
         }
 
+        // Inform the user (email)
+        $changes = array('newuser');
+        $this->user->inform_user($changes);
+
         // Report success
         if($result) {
             $node = $formnode->appendChild($dom->createElement("added"));

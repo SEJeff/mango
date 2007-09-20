@@ -1,5 +1,29 @@
 2007-09-20  Olav Vitters  <olav@bkor.dhs.org>
 
+	New LDAP accounts and certain changes to existing accounts will
+	automatically receive an email.
+
+	* config.xml-gnome:
+	* lib/account.php: Change debug config setting to mode setting.
+	* lib/config.php: Get rid of debug. Mode has the same functionality.
+	* lib/user.php (inform_user): New function to email the user of
+	certain changes to the LDAP account (also for new account).
+	* templates/user_instructions.xsl: Create emails for certain changes.
+	Currently for new users and joining of ftpadmin/mailusers/gnomecvs.
+	* templates/welcome_mail_alias.xsl: Email alias text has been merged
+	with user_instructions.xsl. It is not possible to mail this manually
+	anymore.
+	* templates/welcome_mail_shell.xsl: Shell text has been merged with
+	user_instructions.xsl. It is not possible to mail this manually
+	anymore.
+	* www/new_user.php: Call inform_user to send the welcome email.
+	* www/update_user.php: Call inform_user to automatically inform the
+	user. Get rid of the code that handles the obsolete instructions.
+	* www/update_user.xsl: Get rid of the code that handles the obsolete
+	instructions.
+
+2007-09-20  Olav Vitters  <olav@bkor.dhs.org>
+
 	Initial user creation from account request.
 
 	* lib/account.php: (update_verdict): New function, updates the verdict

@@ -141,12 +141,15 @@ class UpdateUser {
 
 		// Individual tab form handlers
 		$result = null;
+                $inform_changes = false;
 		if($this->tab == "general")
 			$result = $this->process_general_tab($dom, $formnode);
 		elseif($this->tab == "sshkeys")
 			$result = $this->process_sshkeys_tab($dom, $formnode);
-		elseif($this->tab == "groups")
-			$result = $this->process_groups_tab($dom, $formnode);
+		elseif($this->tab == "groups") {
+                        $result = $this->process_groups_tab($dom, $formnode);
+                        $inform_changes = true;
+                }
 		elseif($this->tab == "actions")
 			$result = $this->process_actions_tab($dom, $formnode);
 
@@ -159,6 +162,7 @@ class UpdateUser {
 
 		// Report successes
 		if(is_array($result)) {
+                        if ($inform_changes) $this->user->inform_user($result);
 			foreach($result as $change) {
 				$node = $formnode->appendChild($dom->createElement("change"));
 				$node->setAttribute("id", $change);
@@ -332,33 +336,6 @@ class UpdateUser {
 
 			return $this->_create_email_dom($dom, $formnode, 'authtokenmail', 'authtoken_mail',
 							$to, $cc, $subject, array('authtoken' => $authtoken));
-		}
-
-		// Check for 'auth token' action trigger
-		if(isset($_POST['sendwelcome'])) {
-			// Send a copy to the RT ticket
-			$subject .= "Your GNOME account is ready";
-
-			return $this->_create_email_dom($dom, $formnode, 'welcomemail', 'welcome_mail',
-							$to, $cc, $subject);
-		}
-
-		// Check for 'auth token' action trigger
-		if(isset($_POST['sendwelcomeshell'])) {
-			// Send a copy to the RT ticket
-			$subject .= "Your GNOME account is ready";
-
-			return $this->_create_email_dom($dom, $formnode, 'shellmail', 'welcome_mail_shell',
-							$to, $cc, $subject);
-		}
-
-		// Check for 'auth token' action trigger
-		if(isset($_POST['sendwelcomealias'])) {
-			// Send a copy to the RT ticket
-			$subject .= "Your GNOME email alias is ready";
-
-			return $this->_create_email_dom($dom, $formnode, 'aliasmail', 'welcome_mail_alias',
-							$to, $cc, $subject);
 		}
 	}
 
