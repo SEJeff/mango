@@ -8,6 +8,7 @@ function check_permissions(&$dom, &$pagenode, $group) {
 	$user = $_SESSION['user'];
 	if(!$user || !is_a($user, "User")) {
 		$pagenode->appendChild($dom->createElement("notloggedin"));
+                $pagenode->setAttribute("title", "Login required");
 		return false;
 	}
 	$groups = $_SESSION['groups'];
@@ -17,6 +18,7 @@ function check_permissions(&$dom, &$pagenode, $group) {
 	
 	$node = $pagenode->appendChild($dom->createElement("notauthorised"));
 	$node->setAttribute("group", $group);
+        $pagenode->setAttribute("title", "Not authorised");
 	return false;
 }
 

@@ -1,3 +1,9 @@
+2007-09-21  Olav Vitters  <olav@bkor.dhs.org>
+
+	* www/common.php (check_permissions): Prevent the page title from
+	being shown when the user doesn't have enough permissions or is not
+	logged in.
+
 2007-09-20  Olav Vitters  <olav@bkor.dhs.org>
 
 	New LDAP accounts and certain changes to existing accounts will
