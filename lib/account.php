@@ -203,7 +203,7 @@ class Account {
         if (empty ($this->email)) { 
             $error[] = 'email';
         } elseif (!preg_match("/^[\w\.\+\-=]+@[\w\.\-]+\.[\w\-]+$/", $this->email)) {
-            $errror[] = 'email';
+            $error[] = 'email';
         } else {
             // Check for existing LDAP account with this email address
             $user = User::fetchuser($this->email, 'mail');
