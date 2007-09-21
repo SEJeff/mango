@@ -50,10 +50,6 @@ class NewUser {
         }
     }
 
-    function init_mailbody() {
-        
-    }
-    
     function main() {
         global $config;
 
@@ -68,10 +64,6 @@ class NewUser {
         // Set up a page for tracking the response for this request
         $page = new Page(STYLESHEET);
 
-        // Initialise the mail body
-        if($container->mailbody == "")
-            $container->init_mailbody();
-        
         // Service the request, tracking results and output on the given DOM
         $container->service($page->result);
         
