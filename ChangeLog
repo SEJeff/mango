@@ -1,5 +1,14 @@
 2007-09-21  Olav Vitters  <olav@bkor.dhs.org>
 
+	* lib/account.php: Validate SSH keys
+	* www/new_account.php: Clear the stored SSH keys every time the form
+	is read. Otherwise it isn't possible to not add certain SSH keys.
+	Although this should at one point just use checkboxes.
+	* www/new_account.xsl: Mention that requesters should read
+	lgo/NewAccounts first.
+
+2007-09-21  Olav Vitters  <olav@bkor.dhs.org>
+
 	* lib/account.php: Load account data when the email address has been
 	verified. This allows the maintainer approval email to contain
 	information regarding the account request.

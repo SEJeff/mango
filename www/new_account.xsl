@@ -40,6 +40,7 @@
 	    href="mailto:support@gnome.org">support@gnome.org</a>.</p>
   </xsl:if>
   <xsl:if test="not(boolean(alreadyadded)) and not(boolean(account_added))">
+    <p>Note: Please read the following page first: <a href="http://live.gnome.org/NewAccounts">http://live.gnome.org/NewAccounts</a>.</p>
    <form enctype="multipart/form-data" method="POST" action="{$script}" name="form">
     <input type="hidden" name="mango_token" value="{/page/@token}"/>
     <table class="form">

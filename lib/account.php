@@ -5,6 +5,7 @@ require_once("mysql.php");
 require_once("Mail.php");
 require_once("Mail/mime.php");
 require_once("module.php");
+require_once("util.php");
 
 class Account { 
     // User name 
@@ -228,6 +229,13 @@ class Account {
         }
         if (count ($this->authorizationkeys) == 0) { 
             $error[] = 'keys';
+        } else {
+            foreach($this->authorizationkeys as $authorizedKey) {
+                if (!is_valid_ssh_pub_key($authorizedKey)) {
+                    $error[] = 'keys';
+                    break;
+                }
+            }
         }
         if ($this->svn_access == "N" && $this->ftp_access  == "N" && $this->web_access  == "N" && $this->bugzilla_access  == "N" && $this->membctte  == "N" && $this->art_access  == "N" && $this->mail_alias == "N") {
             $error[] = 'abilities';

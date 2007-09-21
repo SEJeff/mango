@@ -126,7 +126,9 @@ class NewAccount {
 		$this->account->absorb_input ('membctte');
 		$this->account->absorb_input ('art_access');
 		$this->account->absorb_input ('mail_alias');
-			
+		
+                # TODO: Should show checkboxes instead of dumping this into a textbox
+                $this->account->authorizationkeys = array();
 		$keyfile = '';
 		if(is_uploaded_file($_FILES['keyfile']['tmp_name'])) {
 			$keyfile = file_get_contents($_FILES['keyfile']['tmp_name']);
