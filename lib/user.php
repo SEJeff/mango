@@ -38,7 +38,6 @@ class User {
 		if(count($entry['objectclass']) > 0) {
 			for($i = 0; $i < $entry['objectclass']['count']; $i++) {
 				$objectclass = $entry['objectclass'][$i];
-				error_log("ObjectClass: ".$objectclass);
 				if($objectclass == "pubkeyAuthenticationUser")
 					$user->pubkeyauthenticationuser = true;
 			}
@@ -171,7 +170,7 @@ class User {
 		$user = User::absorb($entries[0]);
 		
 		// Gather groups
-		$ldapcriteria = "(&(objectClass=posixGroup)(memberUid=".LDAPUtil::ldap_quote($this->uid)."))";
+		$ldapcriteria = "(&(objectClass=posixGroup)(memberUid=".LDAPUtil::ldap_quote($user->uid)."))";
 		$result = ldap_search($ldap, $config->ldap_groups_basedn, $ldapcriteria, array('cn'));
 		if(!$result) {
 			$pe = PEAR::raiseError("LDAP search failed: ".ldap_error($ldap));

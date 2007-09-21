@@ -1,5 +1,11 @@
 2007-09-21  Olav Vitters  <olav@bkor.dhs.org>
 
+	* lib/user.php: Fix regression: Allowing to search by any attribute
+	caused the groups to always appear as empty, due to wrong variable
+	usage.
+
+2007-09-21  Olav Vitters  <olav@bkor.dhs.org>
+
 	* www/common.php (check_permissions): Prevent the page title from
 	being shown when the user doesn't have enough permissions or is not
 	logged in.
