@@ -1,5 +1,23 @@
 2007-09-21  Olav Vitters  <olav@bkor.dhs.org>
 
+	* lib/account.php: Load account data when the email address has been
+	verified. This allows the maintainer approval email to contain
+	information regarding the account request.
+	Additionally, use better subjects for various emails.
+	* lib/user.php: Use better subjects in the emails going to the GNOME
+	account owner.
+	* templates/maintainer_approval.xsl: Warn maintainers that they are
+	responsible for the requester if they approve. Further, add details of
+	requester to the mail.
+	* lib/module.php: Remove debugging code.
+	* lib/util.php: Enhance function to optionally return the fingerprint
+	of the SSH key. This is basically just a MD5 of the base64 data.
+	* www/list_foundationmembers.php: Remove debug code.
+	* www/update_user.php: Show SSH key fingerprint, if available.
+	* www/update_user.xsl: Show SSH key fingerprint, if available.
+
+2007-09-21  Olav Vitters  <olav@bkor.dhs.org>
+
 	* lib/account.php: Fix typo, causing the email address not to be
 	checked properly (oops).
 

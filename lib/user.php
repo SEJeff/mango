@@ -351,8 +351,8 @@ class User {
                     return;
 
                 $subject = in_array('newuser', $changes) ?
-                           'Your new GNOME LDAP account' :
-                           'Changes to your GNOME LDAP account';
+                           'Your new GNOME account' :
+                           'Changes to your GNOME account';
 
                 $mime = new Mail_Mime();
                 $mime->setTXTBody($body);

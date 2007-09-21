@@ -118,7 +118,16 @@
        <xsl:for-each select="savedkeys/key">
         <div>
          <input type="checkbox" name="authorizedKey-{@ref}" value="{.}" checked="true"/>
-         <span> <xsl:value-of select="concat(substring(., 0, 20), '...', substring(., string-length(.) - 40))"/></span>
+	 <span>
+	   <xsl:choose>
+	     <xsl:when test="boolean(@fingerprint)">
+	       <xsl:value-of select="@fingerprint"/>
+	     </xsl:when>
+	     <xsl:otherwise>
+	       <xsl:value-of select="concat(substring(., 0, 20), '...', substring(., string-length(.) - 40))"/>
+	     </xsl:otherwise>
+	   </xsl:choose>
+         </span>
         </div>
        </xsl:for-each>
        <div>Upload additional public keys in a file (e.g. id_dsa.pub):</div>

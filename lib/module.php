@@ -34,7 +34,6 @@ class Module {
 		if(count($entry['objectclass']) > 0) {
 			for($i = 0; $i < $entry['objectclass']['count']; $i++) {
 				$objectclass = $entry['objectclass'][$i];
-				error_log("ObjectClass: ".$objectclass);
 				if($objectclass == "localizationModule") {
 					$module->localizationModule = true;
 					$module->localizationTeam = $entry['localizationteam'][0];

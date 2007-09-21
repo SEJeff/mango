@@ -301,6 +301,7 @@ class Account {
         $row = mysql_fetch_row($result);
         if ($row != false) { 
             $request_id = $row[0];
+            $this->db_id = $request_id;
         } else {
             $query = "SELECT request_id FROM account_token WHERE status = 'approved' AND token = ".$mysql->escape_string ($_REQUEST['token']);
             $result = $mysql->query($query);
@@ -320,135 +321,136 @@ class Account {
         
         
         // everything alright update database
-        if (!PEAR::isError ($return)) { 
-            // Update accounts table
-            $query = "UPDATE account_request SET mail_approved = 'approved' WHERE id = ".$request_id;
-            $result = $mysql->query($query);
-            $query = "UPDATE account_token SET status = 'approved' WHERE id = ".$request_id;
-            $result = $mysql->query($query);
-            // Get queries abilities
-            $query = "SELECT * FROM account_request WHERE id = ".$request_id;
-            $result = $mysql->query($query);
-            // prepare mail headers
-            $subject = "New account request: pending approval";
-            
-            // maintainers who will get the e-mail notification for this account
-            $row = mysql_fetch_array ($result);
-            if (isset ($row['gnomemodule'])) {
-                $ldap_info = array ();
-                $maintainers = Module::get_maintainers($row['gnomemodule'], $ldap_info);
-                for ($i=0; $i < $maintainers['count']; $i++) { 
-                    $ldap_uid = $maintainers[$i]['maintaineruid'][0];
-                    for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
-                        $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'module "'.$row['gnomemodule'].'"'));
-                        $this->_send_email($mailbody, $ldap_info[$ldap_uid][$j]['mail'][0], $subject);
-                        if(PEAR::isError($error))
-                            return $error;
-                    }
+        if (PEAR::isError ($return))
+            return $return;
+
+        $this->bring_account();
+
+        // Update accounts table
+        $query = "UPDATE account_request SET mail_approved = 'approved' WHERE id = ".$request_id;
+        $result = $mysql->query($query);
+        $query = "UPDATE account_token SET status = 'approved' WHERE id = ".$request_id;
+        $result = $mysql->query($query);
+        // Get queries abilities
+        $query = "SELECT * FROM account_request WHERE id = ".$request_id;
+        $result = $mysql->query($query);
+        // prepare mail headers
+        $subject = "New account request: pending approval";
+        
+        // maintainers who will get the e-mail notification for this account
+        $row = mysql_fetch_array ($result);
+        if (isset ($row['gnomemodule'])) {
+            $ldap_info = array ();
+            $maintainers = Module::get_maintainers($row['gnomemodule'], $ldap_info);
+            for ($i=0; $i < $maintainers['count']; $i++) { 
+                $ldap_uid = $maintainers[$i]['maintaineruid'][0];
+                for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
+                    $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'module "'.$row['gnomemodule'].'"'));
+                    $this->_send_email($mailbody, $ldap_info[$ldap_uid][$j]['mail'][0], $subject);
+                    if(PEAR::isError($error))
+                        return $error;
                 }
             }
-            
-            if (isset ($row['translation'])) { 
-                $ldap_mail = array ();
-                $maintainers = Module::get_maintainers($row['translation'], $ldap_mail);
-                for ($i=0; $i < $maintainers['count']; $i++) { 
-                    $ldap_uid = $maintainers[$i]['maintaineruid'][0];
-                    for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
-                        $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => $row['translation']." translations"));
-                        $this->_send_email($mailbody, $ldap_info[$ldap_uid][$j]['mail'][0], $subject);
-                        if(PEAR::isError($error))
-                            return $error;
-                    }
-                }   
-            }
-/*          
-            if (isset ($row['ftp_access'])) { 
-                $ldap_mail = array ();
-                $maintainers = Module::get_maintainers('', $ldap_mail);
-                for ($i=0; $i < $maintainers['count']; $i++) { 
-                    $ldap_uid = $maintainers[$i]['maintaineruid'][0];
-                    for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
-                        $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'ftp administration'));
-                        $error = $this->_send_email($ldap_info[$ldap_uid][$j]['mail'][0], $headers, $content);
-                        if(PEAR::isError($error))
-                            return $error;
-                    }
-                }   
-            }
-            
-            if (isset ($row['web_admin'])) { 
-                $ldap_mail = array ();
-                $maintainers = Module::get_maintainers($row['mango_webadmin'], $ldap_mail);
-                for ($i=0; $i < $maintainers['count']; $i++) { 
-                    $ldap_uid = $maintainers[$i]['maintaineruid'][0];
-                    for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
-                        $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'web administration'));
-                        $error = $this->_send_email($ldap_info[$ldap_uid][$j]['mail'][0], $headers, $content);
-                        if(PEAR::isError($error))
-                            return $error;
-                    }
-                }   
-            }
-*/              
-            if (isset ($row['bugzilla_access'])) { 
-                $ldap_mail = array ();
-                $maintainers = Module::get_maintainers('bugzilla.gnome.org', $ldap_mail);
-                for ($i=0; $i < $maintainers['count']; $i++) { 
-                    $ldap_uid = $maintainers[$i]['maintaineruid'][0];
-                    for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
-                        $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'bugzilla administration'));
-                        $error = $this->_send_email($ldap_info[$ldap_uid][$j]['mail'][0], $headers, $content);
-                        if(PEAR::isError($error))
-                            return $error;
-                    }
-                }   
-            }
-            
-            if (isset ($row['membctte'])) { 
-                $ldap_mail = array ();
-                $maintainers = Module::get_maintainers('membctte', $ldap_mail);
-                for ($i=0; $i < $maintainers['count']; $i++) { 
-                    $ldap_uid = $maintainers[$i]['maintaineruid'][0];
-                    for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
-                        $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'membership committee'));
-                        $error = $this->_send_email($ldap_info[$ldap_uid][$j]['mail'][0], $headers, $content);
-                        if(PEAR::isError($error))
-                            return $error;
-                    }
-                }   
-            }
-            
-            if (isset ($row['art_access'])) { 
-                $ldap_mail = array ();
-                $maintainers = Module::get_maintainers('art-web', $ldap_mail);
-                for ($i=0; $i < $maintainers['count']; $i++) { 
-                    $ldap_uid = $maintainers[$i]['maintaineruid'][0];
-                    for ($j=0; $j < $$ldap_info[$ldap_uid]['count']; $j++) { 
-                        $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'web art administration'));
-                        $error = $this->_send_email($ldap_info[$ldap_uid][$j]['mail'][0], $headers, $content);
-                        if(PEAR::isError($error))
-                            return $error;
-                    }
-                }   
-            }
-/*          
-            if (isset ($row['mail_alias'])) { 
-                $ldap_mail = array ();
-                $maintainers = Module::get_maintainers($row['mango_mailalias'], $ldap_mail);
-                for ($i=0; $i < $maintainers['count']; $i++) { 
-                    $ldap_uid = $maintainers[$i]['maintaineruid'][0];
-                    for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
-                        $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'gnome.org mail aliases'));
-                        $error = $this->_send_email($ldap_info[$ldap_uid][$j]['mail'][0], $headers, $content);
-                        if(PEAR::isError($error))
-                            return $error;
-                    }
-                }               
-            }
-*/      
-        } else {
-            return $result;
         }
+        
+        if (isset ($row['translation'])) { 
+            $ldap_mail = array ();
+            $maintainers = Module::get_maintainers($row['translation'], $ldap_mail);
+            for ($i=0; $i < $maintainers['count']; $i++) { 
+                $ldap_uid = $maintainers[$i]['maintaineruid'][0];
+                for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
+                    $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => $row['translation']." translations"));
+                    $this->_send_email($mailbody, $ldap_info[$ldap_uid][$j]['mail'][0], $subject);
+                    if(PEAR::isError($error))
+                        return $error;
+                }
+            }   
+        }
+/*          
+        if (isset ($row['ftp_access'])) { 
+            $ldap_mail = array ();
+            $maintainers = Module::get_maintainers('', $ldap_mail);
+            for ($i=0; $i < $maintainers['count']; $i++) { 
+                $ldap_uid = $maintainers[$i]['maintaineruid'][0];
+                for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
+                    $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'ftp administration'));
+                    $error = $this->_send_email($ldap_info[$ldap_uid][$j]['mail'][0], $headers, $content);
+                    if(PEAR::isError($error))
+                        return $error;
+                }
+            }   
+        }
+        
+        if (isset ($row['web_admin'])) { 
+            $ldap_mail = array ();
+            $maintainers = Module::get_maintainers($row['mango_webadmin'], $ldap_mail);
+            for ($i=0; $i < $maintainers['count']; $i++) { 
+                $ldap_uid = $maintainers[$i]['maintaineruid'][0];
+                for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
+                    $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'web administration'));
+                    $error = $this->_send_email($ldap_info[$ldap_uid][$j]['mail'][0], $headers, $content);
+                    if(PEAR::isError($error))
+                        return $error;
+                }
+            }   
+        }
+*/              
+        if (isset ($row['bugzilla_access'])) { 
+            $ldap_mail = array ();
+            $maintainers = Module::get_maintainers('bugzilla.gnome.org', $ldap_mail);
+            for ($i=0; $i < $maintainers['count']; $i++) { 
+                $ldap_uid = $maintainers[$i]['maintaineruid'][0];
+                for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
+                    $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'bugzilla administration'));
+                    $error = $this->_send_email($ldap_info[$ldap_uid][$j]['mail'][0], $headers, $content);
+                    if(PEAR::isError($error))
+                        return $error;
+                }
+            }   
+        }
+        
+        if (isset ($row['membctte'])) { 
+            $ldap_mail = array ();
+            $maintainers = Module::get_maintainers('membctte', $ldap_mail);
+            for ($i=0; $i < $maintainers['count']; $i++) { 
+                $ldap_uid = $maintainers[$i]['maintaineruid'][0];
+                for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
+                    $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'membership committee'));
+                    $error = $this->_send_email($ldap_info[$ldap_uid][$j]['mail'][0], $headers, $content);
+                    if(PEAR::isError($error))
+                        return $error;
+                }
+            }   
+        }
+        
+        if (isset ($row['art_access'])) { 
+            $ldap_mail = array ();
+            $maintainers = Module::get_maintainers('art-web', $ldap_mail);
+            for ($i=0; $i < $maintainers['count']; $i++) { 
+                $ldap_uid = $maintainers[$i]['maintaineruid'][0];
+                for ($j=0; $j < $$ldap_info[$ldap_uid]['count']; $j++) { 
+                    $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'web art administration'));
+                    $error = $this->_send_email($ldap_info[$ldap_uid][$j]['mail'][0], $headers, $content);
+                    if(PEAR::isError($error))
+                        return $error;
+                }
+            }   
+        }
+/*          
+        if (isset ($row['mail_alias'])) { 
+            $ldap_mail = array ();
+            $maintainers = Module::get_maintainers($row['mango_mailalias'], $ldap_mail);
+            for ($i=0; $i < $maintainers['count']; $i++) { 
+                $ldap_uid = $maintainers[$i]['maintaineruid'][0];
+                for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
+                    $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'gnome.org mail aliases'));
+                    $error = $this->_send_email($ldap_info[$ldap_uid][$j]['mail'][0], $headers, $content);
+                    if(PEAR::isError($error))
+                        return $error;
+                }
+            }               
+        }
+*/      
     }
     
     function update_ability ($ability, $approved) { 
@@ -483,7 +485,7 @@ class Account {
 
             # Inform account owner
             $mailbody = $this->_create_email('statuschange', 'requestor_status_change', array ('status' => 'approved'));
-            $error = $this->_send_email($mailbody, $this->email, 'Status change');
+            $error = $this->_send_email($mailbody, $this->email, 'New account request: status change');
         }
         
         if (in_array ($this->svn_access, array ('R', 'N')) &&
@@ -499,7 +501,7 @@ class Account {
                 
             # Inform account owner
             $mailbody = $this->_create_email('statuschange', 'requestor_status_change', array ('status' => 'rejected'));
-            $error = $this->_send_email($mailbody, $this->email, 'Status change');
+            $error = $this->_send_email($mailbody, $this->email, 'New account request: rejected');
         }
         
     }
@@ -562,8 +564,8 @@ class Account {
         // Prepare mail body template variables
         $maildom = new DOMDocument('1.0','UTF-8');
         $mailnode = $maildom->appendChild($maildom->createElement($mailnodename));
-                $mailnode->setAttribute("mode", $config->mode);
-                $mailnode->setAttribute("baseurl", $config->base_url);
+        $mailnode->setAttribute("mode", $config->mode);
+        $mailnode->setAttribute("baseurl", $config->base_url);
         $usernode = $mailnode->appendChild($maildom->createElement("account"));
         $this->add_to_node($maildom, $usernode);
         
@@ -573,7 +575,6 @@ class Account {
                 $node->appendChild($maildom->createTextNode($value));
             }
         }
-
 
         // Process the mail body template
         $stylesheet = new DOMDocument('1.0','UTF-8');

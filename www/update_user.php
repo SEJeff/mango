@@ -43,7 +43,7 @@ class UpdateUser {
 	function UpdateUser($uid) {
 		global $AFFECTEDGROUPS;
 
-		$user = User::fetchUser($uid);
+		$user = User::fetchuser($uid);
 		if(!is_a($user, "User")) {
 			$this->error = $user;
 			return;
@@ -113,6 +113,10 @@ class UpdateUser {
 			$savedkeysnode = $formnode->appendChild($dom->createElement("savedkeys"));
 			foreach($this->savedKeys as $ref => $key) {
 				$keynode = $savedkeysnode->appendChild($dom->createElement("key"));
+                                $fingerprint = is_valid_ssh_pub_key($key, False, True);
+                                if ($fingerprint !== false) {
+                                    $keynode->setAttribute("fingerprint", $fingerprint);
+                                }
 				$keynode->setAttribute("ref", $ref);
 				$keynode->appendChild($dom->createTextNode($key));
 			}
@@ -131,7 +135,7 @@ class UpdateUser {
 		// Check ref (in case of multiple open pages)
 		$uidcheck = $_POST['uidcheck'];
 		if($this->user->uid != $uidcheck) {
-			$user = User::fetchUser($uid);
+			$user = User::fetchuser($uid);
 			if(!is_a($user, "User")) {
 				$this->error = $user;
 				return;

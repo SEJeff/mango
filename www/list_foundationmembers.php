@@ -65,7 +65,6 @@ class ListFoundationMembers {
             $criteria .= "DATE_SUB(CURDATE(), INTERVAL 2 YEAR) ".$op." last_renewed_on";
         }
         $query = "SELECT id FROM foundationmembers $criteria ORDER BY lastname, firstname";
-        error_log("$query");
         $result = mysql_query($query, $db);
         if(!$result) {
             $this->error = PEAR::raiseError("Database error: ".mysql_error());
