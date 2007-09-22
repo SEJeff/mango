@@ -33,7 +33,7 @@ class FoundationMember {
 
         // Check if it's two years since last renewed
         $member->need_to_renew = false;
-        if((time() - $member->last_renewed_on) > (2 * 365 * 24 * 60 * 60)) { 
+        if((time() - $member->last_renewed_on) > ((2 * 365 * 24 * 3600) - (30 * 24 * 3600))) {
             $member->need_to_renew = true;
         }
 

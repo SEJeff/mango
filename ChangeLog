@@ -1,5 +1,10 @@
 2007-09-22  Olav Vitters  <olav@bkor.dhs.org>
 
+	* lib/foundationmember.php: Enable renew button as from 1 month before
+	expiration.
+
+2007-09-22  Olav Vitters  <olav@bkor.dhs.org>
+
 	* docs/ldif/ou.ldif: Add required groups to the example LDIF file.
 	Without these groups Mango will not function correctly.
 
