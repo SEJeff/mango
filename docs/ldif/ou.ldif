@@ -26,6 +26,42 @@ loginShell: /bin/bash
 homeDirectory: /home/directory
 userPassword:: e1NNRDV9aGV0QUdsdkZUdGtlSmM1YXpHQnFLRmMvY3NvPQ==
 
+dn: cn=gnomeweb,ou=groups,dc=example,dc=org
+objectClass: posixGroup
+cn: gnomeweb
+gidNumber: 606
+memberUid: bcicek
+
+dn: cn=ftpadmin,ou=groups,dc=example,dc=org
+objectClass: posixGroup
+cn: ftpadmin
+gidNumber: 605
+memberUid: bcicek
+
+dn: cn=gnomecvs,ou=groups,dc=example,dc=org
+objectClass: posixGroup
+cn: gnomecvs
+gidNumber: 604
+memberUid: bcicek
+
+dn: cn=accounts,ou=groups,dc=example,dc=org
+objectClass: posixGroup
+cn: accounts
+gidNumber: 603
+memberUid: bcicek
+
+dn: cn=mailusers,ou=groups,dc=example,dc=org
+objectClass: posixGroup
+cn: mailusers
+gidNumber: 602
+memberUid: bcicek
+
+dn: cn=bugzilla,ou=groups,dc=example,dc=org
+objectClass: posixGroup
+cn: bugzilla
+gidNumber: 601
+memberUid: bcicek
+
 dn: cn=sysadmin,ou=groups,dc=example,dc=org
 objectClass: posixGroup
 cn: sysadmin
