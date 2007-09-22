@@ -1,5 +1,9 @@
 2007-09-22  Olav Vitters  <olav@bkor.dhs.org>
 
+	* lib/account.php: Update column names to match schema.
+
+2007-09-22  Olav Vitters  <olav@bkor.dhs.org>
+
 	* lib/foundationmember.php: Enable renew button as from 1 month before
 	expiration.
 

@@ -374,7 +374,7 @@ class Account {
                 }
             }   
         }
-/*          
+/*
         if (isset ($row['ftp_access'])) { 
             $ldap_mail = array ();
             $maintainers = Module::get_maintainers('', $ldap_mail);
@@ -402,7 +402,7 @@ class Account {
                 }
             }   
         }
-*/              
+*/
         if (isset ($row['bugzilla_access'])) { 
             $ldap_mail = array ();
             $maintainers = Module::get_maintainers('bugzilla.gnome.org', $ldap_mail);
@@ -491,6 +491,11 @@ class Account {
             $query = "UPDATE account_request SET maintainer_approved = 'approved' WHERE id = ".$this->db_id;
             $result = $mysql->query($query);
 
+            
+            # Inform account owner
+            $mailbody = $this->_create_email('informaccounts', 'inform_accounts');
+            $error = $this->_send_email($mailbody, 'accounts@gnome.org', 'New account request: ' . $this->uid);
+
             # Inform account owner
             $mailbody = $this->_create_email('statuschange', 'requestor_status_change', array ('status' => 'approved'));
             $error = $this->_send_email($mailbody, $this->email, 'New account request: status change');
@@ -540,16 +545,16 @@ class Account {
                 $query = "SELECT id FROM account_request WHERE mail_approved = 'approved' AND ftp_access = 'Y'";
                 break;
             case "web_access":
-                $query = "SELECT id FROM account_request WHERE mail_approved = 'approved' AND web_admin = 'Y'";
+                $query = "SELECT id FROM account_request WHERE mail_approved = 'approved' AND web_access = 'Y'";
                 break;
             case "bugzilla_access":
-                $query = "SELECT id FROM account_request WHERE mail_approved = 'approved' AND bugzilla = 'Y'";
+                $query = "SELECT id FROM account_request WHERE mail_approved = 'approved' AND bugzilla_access = 'Y'";
                 break;
             case "membctte":
-                $query = "SELECT id FROM account_request WHERE mail_approved = 'approved' AND membership = 'Y'";
+                $query = "SELECT id FROM account_request WHERE mail_approved = 'approved' AND membctte = 'Y'";
                 break;
             case "art_access":
-                $query = "SELECT id FROM account_request WHERE mail_approved = 'approved' AND web_art = 'Y'";
+                $query = "SELECT id FROM account_request WHERE mail_approved = 'approved' AND art_access = 'Y'";
                 break;
             case "mail_alias":
                 $query = "SELECT id FROM account_request WHERE mail_approved = 'approved' AND mail_alias = 'Y'";
