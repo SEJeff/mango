@@ -1,3 +1,7 @@
+2007-09-23  Olav Vitters  <olav@bkor.dhs.org>
+
+	* lib/user.php: Typo, causing emails not to go to the user.
+
 2007-09-22  Olav Vitters  <olav@bkor.dhs.org>
 
 	* lib/account.php: Update column names to match schema.

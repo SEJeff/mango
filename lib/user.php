@@ -370,7 +370,7 @@ class User {
                 $content = $mime->get($params);
                 $headers = $mime->headers($headers);
                 $mail = &Mail::factory('smtp');
-                $recipient = ($config->mode == 'live') ? $this->email : $config->support_email;
+                $recipient = ($config->mode == 'live') ? $this->mail : $config->support_email;
                 $error = $mail->send($recipient, $headers, $content);
 
                 return $error;
