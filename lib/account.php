@@ -347,7 +347,7 @@ class Account {
         
         // maintainers who will get the e-mail notification for this account
         $row = mysql_fetch_array ($result);
-        if (isset ($row['gnomemodule'])) {
+        if (isset ($row['svn_access']) && $row['translation'] == 'Y') {
             $ldap_info = array ();
             $maintainers = Module::get_maintainers($row['gnomemodule'], $ldap_info);
             for ($i=0; $i < $maintainers['count']; $i++) { 
@@ -361,13 +361,13 @@ class Account {
             }
         }
         
-        if (isset ($row['translation'])) { 
-            $ldap_mail = array ();
-            $maintainers = Module::get_maintainers($row['translation'], $ldap_mail);
+        if (isset ($row['translation']) && $row['translation'] == 'Y') { 
+            $ldap_info = array ();
+            $maintainers = Module::get_maintainers($row['gnomemodule'], $ldap_info);
             for ($i=0; $i < $maintainers['count']; $i++) { 
                 $ldap_uid = $maintainers[$i]['maintaineruid'][0];
                 for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
-                    $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => $row['translation']." translations"));
+                    $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => $row['gnomemodule']." translations"));
                     $error = $this->_send_email($mailbody, $ldap_info[$ldap_uid][$j]['mail'][0], $subject);
                     if(PEAR::isError($error))
                         return $error;
@@ -376,8 +376,8 @@ class Account {
         }
 /*
         if (isset ($row['ftp_access'])) { 
-            $ldap_mail = array ();
-            $maintainers = Module::get_maintainers('', $ldap_mail);
+            $ldap_info = array ();
+            $maintainers = Module::get_maintainers('', $ldap_info);
             for ($i=0; $i < $maintainers['count']; $i++) { 
                 $ldap_uid = $maintainers[$i]['maintaineruid'][0];
                 for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
@@ -390,8 +390,8 @@ class Account {
         }
         
         if (isset ($row['web_admin'])) { 
-            $ldap_mail = array ();
-            $maintainers = Module::get_maintainers($row['mango_webadmin'], $ldap_mail);
+            $ldap_info = array ();
+            $maintainers = Module::get_maintainers($row['mango_webadmin'], $ldap_info);
             for ($i=0; $i < $maintainers['count']; $i++) { 
                 $ldap_uid = $maintainers[$i]['maintaineruid'][0];
                 for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
@@ -403,9 +403,9 @@ class Account {
             }   
         }
 */
-        if (isset ($row['bugzilla_access'])) { 
-            $ldap_mail = array ();
-            $maintainers = Module::get_maintainers('bugzilla.gnome.org', $ldap_mail);
+        if (isset ($row['bugzilla_access']) && $row['bugzilla_access'] == 'Y') { 
+            $ldap_info = array ();
+            $maintainers = Module::get_maintainers('bugzilla.gnome.org', $ldap_info);
             for ($i=0; $i < $maintainers['count']; $i++) { 
                 $ldap_uid = $maintainers[$i]['maintaineruid'][0];
                 for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
@@ -417,9 +417,9 @@ class Account {
             }   
         }
         
-        if (isset ($row['membctte'])) { 
-            $ldap_mail = array ();
-            $maintainers = Module::get_maintainers('membctte', $ldap_mail);
+        if (isset ($row['membctte']) && $row['membctte'] == 'Y') { 
+            $ldap_info = array ();
+            $maintainers = Module::get_maintainers('membctte', $ldap_info);
             for ($i=0; $i < $maintainers['count']; $i++) { 
                 $ldap_uid = $maintainers[$i]['maintaineruid'][0];
                 for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
@@ -431,12 +431,12 @@ class Account {
             }   
         }
         
-        if (isset ($row['art_access'])) { 
-            $ldap_mail = array ();
-            $maintainers = Module::get_maintainers('art-web', $ldap_mail);
+        if (isset ($row['art_access']) && $row['art_access'] == 'Y') { 
+            $ldap_info = array ();
+            $maintainers = Module::get_maintainers('art-web', $ldap_info);
             for ($i=0; $i < $maintainers['count']; $i++) { 
                 $ldap_uid = $maintainers[$i]['maintaineruid'][0];
-                for ($j=0; $j < $$ldap_info[$ldap_uid]['count']; $j++) { 
+                for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
                     $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'web art administration'));
                     $error = $this->_send_email($mailbody, $ldap_info[$ldap_uid][$j]['mail'][0], $subject);
                     if(PEAR::isError($error))
@@ -444,10 +444,10 @@ class Account {
                 }
             }   
         }
-/*          
+/*
         if (isset ($row['mail_alias'])) { 
-            $ldap_mail = array ();
-            $maintainers = Module::get_maintainers($row['mango_mailalias'], $ldap_mail);
+            $ldap_info = array ();
+            $maintainers = Module::get_maintainers($row['mango_mailalias'], $ldap_info);
             for ($i=0; $i < $maintainers['count']; $i++) { 
                 $ldap_uid = $maintainers[$i]['maintaineruid'][0];
                 for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
@@ -458,7 +458,7 @@ class Account {
                 }
             }               
         }
-*/      
+*/
 		return true;
     }
     

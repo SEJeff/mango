@@ -1,5 +1,10 @@
 2007-09-23  Olav Vitters  <olav@bkor.dhs.org>
 
+	* lib/account.php: Fix error in the email code. Every maintainer would
+	always get an email, even if the request wasn't for them.
+
+2007-09-23  Olav Vitters  <olav@bkor.dhs.org>
+
 	* lib/util.php: Older ssh-keygens allowed DSA keys other than 1024
 	bits. Allow everything with 1024 or more bits. Not sure if they'll
 	allow a login though.
