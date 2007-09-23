@@ -1,5 +1,29 @@
 2007-09-23  Olav Vitters  <olav@bkor.dhs.org>
 
+	Fix loads of errors by RATS and an evaluation version of Zend Studio.
+	Unless specified otherwise, the fixes are for unused variables.
+
+	* lib/account.php: Also don't use "" to surround regexps (should be
+	''). Fix how _send_email is called.
+	* lib/config.php:
+	* lib/module.php:
+	* lib/mysql.php:
+	* lib/page.php:
+	* lib/user.php: Also don't use "" to surround regexps (should be '').
+	* www/list_accounts.php:
+	* www/login.php:
+	* www/new_account.php:
+	* www/new_foundationmember.php:
+	* www/new_ftpmirror.php:
+	* www/new_module.php:
+	* www/new_user.php:
+	* www/update_foundationmember.php: Also use correct idcheck variable.
+	* www/update_ftpmirror.php:
+	* www/update_module.php:
+	* www/update_user.php:
+
+2007-09-23  Olav Vitters  <olav@bkor.dhs.org>
+
 	* lib/user.php: Typo, causing emails not to go to the user.
 
 2007-09-22  Olav Vitters  <olav@bkor.dhs.org>

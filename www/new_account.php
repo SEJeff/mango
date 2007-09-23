@@ -23,8 +23,6 @@ class NewAccount {
 
 	
 	function main() {
-		global $config;
-
 		// Check session for previous instance
 		$container = $_SESSION[SESSIONID];
 		if(!is_a($container, "NewAccount") || isset($_REQUEST['reload'])) {

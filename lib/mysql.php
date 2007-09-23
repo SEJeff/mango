@@ -11,11 +11,10 @@ class MySQLUtil {
     // A private constructor; prevents direct creation of object
     private function __construct($db_url)
     {
-         global $config;
         /* Extract the hostname */
         $url_parts = parse_url($db_url);
         $hostname = $url_parts['host'];
-        $scheme = $url_parts['scheme'];
+        # $scheme = $url_parts['scheme']; -- we don't care about the scheme, only support MySQL for now
         $login = $url_parts['user'];
         $passwd = $url_parts['pass'];
         $dbname = substr($url_parts['path'], 1);
@@ -97,8 +96,6 @@ class MySQLUtil {
     }
     
     function query ($query) {
-        global $config;
-        
         $result = mysql_query ($query, $this->handle);
         if (!$result) {
             die ("Unable to run query: ".mysql_error ($this->handle));

@@ -203,7 +203,7 @@ class Account {
         }
         if (empty ($this->email)) { 
             $error[] = 'email';
-        } elseif (!preg_match("/^[\w\.\+\-=]+@[\w\.\-]+\.[\w\-]+$/", $this->email)) {
+        } elseif (!preg_match('/^[\w\.\+\-=]+@[\w\.\-]+\.[\w\-]+$/', $this->email)) {
             $error[] = 'email';
         } else {
             // Check for existing LDAP account with this email address
@@ -354,7 +354,7 @@ class Account {
                 $ldap_uid = $maintainers[$i]['maintaineruid'][0];
                 for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
                     $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'module "'.$row['gnomemodule'].'"'));
-                    $this->_send_email($mailbody, $ldap_info[$ldap_uid][$j]['mail'][0], $subject);
+                    $error = $this->_send_email($mailbody, $ldap_info[$ldap_uid][$j]['mail'][0], $subject);
                     if(PEAR::isError($error))
                         return $error;
                 }
@@ -368,7 +368,7 @@ class Account {
                 $ldap_uid = $maintainers[$i]['maintaineruid'][0];
                 for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
                     $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => $row['translation']." translations"));
-                    $this->_send_email($mailbody, $ldap_info[$ldap_uid][$j]['mail'][0], $subject);
+                    $error = $this->_send_email($mailbody, $ldap_info[$ldap_uid][$j]['mail'][0], $subject);
                     if(PEAR::isError($error))
                         return $error;
                 }
@@ -410,7 +410,7 @@ class Account {
                 $ldap_uid = $maintainers[$i]['maintaineruid'][0];
                 for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
                     $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'bugzilla administration'));
-                    $error = $this->_send_email($ldap_info[$ldap_uid][$j]['mail'][0], $headers, $content);
+                    $error = $this->_send_email($mailbody, $ldap_info[$ldap_uid][$j]['mail'][0], $subject);
                     if(PEAR::isError($error))
                         return $error;
                 }
@@ -424,7 +424,7 @@ class Account {
                 $ldap_uid = $maintainers[$i]['maintaineruid'][0];
                 for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
                     $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'membership committee'));
-                    $error = $this->_send_email($ldap_info[$ldap_uid][$j]['mail'][0], $headers, $content);
+                    $error = $this->_send_email($mailbody, $ldap_info[$ldap_uid][$j]['mail'][0], $subject);
                     if(PEAR::isError($error))
                         return $error;
                 }
@@ -438,7 +438,7 @@ class Account {
                 $ldap_uid = $maintainers[$i]['maintaineruid'][0];
                 for ($j=0; $j < $$ldap_info[$ldap_uid]['count']; $j++) { 
                     $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'web art administration'));
-                    $error = $this->_send_email($ldap_info[$ldap_uid][$j]['mail'][0], $headers, $content);
+                    $error = $this->_send_email($mailbody, $ldap_info[$ldap_uid][$j]['mail'][0], $subject);
                     if(PEAR::isError($error))
                         return $error;
                 }
@@ -452,13 +452,14 @@ class Account {
                 $ldap_uid = $maintainers[$i]['maintaineruid'][0];
                 for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
                     $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'gnome.org mail aliases'));
-                    $error = $this->_send_email($ldap_info[$ldap_uid][$j]['mail'][0], $headers, $content);
+                    $error = $this->_send_email($mailbody, $ldap_info[$ldap_uid][$j]['mail'][0], $subject);
                     if(PEAR::isError($error))
                         return $error;
                 }
             }               
         }
 */      
+		return true;
     }
     
     function update_ability ($ability, $approved) { 
@@ -642,7 +643,7 @@ class Account {
         if (in_array("art_access", $this->abilities)) {$user->groups[] = 'artweb';}
         if (in_array("membctte", $this->abilities)) {$user->groups[] = 'membctte';}
         if (in_array("mail_alias", $this->abilities)) {$user->groups[] = 'mailusers';}
-        $users->groups = array_unique($user->groups);
+        $user->groups = array_unique($user->groups);
 
         #if ($this->svn_access == "N" && $this->ftp_access  == "N" && $this->web_access  == "N" && $this->bugzilla_access  == "N" && $this->membctte  == "N" && $this->art_access  == "N" && $this->mail_alias == "N") {
     }

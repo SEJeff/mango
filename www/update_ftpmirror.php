@@ -15,8 +15,6 @@ class UpdateFTPMirror {
 	var $error;
 		
 	function UpdateFTPMirror($id) {
-		global $affectedgroups;
-
 		$ftpmirror = FTPMirror::fetchmirror($id);
 		if(!is_a($ftpmirror, "FTPMirror")) {
 			$this->error = $ftpmirror;
@@ -27,8 +25,6 @@ class UpdateFTPMirror {
 	}
 		
 	function main() {
-		global $config;
-
 		// Check session for previous instance
 		$container = $_SESSION[SESSIONID];
 		if(!is_a($container, "UpdateFTPMirror") || isset($_REQUEST['id'])) {
@@ -82,7 +78,7 @@ class UpdateFTPMirror {
 		// Check ref (in case of multiple open pages)
 		$idcheck = $_POST['idcheck'];
 		if($this->ftpmirror->id != $idcheck) {
-			$ftpmirror = FTPMirror::fetchmirror($id);
+			$ftpmirror = FTPMirror::fetchmirror($idcheck);
 			if(!is_a($ftpmirror, "FTPMirror")) {
 				$this->error = $ftpmirror;
 				return;

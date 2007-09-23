@@ -65,7 +65,7 @@ class Login {
 
 		if($_REQUEST['action'] == "login") {
 			if(!isset($_POST['login']) || !isset($_POST['password'])) {
-				Login::loginform(false, $pe);
+				Login::loginform(false);
 				return;
 			}
 

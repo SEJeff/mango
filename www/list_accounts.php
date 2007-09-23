@@ -15,8 +15,6 @@ class ListAccounts {
 	var $error;
 	
 	function reload() {
-		global $config;
-		
 		unset($this->error);
 
 		// Create an empty resultset in case of problems
@@ -29,8 +27,6 @@ class ListAccounts {
 	
 	
 	function main() {
-		global $config;
-
 		// Check session for previous instance
 		$container = $_SESSION[SESSIONID];
 		if(!is_a($container, "ListAccounts") || isset($_REQUEST['reload'])) {
@@ -101,9 +97,7 @@ class ListAccounts {
 		}
 	}
 	
-	function add_entries(&$dom, &$listnode, &$results) {
-		global $config;
-
+	function add_entries(&$dom, &$listnode) {
 		// Get entries from database server
 		$entries = Account::get_pending_actions('accountsteam');
 		// Add entries to page

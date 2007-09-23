@@ -348,7 +348,7 @@ class User {
                 $body = $xsltprocessor->transformToXML($maildom);
                 
                 if (empty($body))
-                    return;
+                    return false;
 
                 $subject = in_array('newuser', $changes) ?
                            'Your new GNOME account' :
@@ -444,7 +444,7 @@ class User {
 		}
 		if(empty($this->cn))
 			$errors[] = "cn";
-		if(empty($this->mail) || !preg_match("/^[\w\.\+\-=]+@[\w\.\-]+\.[\w\-]+$/", $this->mail))
+		if(empty($this->mail) || !preg_match('/^[\w\.\+\-=]+@[\w\.\-]+\.[\w\-]+$/', $this->mail))
 			$errors[] = "mail";
                 
                 foreach($this->authorizedKeys as $authorizedKey) {
@@ -460,7 +460,6 @@ class User {
 	function user_modules ($all = false) { 
 		global $config;
 		
-		$modules = array ();
 		// if all modules including translation based modules
 		if ($all) {
 			$ldapcriteria = "(&(maintainerUid=$this->uid)(objectClass=gnomeModule))";
@@ -484,7 +483,6 @@ class User {
 	function user_languages () { 
 		global $config;
 		
-		$modules = array ();
 		$ldapcriteria = "(&(maintainerUid=$this->uid)(objectClass=gnomeModule)(objectClass=localizationModule))";
 		$ldap = LDAPUtil::singleton();
 		if(PEAR::isError($ldap)) return $ldap;

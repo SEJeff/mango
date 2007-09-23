@@ -36,8 +36,6 @@ class Page {
 				foreach($keys as $key) {
 					unset($_REQUEST[$key], $_GET[$key], $_POST[$key], $GLOBALS[$key]);
 				}
-
-				$_SERVER['REQUEST_METHOD'] == 'GET';
 			}
 		}
 
@@ -57,38 +55,42 @@ class Page {
 	function send() {
                 /* Grab root node */
                 $dom = $this->result;
-		$xpath = new DOMXPath($this->result);
+		$xpath = new DOMXPath($dom);
 		$result = $xpath->query("/page");
 		if($result->length > 0) {
 			$pagenode = $result->item(0);
-			$this->_add_dynamic_data($this->result, $pagenode);
+			$this->_add_dynamic_data($dom, $pagenode);
 		}
 
 
                 /* Just let the client transform it */
 		header("Content-Type: application/xml");
-                echo $this->result->saveXML();
+                echo $dom->saveXML();
                 return;
 
 
-		/* Catch debug hook */
+                /* Disabled for now, let the browser do the XSLT conversion
+                 *
+                 * 
+
+		# Catch debug hook
 		if(isset($_REQUEST['debugxml'])) {
 			header("Content-Type: application/xml");
                         echo $this->result->saveXML();
 			return;
 		}
 		
-		/* Process it */
+		# Process it
 		$this->result->xinclude();
 		$xsl_file = new DOMDocument('1.0','UTF-8');
 		$xsl_file->loadXML(file_get_contents($this->stylesheet));
 		$xsltprocessor = new XSLTProcessor();
 		$xsltprocessor->importStylesheet($xsl_file);
-		
-		/* Pass the result to the browser */
+
+		# Pass the result to the browser
 		header("Content-Type: text/html");
 		echo $xsltprocessor->transformToXML($this->result);
-		
+	*/	
 
 	}
 

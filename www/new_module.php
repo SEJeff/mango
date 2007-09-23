@@ -17,8 +17,6 @@ class NewModule {
 	}
 		
 	function main() {
-		global $config;
-
 		// Check session for previous instance
 		$container = $_SESSION[SESSIONID];
 		if(!is_a($container, "NewModule") || isset($_REQUEST['reload'])) {
@@ -105,8 +103,6 @@ class NewModule {
 	}
 	
 	function readform() {
-		global $checkforgroups;
-		
 		// Read details from form
 		$this->module->cn = $_POST['cn'];
 		$this->module->description = $_POST['description'];

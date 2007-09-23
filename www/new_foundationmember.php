@@ -17,8 +17,6 @@ class NewFoundationMember {
     }
         
     function main() {
-        global $config;
-
         // Check session for previous instance
         $container = $_SESSION[SESSIONID];
         if(!is_a($container, "NewFoundationMember") || isset($_REQUEST['reload'])) {
@@ -121,8 +119,6 @@ class NewFoundationMember {
     }
     
     function readform() {
-        global $checkforgroups;
-        
         // Read details from form
         $this->foundationmember->firstname = $_POST['firstname'];
         $this->foundationmember->lastname = $_POST['lastname'];

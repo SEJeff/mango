@@ -15,8 +15,6 @@ class UpdateFoundationMember {
     var $error;
         
     function UpdateFoundationMember($id) {
-        global $affectedgroups;
-
         $foundationmember = FoundationMember::fetchmember($id);
         if(!is_a($foundationmember, "FoundationMember")) {
             $this->error = $foundationmember;
@@ -27,8 +25,6 @@ class UpdateFoundationMember {
     }
         
     function main() {
-        global $config;
-
         // Check session for previous instance
         $container = $_SESSION[SESSIONID];
         if(!is_a($container, "UpdateFoundationMember") || isset($_REQUEST['id'])) {
@@ -82,7 +78,7 @@ class UpdateFoundationMember {
         // Check ref (in case of multiple open pages)
         $idcheck = $_POST['idcheck'];
         if($this->foundationmember->id != $idcheck) {
-            $foundationmember = FoundationMember::fetchmirror($id);
+            $foundationmember = FoundationMember::fetchmember($idcheck);
             if(!is_a($foundationmember, "FoundationMember")) {
                 $this->error = $foundationmember;
                 return;
@@ -141,7 +137,7 @@ class UpdateFoundationMember {
                 if(PEAR::isError($error))
                     return $error;
                 
-                $updatednode = $formnode->appendChild($dom->createElement('emailsent'));
+                $formnode->appendChild($dom->createElement('emailsent'));
                 
             }
 

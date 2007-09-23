@@ -278,7 +278,6 @@ class Module {
 	function get_maintainers ($cn='', &$info = array ()) { 
 		global $config;
 		
-		$modules = array ();
 		$ldapcriteria = "(&(cn=".LDAPUtil::ldap_quote($cn).")(objectClass=gnomeModule))";
 		$ldap = LDAPUtil::singleton();
 		if(PEAR::isError($ldap)) return $ldap;

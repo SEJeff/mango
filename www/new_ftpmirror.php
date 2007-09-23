@@ -17,8 +17,6 @@ class NewFTPMirror {
 	}
 		
 	function main() {
-		global $config;
-
 		// Check session for previous instance
 		$container = $_SESSION[SESSIONID];
 		if(!is_a($container, "NewFTPMirror") || isset($_REQUEST['reload'])) {
@@ -91,8 +89,6 @@ class NewFTPMirror {
 	}
 	
 	function readform() {
-		global $checkforgroups;
-		
 		// Read details from form
 		$this->ftpmirror->name = $_POST['name'];
 		$this->ftpmirror->url = $_POST['url'];

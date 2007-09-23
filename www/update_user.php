@@ -56,8 +56,6 @@ class UpdateUser {
 	}
 		
 	function main() {
-		global $config;
-
 		// Check session for previous instance
 		$container = $_SESSION[SESSIONID];
 		if(!is_a($container, "UpdateUser") || isset($_REQUEST['uid'])) {
@@ -135,7 +133,7 @@ class UpdateUser {
 		// Check ref (in case of multiple open pages)
 		$uidcheck = $_POST['uidcheck'];
 		if($this->user->uid != $uidcheck) {
-			$user = User::fetchuser($uid);
+			$user = User::fetchuser($uidcheck);
 			if(!is_a($user, "User")) {
 				$this->error = $user;
 				return;
@@ -195,7 +193,7 @@ class UpdateUser {
 			return $result;
 
 		// Mark success
-		$updatednode = $formnode->appendChild($dom->createElement("updated"));
+		$formnode->appendChild($dom->createElement("updated"));
 
 		return $result;
 	}
@@ -232,13 +230,12 @@ class UpdateUser {
 			return $result;
 
 		// Mark success
-		$updatednode = $formnode->appendChild($dom->createElement("updated"));
+		$formnode->appendChild($dom->createElement("updated"));
 
 		return $result;
 	}
 	
 	function process_groups_tab(&$dom, &$formnode) {	
-		global $checkforgroups;
 		global $AFFECTEDGROUPS;
 
 		// Read form and validate
@@ -262,7 +259,7 @@ class UpdateUser {
 			return $result;
 
 		// Mark success
-		$updatednode = $formnode->appendChild($dom->createElement("updated"));
+		$formnode->appendChild($dom->createElement("updated"));
 
 		return $result;
 	}

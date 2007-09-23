@@ -51,8 +51,6 @@ class NewUser {
     }
 
     function main() {
-        global $config;
-
         // Check session for previous instance
         $container = $_SESSION[SESSIONID];
         if(!is_a($container, "NewUser") || isset($_REQUEST['reload'])) {
@@ -144,7 +142,6 @@ class NewUser {
     }
     
     function readform() {
-        global $checkforgroups;
         global $AFFECTEDGROUPS;
 
         // Save any keys from the last form     

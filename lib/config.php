@@ -97,6 +97,8 @@ class SiteConfig {
 		$nodes = $root_node->childNodes;
 		foreach($nodes as $node)
 			$this->read_from($node);
+
+                return true;
 	}
 
 	/*
