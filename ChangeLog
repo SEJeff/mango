@@ -1,5 +1,11 @@
 2007-09-23  Olav Vitters  <olav@bkor.dhs.org>
 
+	* lib/util.php: Older ssh-keygens allowed DSA keys other than 1024
+	bits. Allow everything with 1024 or more bits. Not sure if they'll
+	allow a login though.
+
+2007-09-23  Olav Vitters  <olav@bkor.dhs.org>
+
 	Fix loads of errors by RATS and an evaluation version of Zend Studio.
 	Unless specified otherwise, the fixes are for unused variables.
 
