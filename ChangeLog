@@ -1,5 +1,10 @@
 2007-09-24  Olav Vitters  <olav@bkor.dhs.org>
 
+	* lib/user.php: Don't check the key length. Too many existing users
+	have too short keys for this to work.
+
+2007-09-24  Olav Vitters  <olav@bkor.dhs.org>
+
 	* www/update_user.php: Always run validate before updating the user.
 	Further, avoid copy/paste code.
 
