@@ -155,6 +155,21 @@ class UpdateUser {
 		elseif($this->tab == "actions")
 			$result = $this->process_actions_tab($dom, $formnode);
 
+                if ($result === true) {
+                    $formerrors = $this->user->validate();
+                    if(count($formerrors) > 0) {
+                            foreach($formerrors as $error) {
+                                    $node = $formnode->appendChild($dom->createElement("formerror"));
+                                    $node->setAttribute("type", $error);
+                            }
+                    } else {
+                        // Attempt LDAP update
+                        $result = $this->user->update();
+                        if(!PEAR::isError($result))
+                            $formnode->appendChild($dom->createElement("updated")); // Mark success
+                    }
+                }
+
 		// Report an exception
 		if(PEAR::isError($result)) {
 			$node = $formnode->appendChild($dom->createElement("error"));
@@ -170,7 +185,6 @@ class UpdateUser {
 				$node->setAttribute("id", $change);
 			}
 		}
-
 	}
 
 	function process_general_tab(&$dom, &$formnode) {	
@@ -178,24 +192,8 @@ class UpdateUser {
 		$this->user->cn = $_POST['cn'];
 		$this->user->mail = $_POST['mail'];
 		$this->user->description = $_POST['description'];
-		$formerrors = $this->user->validate();
-		if(count($formerrors) > 0) {
-			foreach($formerrors as $error) {
-				$node = $formnode->appendChild($dom->createElement("formerror"));
-				$node->setAttribute("type", $error);
-			}
-			return;
-		}
 
-		// Attempt LDAP update
-		$result = $this->user->update();
-		if(PEAR::isError($result))
-			return $result;
-
-		// Mark success
-		$formnode->appendChild($dom->createElement("updated"));
-
-		return $result;
+		return true;
 	}
 
 	function process_sshkeys_tab(&$dom, &$formnode) {	
@@ -224,15 +222,7 @@ class UpdateUser {
 		// Remember keys for next hit	
 		$this->savedKeys = $this->user->authorizedKeys;
 
-		// Attempt LDAP update
-		$result = $this->user->update();
-		if(PEAR::isError($result))
-			return $result;
-
-		// Mark success
-		$formnode->appendChild($dom->createElement("updated"));
-
-		return $result;
+		return true;
 	}
 	
 	function process_groups_tab(&$dom, &$formnode) {	
@@ -253,15 +243,7 @@ class UpdateUser {
 		if(is_array($this->othergroups))
 			$this->user->groups = array_merge($this->user->groups, $this->othergroups);
 		
-		// Attempt LDAP update
-		$result = $this->user->update();
-		if(PEAR::isError($result))
-			return $result;
-
-		// Mark success
-		$formnode->appendChild($dom->createElement("updated"));
-
-		return $result;
+		return true;
 	}
 
 	function process_actions_tab(&$dom, &$formnode) {
@@ -310,7 +292,7 @@ class UpdateUser {
 			$formnode->appendChild($dom->createElement("emailsent"));
 
 			// No changes made
-			return;
+			return false;
 		}
 
 		// Prepare an e-mail
@@ -376,7 +358,7 @@ class UpdateUser {
 		$fieldnode = $formnode->appendChild($dom->createElement("body"));
 		$fieldnode->appendChild($dom->createTextNode($body));
 
-		return;
+		return false;
 	}
 
 }

@@ -1,3 +1,8 @@
+2007-09-24  Olav Vitters  <olav@bkor.dhs.org>
+
+	* www/update_user.php: Always run validate before updating the user.
+	Further, avoid copy/paste code.
+
 2007-09-23  Olav Vitters  <olav@bkor.dhs.org>
 
 	* lib/account.php: Fix error in the email code. Every maintainer would
