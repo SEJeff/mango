@@ -21,33 +21,35 @@
 			<thead>
 			<th>UID</th>
 			<th>Name</th>
-			<th>Approved By</th>
+			<th>Approved For</th>
 			<th>Created On</th>
 			<th>Action</th>
 			</thead>
 			<tbody>
      <xsl:for-each select="account">
-      <xsl:sort select="uid"/>
+      <xsl:sort select="@uid"/>
       <tr class="row-{position() mod 2}">
        <td valign="top">
-        <a href="mailto:{email}">
-         <xsl:apply-templates select="uid"/>
+        <a href="mailto:{mail}">
+         <xsl:apply-templates select="@uid"/>
         </a>
        </td>
        <td valign="top">
-        <xsl:apply-templates select="name"/>
+        <xsl:apply-templates select="@cn"/>
        </td>
        <td valign="top">
-       	<xsl:for-each select="approvedby">
-        	<input type="checkbox" checked="on" />
-        	 <a href="mailto:{email}"><xsl:value-of select="name"/></a> (<xsl:value-of select="module"/>)<br/>
+	 <xsl:for-each select="groups/group">
+	   <tt><xsl:value-of select='@cn'/></tt>
+	   <xsl:if test="@approvedby != ''"> by <xsl:value-of select="@approvedby"/> for <xsl:value-of select="@module"/>
+	   </xsl:if>
+	     <br/>
         </xsl:for-each>
        </td>
        <td valign="top">
-        <xsl:apply-templates select="createdon"/>
+        <xsl:apply-templates select="@createdon"/>
        </td>
        <td valign="top">
-	 <a class="button" href="new_user.php?reload=true&amp;account={db_id}">New user</a><input type="submit" value="Reject" />
+	 <a class="button" href="new_user.php?reload=true&amp;account={@db_id}">New user</a><input type="submit" value="Reject" />
        </td>
       </tr>
      </xsl:for-each>

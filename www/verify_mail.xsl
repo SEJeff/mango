@@ -7,7 +7,7 @@
   <xsl:template match="verify_mail">
     <xsl:choose>
       <xsl:when test="boolean(/page/verified)">
-        <p>Your e-mail address is verified as <xsl:value-of select="/page/verified/email" />. This e-mail will be used as your
+        <p>Your e-mail address is verified as <xsl:value-of select="/page/verified/mail" />. This e-mail will be used as your
         communication e-mail for the rest of the process.</p>
         <p>Now please wait maintainer to approve your account request. Once maintainer approved your request, your account will be
         created by accounts team members. Length of the process will depend on the response time of maintainer which is responsible for the ability you requested.</p>
@@ -28,5 +28,5 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-  <xsl:template match="email"></xsl:template><!-- prevent printing of email address again. TODO: Fix properly -->
+  <xsl:template match="mail"></xsl:template><!-- prevent printing of email address again. TODO: Fix properly -->
 </xsl:stylesheet>

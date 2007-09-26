@@ -16,11 +16,12 @@
   	</xsl:apply-templates>
    <xsl:apply-templates select="error"/>
    <script language="javascript"> 
-  	function ongnomesvnclick (node) { 
-   		document.getElementById("gnomemodule").disabled = !node.checked;
-   	}
-   	function ontranslationsvnclick (node) {
-   		document.getElementById("translationmodule").disabled = !node.checked;
+  	function on_ability_click () { 
+	    var new_state = document.getElementById("gnomecvs").checked
+                            || document.getElementById("ftpadmin").checked;
+
+   	    document.getElementById("vouch_dev").disabled = !new_state;
+	    document.getElementById("vouch_i18n").disabled = !new_state;
    	}
    </script>
    <xsl:if test="boolean(alreadyadded)">
@@ -72,13 +73,13 @@
      </tr>
      <tr>
       <th>
-       <xsl:if test="boolean(formerror[@type='email'])">
+       <xsl:if test="boolean(formerror[@type='mail'])">
         <xsl:attribute name="class">formerror</xsl:attribute>
        </xsl:if>
        E-mail
       </th>
       <td>
-       <input type="text" name="email" value="{email}" size="40"/>
+       <input type="text" name="mail" value="{mail}" size="40"/>
        <xsl:if test="boolean(formerror[@type='existing_email'])">
         * This email address has already been used.
        </xsl:if>
@@ -120,98 +121,53 @@
       </th>
       <td>
        <div>
-        <input onclick="javascript: ongnomesvnclick(this);" type="checkbox" name="gnomesvn" id="gnomesvn">
-         <xsl:if test="boolean(group[@cn='gnomemodule'])">
+        <input onclick="on_ability_click()" type="checkbox" name="gnomecvs" id="gnomecvs">
+         <xsl:if test="boolean(group[@cn='gnomecvs'])">
           <xsl:attribute name="checked"/>
          </xsl:if>
         </input>
-        <label for="gnomesvn">Developer access to Subversion</label>
-       </div>
-       <div>&#160;&#160;&#160;&#160;&#160;&#160;<label for="gnomemodule">GNOME module: </label>
-       	 	<select name="gnomemodule" id="gnomemodule">
-       	 	<xsl:if test="boolean(disabled[@input='gnome'])">
-       	 		<xsl:attribute name="disabled" />
-       	 	</xsl:if>
-      		<xsl:for-each select="gnomemodule">
-      			<xsl:element name="option">
-      			<xsl:if test="boolean(selected)">
-      				<xsl:attribute name="selected"/>
-      			</xsl:if>
-      			<xsl:attribute name="value">
-      				<xsl:value-of select="key" />
-      			</xsl:attribute>
-      			<xsl:value-of select="value" />
-      			</xsl:element>
-      		</xsl:for-each>
-      	</select>
-      </div>
-      <xml:if test="boolean(translation)">
-      <div>
-       <input onclick="javascript: ontranslationsvnclick(this);" type="checkbox" name="translationsvn" id="translationsvn">
-         <xsl:if test="boolean(group[@cn='translation'])">
-          <xsl:attribute name="checked"/>
-         </xsl:if>
-        </input>
-	<label for="translationsvn">Translator access to Subversion</label><br />
-       </div>
-       <div>&#160;&#160;&#160;&#160;&#160;&#160;<label for="translation">Translation Team: </label>
-       	 	<select name="translation" id="translationmodule">
-       	 	<xsl:if test="boolean(disabled[@input='translation'])">
-       	 		<xsl:attribute name="disabled" />
-       	 	</xsl:if>
-      		<xsl:for-each select="translation">
-      			<xsl:element name="option">
-      			<xsl:if test="boolean(selected)">
-      				<xsl:attribute name="selected"/>
-      			</xsl:if>
-      			<xsl:attribute name="value">
-      				<xsl:value-of select="key" />
-      			</xsl:attribute>
-      			<xsl:value-of select="value" />
-      			</xsl:element>
-      		</xsl:for-each>
-      	</select>
-    </div></xml:if>
-       <div>
-       <input type="checkbox" name="ftp_access" id="ftp_access">
-         <xsl:if test="boolean(group[@cn='ftp_access'])">
-          <xsl:attribute name="checked"/>
-         </xsl:if>
-        </input>
-        <label for="ftp_access">Install new modules on ftp.gnome.org</label> 
+        <label for="gnomecvs">Access to Subversion</label>
        </div>
        <div>
-        <input type="checkbox" name="mail_alias" id="mail_alias">
-         <xsl:if test="boolean(group[@cn='mail_alias'])">
+       <input onclick="on_ability_click()" type="checkbox" name="ftpadmin" id="ftpadmin">
+         <xsl:if test="boolean(group[@cn='ftpadmin'])">
           <xsl:attribute name="checked"/>
          </xsl:if>
         </input>
-        <label for="mail_alias">'gnome.org' email alias. (Only for Foundation Members)</label>
+        <label for="ftpadmin">Install new modules on ftp.gnome.org</label> 
+       </div>
+       <div>
+        <input type="checkbox" name="mailusers" id="mailusers">
+         <xsl:if test="boolean(group[@cn='mailusers'])">
+          <xsl:attribute name="checked"/>
+         </xsl:if>
+        </input>
+        <label for="mailusers">'gnome.org' email alias. (Only for Foundation Members)</label>
        </div>
        <p>Special abilities:
        <div>
-        <input type="checkbox" name="web_access" id="web_access">
-         <xsl:if test="boolean(group[@cn='web_access'])">
+        <input type="checkbox" name="gnomeweb" id="gnomeweb">
+         <xsl:if test="boolean(group[@cn='gnomeweb'])">
           <xsl:attribute name="checked"/>
          </xsl:if>
         </input>
-        <label for="web_access">Shell access for GNOME websites</label>
+        <label for="gnomeweb">Shell access for GNOME websites</label>
        </div>
        <div>
-        <input type="checkbox" name="bugzilla_access" id="bugzilla_access">
-         <xsl:if test="boolean(group[@cn='bugzilla_access'])">
+        <input type="checkbox" name="bugzilla" id="bugzilla">
+         <xsl:if test="boolean(group[@cn='bugzilla'])">
           <xsl:attribute name="checked"/>
          </xsl:if>
         </input>
-        <label for="bugzilla_access">Shell access for GNOME Bugzilla</label>
+        <label for="bugzilla">Shell access for GNOME Bugzilla</label>
        </div>
        <div>
-        <input type="checkbox" name="art_access" id="art_access">
-         <xsl:if test="boolean(group[@cn='art_access'])">
+        <input type="checkbox" name="artweb" id="artweb">
+         <xsl:if test="boolean(group[@cn='artweb'])">
           <xsl:attribute name="checked"/>
          </xsl:if>
         </input>
-        <label for="art_access">Shell access for GNOME art website</label>
+        <label for="artweb">Shell access for GNOME art website</label>
        </div>
        <div>
         <input type="checkbox" name="membctte" id="membctte">
@@ -222,6 +178,56 @@
         <label for="membctte">GNOME Foundation membership committee</label>
        </div>
        </p>
+      </td>
+     </tr>
+     <tr>
+      <th>
+       <xsl:if test="boolean(formerror[@type='vouchers'])">
+        <xsl:attribute name="class">formerror</xsl:attribute>
+       </xsl:if>
+       Vouchers
+      </th>
+      <td>
+       For GNOME SVN and the ability to install new modules, 
+       please select the module who can vouch for for:
+       <div><label for="vouch_dev">GNOME module: </label>
+       	 	<select name="vouch_dev" id="vouch_dev">
+       	 	<xsl:if test="count(gnomemodule) = 0 or not(boolean(group[@cn='gnomecvs']))">
+       	 		<xsl:attribute name="disabled" />
+       	 	</xsl:if>
+		<option value=''>None</option>
+      		<xsl:for-each select="gnomemodule">
+      			<xsl:element name="option">
+      			<xsl:if test="boolean(@selected)">
+      				<xsl:attribute name="selected"/>
+      			</xsl:if>
+      			<xsl:attribute name="value">
+      				<xsl:value-of select="@cn" />
+      			</xsl:attribute>
+      			<xsl:value-of select="@cn" />
+      			</xsl:element>
+      		</xsl:for-each>
+      	</select>
+       </div>
+       <div><label for="vouch_i18n">Translation Team: </label>
+       	 	<select name="vouch_i18n" id="vouch_i18n">
+       	 	<xsl:if test="count(translation) = 0 or not(boolean(group[cn='gnomecvs']))">
+       	 		<xsl:attribute name="disabled" />
+       	 	</xsl:if>
+		<option value=''>None</option>
+      		<xsl:for-each select="translation">
+      			<xsl:element name="option">
+      			<xsl:if test="boolean(@selected)">
+      				<xsl:attribute name="selected"/>
+      			</xsl:if>
+      			<xsl:attribute name="value">
+      				<xsl:value-of select="@cn" />
+      			</xsl:attribute>
+      			<xsl:value-of select="@cn" />
+      			</xsl:element>
+      		</xsl:for-each>
+		</select>
+        </div>
       </td>
      </tr>
     </table>

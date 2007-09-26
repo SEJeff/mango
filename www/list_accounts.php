@@ -21,7 +21,7 @@ class ListAccounts {
 		$results = array();
 		$this->accounts = new PagedResults($results);
 		
-		$results = Account::get_pending_actions('accountsteam');
+		$results = Account::get_accountsteam_actions('accountsteam');
 		$this->users = new PagedResults($results);
 	}
 	
@@ -99,43 +99,33 @@ class ListAccounts {
 	
 	function add_entries(&$dom, &$listnode) {
 		// Get entries from database server
-		$entries = Account::get_pending_actions('accountsteam');
+		$entries = Account::get_accountsteam_actions();
 		// Add entries to page
-		foreach ($entries as $entry) {
-			// TODO: get all the other maintaiers for ftp_access etc. 
-			$modules = array (
-			                 'svn_access' => (($entry->gnomemodule == '') ? $entry->translation : $entry->gnomemodule), 
-			                 'ftp_access' => 'Ftp Access', 
-			                 'web_access' => 'Web Access', 
-			                 'bugzilla_access' => 'Bugzilla Access',
-			                 'art_access' => 'Web Art Access',
-			                 'mail_alias' => 'Mail Alias');
-			$users = array ();
-			foreach ($entry->abilities as $ability) { 
-			    $users[$ability] = User::fetchuser($entry->$ability);
+		foreach ($entries as $account) {
+			foreach ($account->abilities as $group => $ability) { 
+#			    $users[$ability] = User::fetchuser($account->$ability);
 			} 
-			$usernode = $listnode->appendChild($dom->createElement("account"));
-			$usernode->appendChild($node = $dom->createElement("db_id"));
-			$node->appendChild($dom->createTextNode($entry->db_id));
-			$usernode->appendChild($node = $dom->createElement("uid"));
-			$node->appendChild($dom->createTextNode($entry->uid));
-			$usernode->appendChild($node = $dom->createElement("name"));
-			$node->appendChild($dom->createTextNode($entry->cn));
-			$usernode->appendChild($node = $dom->createElement("email"));
-			$node->appendChild($dom->createTextNode($entry->email));
-			$usernode->appendChild($node = $dom->createElement("createdon"));
-			$node->appendChild($dom->createTextNode($entry->timestamp));
-			// list all the results
-		    foreach ($users as $key=>$user) { 
-				$usernode->appendChild($cnode = $dom->createElement("approvedby"));
-				$cnode->appendChild($node = $dom->createElement('name'));
-				$node->appendChild($dom->createTextNode($user->cn));
-				$cnode->appendChild($node = $dom->createElement('email'));
-				$node->appendChild($dom->createTextNode($user->mail));
-				$cnode->appendChild($node = $dom->createElement('module'));
-				$node->appendChild($dom->createTextNode($modules[$key]));
-			}
-			
+
+                        $listnode->appendChild($accountnode = $dom->createElement('account'));
+                        $accountnode->setAttribute('cn', $account->cn);
+                        $accountnode->setAttribute('uid', $account->uid);
+                        $accountnode->setAttribute('mail', $account->mail);
+                        $accountnode->setAttribute('comment', $account->comment);
+                        $accountnode->setAttribute('db_id', $account->db_id);
+                        $accountnode->setAttribute('createdon', $account->timestamp);
+                        $accountnode->appendChild ($groupsnode = $dom->createElement('groups'));
+                        foreach($account->abilities as $group => $ability) {
+                            if ($ability['verdict'] == 'A') {
+                                $groupnode = $dom->createElement('group');
+                                $groupnode->setAttribute('cn', $group);
+
+                                if (!is_null($ability['voucher'])) {
+                                    $groupnode->setAttribute('approvedby', $ability['voucher']);
+                                    $groupnode->setAttribute('module', $ability['voucher_group']);
+                                }
+                                $groupsnode->appendChild($groupnode);
+                            }
+                        }
 		}
 	}
 }

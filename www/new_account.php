@@ -62,40 +62,23 @@ class NewAccount {
 
 		$gnomemodules = Module::listmodule($result, "devmodule");
 		$translationmodules = Module::listmodule($result, "translationmodule");
-		$selectednode = '';
 		if ($gnomemodules['count'] > 0) { 
 			for ($i = 0; $i < $gnomemodules['count']; $i++) { 
 				$usernode = $formnode->appendChild($dom->createElement("gnomemodule"));
-				$usernode->appendChild($node = $dom->createElement("key"));
-				$node->appendChild($dom->createTextNode($gnomemodules[$i]['cn'][0]));
-				$usernode->appendChild($node = $dom->createElement("value"));
-				$node->appendChild($dom->createTextNode($gnomemodules[$i]['cn'][0]));
-				if ($gnomemodules[$i]['cn'][0] == $this->account->gnomemodule) { 
-					$usernode->appendChild($selectednode = $dom->createElement('selected'));
+				$usernode->setAttribute('cn', $gnomemodules[$i]['cn'][0]);
+				if ($this->vouch_dev == $gnomemodules[$i]['cn'][0]) { 
+					$usernode->setAttribute('selected', '1');
 				}
-			}
-			if (!is_a($selectednode, 'DOMElement')) { 
-				$formnode->appendChild ($node = $dom->createElement('disabled'));
-				$node->setAttribute ('input', 'gnome');
 			}
 		}
 
-		$selectednode = '';
 		if ($translationmodules['count'] > 0) { 
 			for ($i = 0; $i < $translationmodules['count']; $i++) { 
 				$usernode = $formnode->appendChild($dom->createElement("translation"));
-				$usernode->appendChild($node = $dom->createElement("key"));
-				$node->appendChild($dom->createTextNode($translationmodules[$i]['cn'][0]));
-				$usernode->appendChild($node = $dom->createElement("value"));
-				$node->appendChild($dom->createTextNode($translationmodules[$i]['cn'][0]));
-				if ($translationmodules[$i]['cn'][0] == $this->account->translation) { 
-					$usernode->appendChild($selectednode = $dom->createElement('selected'));
+				$usernode->setAttribute('cn', $translationmodules[$i]['cn'][0]);
+				if ($this->vouch_i18n == $translationmodules[$i]['cn'][0]) { 
+					$usernode->setAttribute('selected', '1');
 				}
-			}
-			// if there's a selected translation module, don't disable the menu
-			if (!is_a($selectednode, 'DOMElement')) { 
-				$formnode->appendChild ($node = $dom->createElement('disabled'));
-				$node->setAttribute ('input', 'translation');
 			}
 		}
 		
@@ -107,23 +90,24 @@ class NewAccount {
 	function readform() {
 		$this->account->uid = $_POST['uid'];
 		$this->account->cn = $_POST['cn'];
-		$this->account->email = $_POST['email'];
+		$this->account->mail = $_POST['mail'];
 		$this->account->comment = $_POST['comment'];
-		$this->account->translationmodule = '';
-		if (isset ($_POST['gnomesvn'])) { 
-			$this->account->gnomemodule = $_POST['gnomemodule'];
-			$this->account->svn_access = 'Y';
-		}  
-		if (isset ($_POST['translationsvn'])) {
-			$this->account->translation = $_POST['translation'];
-			$this->account->svn_access = 'Y';	
-		}
-		$this->account->absorb_input ('ftp_access');
-		$this->account->absorb_input ('web_access');
-		$this->account->absorb_input ('bugzilla_access');
-		$this->account->absorb_input ('membctte');
-		$this->account->absorb_input ('art_access');
-		$this->account->absorb_input ('mail_alias');
+		$this->vouch_dev  = isset ($_POST['vouch_dev'])  ? $_POST['vouch_dev']  : '';
+		$this->vouch_i18n = isset ($_POST['vouch_i18n']) ? $_POST['vouch_i18n'] : '';
+
+                $vouch_group = ($this->vouch_dev != '') ? $this->vouch_dev : $this->vouch_i18n;
+
+                # groupname/inputboxname, vouchgroup
+                # NOTE: If a group requires a vouch group, make sure to add it 
+                # as well to the validation below!!!
+                $this->account->abilities = array();
+		$this->account->ability_from_form('gnomecvs', $vouch_group);
+		$this->account->ability_from_form('ftpadmin', $vouch_group);
+		$this->account->ability_from_form('mailusers');
+		$this->account->ability_from_form('gnomeweb');
+		$this->account->ability_from_form('bugzilla', 'bugzilla.gnome.org');
+		$this->account->ability_from_form('artweb', 'art-web');
+		$this->account->ability_from_form('membctte');
 		
                 # TODO: Should show checkboxes instead of dumping this into a textbox
                 $this->account->authorizationkeys = array();
@@ -142,7 +126,14 @@ class NewAccount {
 		$this->account->authorizationkeys = array_unique($this->account->authorizationkeys);
 
 		// Validate details
-		$errors = $this->account->validate();
+                $errors = $this->account->validate();
+                $abilities = array_keys($this->account->abilities);
+                if (count(array_intersect(array('ftpadmin', 'gnomecvs'), $abilities)) != 0
+                    && (($this->vouch_dev == '' && $this->vouch_i18n == '')
+                        || ($this->vouch_dev != '' && $this->vouch_i18n != '')))
+                {
+                    $errors[] = 'vouchers';
+                }
 
 		return $errors;
 	}

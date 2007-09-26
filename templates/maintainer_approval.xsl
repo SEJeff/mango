@@ -12,8 +12,10 @@
 
   <xsl:template match="maintainerapproval">Dear <xsl:value-of select="maintainername"/>,
 
-We've received an account request for <xsl:value-of select="maintainermodule"/>. As
-you are a maintainer, please approve or reject this account request.
+We've received an account request for:<xsl:for-each select="maintainermodule">
+ * <xsl:value-of select="."/>
+</xsl:for-each>
+As you are a maintainer, please approve or reject this account request.
     
 To do so, please login to your Mango account through <xsl:value-of select="@baseurl"/> and
 check the pending requests. If you do not see any pending request, this

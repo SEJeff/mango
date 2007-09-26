@@ -8,69 +8,82 @@ require_once("module.php");
 require_once("util.php");
 
 class Account { 
-    // User name 
-    var $uid;
-    // Full name
-    var $cn;
-    // E-mail 
-    var $email;
-    // Why account is needed
-    var $comment;
-    // Public keys 
-    var $authorizationkeys;
-    // Subversion access
-    var $svn_access;
-    // Module name
-    var $gnomemodule;
-    // Translation team
-    var $translation;
-    // Art web group
-    var $art_access;
-    // Ftp group
-    var $ftp_access;
-    // Web group
-    var $web_access;
-    // Bugzilla 
-    var $bugzilla_access;
-    // Membership Committee
-    var $membctte;
-    // @gnome.org alias
-    var $mail_alias;
-    // Created on
-    var $timestamp;
-    // Abilities
-    var $abilities;
-    
-    var $mailverified;
-    var $maintainerapproved;
-    var $maintainercomment;
-    var $token;
-    
-    // If of the account row on the databse table
-    var $db_id;
+    public
+        $db_id,             // Id of the account row on the databse table
 
-    function Account ($db_id = '') { 
-        if (is_numeric($db_id)) {
-            $this->db_id = $db_id;
-            $this->bring_account();
+        $uid,               // User name 
+        $cn,                // Full name
+        $mail,             // E-mail 
+        $comment,           // Why account is needed
+        $authorizationkeys, // Public keys 
+
+        $status,
+        $is_new_account,
+        $is_mail_verified,
+        $mail_token,
+
+        $timestamp,         // Created on
+        $abilities         // Abilities
+    ;
+    
+    function __construct($search = '', $what = 'id') { 
+        global $config;
+        $db_id = '';
+        $mysql = null;
+
+        if ($what != 'id') {
+            $mysql =  MySQLUtil::singleton($config->accounts_db_url);
+
+            $query = "SELECT id FROM account_request WHERE $what = ".$mysql->escape_string ($search);
+            $result = $mysql->query($query);
+            $row = mysql_fetch_row($mysql->query($query));
+            if ($row == false) { 
+                return PEAR::raiseError('Account does not exist');
+            }
+            $db_id = $row[0];
         } else {
-            $this->authorizationkeys = array ();
-            $this->gnomemodule = null;
-            $this->translation = null;
-            $this->svn_access = 'N';
-            $this->ftp_access = 'N';
-            $this->art_access = 'N';
-            $this->web_access = 'N';
-            $this->membctte = 'N';
-            $this->bugzilla_access = 'N';
-            $this->mail_alias = 'N';
-            $this->mailverified = false;
-            $this->maintainerapproved = false;
+            $db_id = $search;
+        }
+
+        if (ctype_digit($db_id)) {
+            $this->db_id = $db_id;
+
+            if(is_null($mysql))
+                $mysql =  MySQLUtil::singleton($config->accounts_db_url);
+
+            $query = "SELECT * FROM account_request WHERE id=".$mysql->escape_string($this->db_id);
+            $result = $mysql->query($query);
+            $row = mysql_fetch_array ($result);
+
+            $this->abilities = array ();
+
+            foreach ($row as $key => $value) {
+                $this->$key = $value;
+            }
+            $this->authorizationkeys = split("\n", $this->authorizationkeys);
+
+            $query = "SELECT * FROM account_groups WHERE request_id=" . $mysql->escape_string($this->db_id);
+            $result = $mysql->query($query);
+            while ($row = mysql_fetch_array($result)) {
+                $group = $row['cn'];
+                $this->abilities[$group] = array();
+                foreach ($row as $key => $value) {
+                    if ($key != 'cn')
+                        $this->abilities[$group][$key] = $value;
+                }
+            }
+        } else {
             $this->db_id = null;
+            $this->authorizationkeys = array ();
+            $this->is_mail_verified = 'N';
+            $this->is_new_account = 'Y';
+            $this->status = 'M';
             $this->timestamp = date ('Y-m-d H:m:s');
             $this->abilities = array ();
-            $this->token = $this->create_token();
+            $this->mail_token = $this->create_token();
         }
+
+        return $this;
     }
 
     function create_token () { 
@@ -83,87 +96,41 @@ class Account {
         return sha1('mango'.date('c').$salt.$random_bytes);
     }
     
-    function bring_account () { 
-        global $config;
-    
-        $mysql =  MySQLUtil::singleton($config->accounts_db_url);
-        $query = "SELECT * FROM account_request WHERE id=".$mysql->escape_string($this->db_id);
-        $result = $mysql->query($query);
-        $row = mysql_fetch_array ($result);
-        $this->abilities = array ();
-        $this->uid = $row['uid'];
-        $this->cn = $row['cn'];
-        $this->email = $row['email'];
-        $this->mailverified = ($row['mail_approved'] == 'approved') ? true : false;
-        $this->comment = $row['comment'];
-        $this->authorizationkeys = split("\n", $row['authorizationkeys']);
-        $this->gnomemodule = $row['gnomemodule'];
-        $this->translation = $row['translation'];
-        $this->svn_access = $row['svn_access'];
-        if (!in_array ($this->svn_access, array ('R', 'Y', 'N'))) {
-            $this->abilities[] = 'svn_access';
-        }
-        $this->ftp_access = $row['ftp_access'];
-        if (!in_array ($this->ftp_access, array ('R', 'Y', 'N'))) {
-            $this->abilities[] = 'ftp_access';
-        }
-        $this->web_access = $row['web_access'];
-        if (!in_array ($this->web_access, array ('R', 'Y', 'N'))) {
-            $this->abilities[] = 'web_access';
-        }
-        $this->bugzilla_access = $row['bugzilla_access'];
-        if (!in_array ($this->bugzilla_access, array ('R', 'Y', 'N'))) {
-            $this->abilities[] = 'bugzilla_access';
-        }
-        $this->art_access = $row['art_access'];
-        if (!in_array ($this->art_access, array ('R', 'Y', 'N'))) {
-            $this->abilities[] = 'art_access';
-        }
-        $this->membctte = $row['membctte'];
-        if (!in_array ($this->membctte, array ('R', 'Y', 'N'))) {
-            $this->abilities[] = 'membctte';
-        }
-        $this->mail_alias = $row['mail_alias'];
-        if (!in_array ($this->mail_alias, array ('R', 'Y', 'N'))) {
-            $this->abilities[] = 'mail_alias';
-        }
-        $this->abilities = array_unique($this->abilities);
-        $this->maintainerapproved = ($row['maintainer_approved'] == 'approved') ? true : false;
-        $this->timestamp = $row['timestamp'];
-        
-    }
-    
     function add_account () { 
         global $config;
         
         $mysql =  MySQLUtil::singleton($config->accounts_db_url);
-        $enum_values = array ('Y', 'N', 'A', 'R');
-        $query = 'INSERT INTO account_request SET '.
-            'uid='.$mysql->escape_string($this->uid).','.
-            'cn='.$mysql->escape_string($this->cn).','.
-            'email='.$mysql->escape_string($this->email).','.
-            'comment='.$mysql->escape_string($this->comment).','.
-            ($this->translationmodule != null ? 'translation='.$mysql->escape_string($this->translationmodule).',':'').
-            ($this->gnomemodule != null ? 'gnomemodule='.$mysql->escape_string($this->gnomemodule).',' : '').
-            'svn_access='.$mysql->escape_enum($this->svn_access, $enum_values).','.
-            'ftp_access='.$mysql->escape_enum($this->ftp_access, $enum_values).','.
-            'web_access='.$mysql->escape_enum($this->web_access, $enum_values).','.
-            'art_access='.$mysql->escape_enum($this->art_access, $enum_values).','.
-            'bugzilla_access='.$mysql->escape_enum($this->bugzilla_access, $enum_values).','.
-            'membctte='.$mysql->escape_enum($this->membctte, $enum_values).','.
-            'mail_alias='.$mysql->escape_enum($this->mail_alias, $enum_values).','.
-            (count ($this->authorizationkeys) > 0 ? 'authorizationkeys='.$mysql->escape_string(join("\n", $this->authorizationkeys)) : '').','.
-            'timestamp='.$mysql->escape_string($this->timestamp);
-                
-                $result = mysql_query ($query, $mysql->dbh());
+        $query = 'INSERT INTO account_request SET ' .
+            'uid='.$mysql->escape_string($this->uid).',' .
+            'cn='.$mysql->escape_string($this->cn).',' .
+            'mail='.$mysql->escape_string($this->mail) .',' .
+            'comment='.$mysql->escape_string($this->comment).',' .
+            'timestamp='.$mysql->escape_string($this->timestamp) .','.
+            (count ($this->authorizationkeys) > 0 ? 'authorizationkeys='.$mysql->escape_string(join("\n", $this->authorizationkeys)) .',' : '') .
+            'status=' . $mysql->escape_string($this->status) .','.
+            'is_new_account=' . $mysql->escape_string($this->is_new_account) .','.
+            'is_mail_verified=' . $mysql->escape_string($this->is_mail_verified) .','.
+            'mail_token=' . $mysql->escape_string($this->mail_token)
+        ;
+        $result = mysql_query ($query, $mysql->dbh());
         $this->db_id = mysql_insert_id($mysql->dbh());
-        // Create the authentication token 
-        $query = 'INSERT INTO account_token SET request_id = '.$mysql->escape_string($this->db_id).', token = '.$mysql->escape_string($this->token);
-        $result = mysql_query ($query, $mysql->dbh());      
-        $authtokenurl = $config->base_url.'/verify_mail.php?token='.$this->token.'&email='.urlencode($this->email);
+        
+        // Create the authentication token
+        foreach($this->abilities as $key => $val) {
+            $query = 'INSERT INTO account_groups SET ' .
+                'request_id='.$mysql->escape_string($this->db_id).','.
+                'cn='.$mysql->escape_string($key).','.
+                'voucher_group='.$mysql->escape_string($val['voucher_group']).','.
+                'verdict='.$mysql->escape_string($val['verdict'])
+            ;
+            $result = mysql_query ($query, $mysql->dbh());      
+            $this->abilities[$key]['id'] = mysql_insert_id($mysql->dbh());
+        }
+
+        $authtokenurl = $config->base_url.'/verify_mail.php?token='.$this->mail_token.'&uid='.urlencode($this->uid);
         $mailbody = $this->_create_email('authtokenmail', 'authtoken_mail_verification', array ('authtokenlink' => $authtokenurl));
         $subject = "New account request: mail verification";
-                $error = $this->_send_email($mailbody, $this->email, $subject);
+        $error = $this->_send_email($mailbody, $this->mail, $subject);
         if(PEAR::isError($error))
             return $error;
         else 
@@ -201,24 +168,24 @@ class Account {
         if (empty ($this->cn)) { 
             $error[] = 'cn';
         }
-        if (empty ($this->email)) { 
-            $error[] = 'email';
-        } elseif (!preg_match('/^[\w\.\+\-=]+@[\w\.\-]+\.[\w\-]+$/', $this->email)) {
-            $error[] = 'email';
+        if (empty ($this->mail)) { 
+            $error[] = 'mail';
+        } elseif (!preg_match('/^[\w\.\+\-=]+@[\w\.\-]+\.[\w\-]+$/', $this->mail)) {
+            $error[] = 'mail';
         } else {
             // Check for existing LDAP account with this email address
-            $user = User::fetchuser($this->email, 'mail');
+            $user = User::fetchuser($this->mail, 'mail');
             if (!PEAR::isError($user) && !empty($user->uid)) {
-                $error[] = 'email';
+                $error[] = 'mail';
                 $error[] = 'existing_email';
             } else {
                 // Check if existing account request already used this email address
                 $mysql = MySQLUtil::singleton($config->accounts_db_url);
-                $query = "SELECT 1 FROM account_request WHERE email = ".$mysql->escape_string($this->email);
+                $query = "SELECT 1 FROM account_request WHERE mail = ".$mysql->escape_string($this->mail);
                 $result = $mysql->query($query);
                 $row = mysql_fetch_row($result);
                 if ($row != false) { 
-                    $error[] = 'email';
+                    $error[] = 'mail';
                     $error[] = 'existing_email';
                 }
             }
@@ -237,9 +204,10 @@ class Account {
                 }
             }
         }
-        if ($this->svn_access == "N" && $this->ftp_access  == "N" && $this->web_access  == "N" && $this->bugzilla_access  == "N" && $this->membctte  == "N" && $this->art_access  == "N" && $this->mail_alias == "N") {
+        if (count($this->abilities) == 0) {
             $error[] = 'abilities';
         }
+
 
         return $error;
     }
@@ -249,321 +217,189 @@ class Account {
         $node->appendChild($dom->createTextNode($this->uid));
         $node = $formnode->appendChild($dom->createElement('cn'));
         $node->appendChild($dom->createTextNode($this->cn));
-        $node = $formnode->appendChild($dom->createElement('email'));
-        $node->appendChild($dom->createTextNode($this->email));
+        $node = $formnode->appendChild($dom->createElement('mail'));
+        $node->appendChild($dom->createTextNode($this->mail));
         $node = $formnode->appendChild($dom->createElement('comment'));
         $node->appendChild($dom->createTextNode($this->comment));
-        if ($this->translation) { 
+        foreach(array_keys($this->abilities) as $ability) {
             $node = $formnode->appendChild($dom->createElement('group'));
-            $node->setAttribute('cn', 'translation');
-        }
-        if ($this->gnomemodule) { 
-            $node = $formnode->appendChild ($dom->createElement('group'));
-            $node->setAttribute('cn', 'gnomemodule');
-        }
-        if ($this->ftp_access == 'Y') { 
-            $node = $formnode->appendChild ($dom->createElement('group'));
-            $node->setAttribute('cn', 'ftp_access');
-        }
-        if ($this->web_access == 'Y') { 
-            $node = $formnode->appendChild ($dom->createElement('group'));
-            $node->setAttribute('cn', 'web_access');
-        }
-        if ($this->bugzilla_access == 'Y') { 
-            $node = $formnode->appendChild ($dom->createElement('group'));
-            $node->setAttribute('cn', 'bugzilla_access');
-        }
-        if ($this->membctte == 'Y') { 
-            $node = $formnode->appendChild ($dom->createElement('group'));
-            $node->setAttribute('cn', 'membctte');
-        }
-        if ($this->art_access == 'Y') { 
-            $node = $formnode->appendChild ($dom->createElement('group'));
-            $node->setAttribute('cn', 'art_access');
-        }
-        if ($this->mail_alias == 'Y') { 
-            $node = $formnode->appendChild ($dom->createElement('group'));
-            $node->setAttribute('cn', 'mail_alias');
+            $node->setAttribute('cn', $ability);
         }
         $node = $formnode->appendChild($dom->createElement('authorizationkeys'));
         $node->appendChild($dom->createTextNode(join ('\n', $this->authorizationkeys)));
     }
         
-    function absorb_input ($variable) { 
-        if (isset ($_POST[$variable]))
-            $this->$variable = 'Y';
-        else 
-            $this->$variable = 'N'; 
+    function ability_from_form($ability, $vouchgroup = null) { 
+        if (!isset ($_POST[$ability]))
+            return;
+
+        if (!array_key_exists($ability, $this->abilities))
+            $this->abilities[$ability] = array();
+
+        $this->abilities[$ability]['voucher_group'] = $vouchgroup;
+        $this->abilities[$ability]['verdict'] = (is_null($vouchgroup)) ? 'A' : 'P';
     }
     
-    function verify_email_token () {
-        global $config;
-        
-        $return = '';
-        if (!isset ($_REQUEST['email']) || !isset ($_REQUEST['token'])) { 
+    function validate_mail_token($token) {
+        if (!isset($token) || $this->mail_token !== $token) { 
             return PEAR::raiseError('Bogus');
         }
-        $mysql = MySQLUtil::singleton($config->accounts_db_url);
-        $query = "SELECT id FROM account_request WHERE mail_approved = 'pending' AND email = ".$mysql->escape_string($_REQUEST['email'])." AND verdict = ".$mysql->escape_string('pending');
-        $result = $mysql->query($query);
-        $row = mysql_fetch_row($result);
-        if ($row != false) { 
-            $request_id = $row[0];
-            $this->db_id = $request_id;
-        } else {
-            $query = "SELECT request_id FROM account_token WHERE status = 'approved' AND token = ".$mysql->escape_string ($_REQUEST['token']);
-            $result = $mysql->query($query);
-            $row = mysql_fetch_row($mysql->query($query));
-            if ($row != false) { 
-                return PEAR::raiseError('Already verified');
-            } else { 
-                return PEAR::raiseError('Bogus');
-            }
+        if ($this->is_mail_verified != 'N') { 
+            return PEAR::raiseError('Already verified');
         }
-        $query = "SELECT count(*) FROM account_token WHERE request_id = ".$request_id." AND token = ".$mysql->escape_string ($_REQUEST['token']);
-        $result = $mysql->query($query);
-        $row = mysql_fetch_row($result);
-        if ($row == false) { 
-            return PEAR::raiseError ("Bogus");
-        }
-        
-        
-        // everything alright update database
-        if (PEAR::isError ($return))
-            return $return;
 
-        $this->bring_account();
-
-        // Update accounts table
-        $query = "UPDATE account_request SET mail_approved = 'approved' WHERE id = ".$request_id;
-        $result = $mysql->query($query);
-        $query = "UPDATE account_token SET status = 'approved' WHERE id = ".$request_id;
-        $result = $mysql->query($query);
-        // Get queries abilities
-        $query = "SELECT * FROM account_request WHERE id = ".$request_id;
-        $result = $mysql->query($query);
-        // prepare mail headers
-        $subject = "New account request: pending approval";
-        
-        // maintainers who will get the e-mail notification for this account
-        $row = mysql_fetch_array ($result);
-        if (isset ($row['svn_access']) && $row['translation'] == 'Y') {
-            $ldap_info = array ();
-            $maintainers = Module::get_maintainers($row['gnomemodule'], $ldap_info);
-            for ($i=0; $i < $maintainers['count']; $i++) { 
-                $ldap_uid = $maintainers[$i]['maintaineruid'][0];
-                for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
-                    $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'module "'.$row['gnomemodule'].'"'));
-                    $error = $this->_send_email($mailbody, $ldap_info[$ldap_uid][$j]['mail'][0], $subject);
-                    if(PEAR::isError($error))
-                        return $error;
-                }
-            }
-        }
-        
-        if (isset ($row['translation']) && $row['translation'] == 'Y') { 
-            $ldap_info = array ();
-            $maintainers = Module::get_maintainers($row['gnomemodule'], $ldap_info);
-            for ($i=0; $i < $maintainers['count']; $i++) { 
-                $ldap_uid = $maintainers[$i]['maintaineruid'][0];
-                for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
-                    $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => $row['gnomemodule']." translations"));
-                    $error = $this->_send_email($mailbody, $ldap_info[$ldap_uid][$j]['mail'][0], $subject);
-                    if(PEAR::isError($error))
-                        return $error;
-                }
-            }   
-        }
-/*
-        if (isset ($row['ftp_access'])) { 
-            $ldap_info = array ();
-            $maintainers = Module::get_maintainers('', $ldap_info);
-            for ($i=0; $i < $maintainers['count']; $i++) { 
-                $ldap_uid = $maintainers[$i]['maintaineruid'][0];
-                for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
-                    $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'ftp administration'));
-                    $error = $this->_send_email($ldap_info[$ldap_uid][$j]['mail'][0], $headers, $content);
-                    if(PEAR::isError($error))
-                        return $error;
-                }
-            }   
-        }
-        
-        if (isset ($row['web_admin'])) { 
-            $ldap_info = array ();
-            $maintainers = Module::get_maintainers($row['mango_webadmin'], $ldap_info);
-            for ($i=0; $i < $maintainers['count']; $i++) { 
-                $ldap_uid = $maintainers[$i]['maintaineruid'][0];
-                for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
-                    $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'web administration'));
-                    $error = $this->_send_email($ldap_info[$ldap_uid][$j]['mail'][0], $headers, $content);
-                    if(PEAR::isError($error))
-                        return $error;
-                }
-            }   
-        }
-*/
-        if (isset ($row['bugzilla_access']) && $row['bugzilla_access'] == 'Y') { 
-            $ldap_info = array ();
-            $maintainers = Module::get_maintainers('bugzilla.gnome.org', $ldap_info);
-            for ($i=0; $i < $maintainers['count']; $i++) { 
-                $ldap_uid = $maintainers[$i]['maintaineruid'][0];
-                for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
-                    $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'bugzilla administration'));
-                    $error = $this->_send_email($mailbody, $ldap_info[$ldap_uid][$j]['mail'][0], $subject);
-                    if(PEAR::isError($error))
-                        return $error;
-                }
-            }   
-        }
-        
-        if (isset ($row['membctte']) && $row['membctte'] == 'Y') { 
-            $ldap_info = array ();
-            $maintainers = Module::get_maintainers('membctte', $ldap_info);
-            for ($i=0; $i < $maintainers['count']; $i++) { 
-                $ldap_uid = $maintainers[$i]['maintaineruid'][0];
-                for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
-                    $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'membership committee'));
-                    $error = $this->_send_email($mailbody, $ldap_info[$ldap_uid][$j]['mail'][0], $subject);
-                    if(PEAR::isError($error))
-                        return $error;
-                }
-            }   
-        }
-        
-        if (isset ($row['art_access']) && $row['art_access'] == 'Y') { 
-            $ldap_info = array ();
-            $maintainers = Module::get_maintainers('art-web', $ldap_info);
-            for ($i=0; $i < $maintainers['count']; $i++) { 
-                $ldap_uid = $maintainers[$i]['maintaineruid'][0];
-                for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
-                    $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'web art administration'));
-                    $error = $this->_send_email($mailbody, $ldap_info[$ldap_uid][$j]['mail'][0], $subject);
-                    if(PEAR::isError($error))
-                        return $error;
-                }
-            }   
-        }
-/*
-        if (isset ($row['mail_alias'])) { 
-            $ldap_info = array ();
-            $maintainers = Module::get_maintainers($row['mango_mailalias'], $ldap_info);
-            for ($i=0; $i < $maintainers['count']; $i++) { 
-                $ldap_uid = $maintainers[$i]['maintaineruid'][0];
-                for ($j=0; $j < $ldap_info[$ldap_uid]['count']; $j++) { 
-                    $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$ldap_uid][$j]['cn'][0], 'maintainermodule' => 'gnome.org mail aliases'));
-                    $error = $this->_send_email($mailbody, $ldap_info[$ldap_uid][$j]['mail'][0], $subject);
-                    if(PEAR::isError($error))
-                        return $error;
-                }
-            }               
-        }
-*/
-		return true;
+        return true;
     }
-    
+
+    function approve_mail_token() {
+        global $config;
+        
+        // Update accounts table
+        $mysql =  MySQLUtil::singleton($config->accounts_db_url);
+        $query = "UPDATE account_request SET is_mail_verified = 'Y' WHERE id = ".$this->db_id;
+        $this->is_mail_verified = 'Y';
+        $mysql->query($query);
+
+        // Check if we need vouchers
+        $verdicts = $this->verdict_status();
+        error_log("verdicts: " . implode(", ", $verdicts));
+        if (in_array('P', $verdicts)) {
+            $this->update_status('V'); // There are pending requests
+        } else {
+            $this->update_status('S');
+        }
+        
+        return true;
+    }
+
+    function verdict_status () {
+        $tmp = array();
+
+        error_log(count($this->abilities));
+        foreach ($this->abilities as $key => $ability) {
+            error_log("ability status check: $key");
+            $tmp[$ability['verdict']] = 1;
+        }
+        
+        return array_keys($tmp);
+    }
+
     function update_ability ($ability, $approved) { 
         global $config;
         
         $mysql = MySQLUtil::singleton($config->accounts_db_url);
-        if (in_array ($ability, array ('ftp_access', 'web_access', 'bugzilla_access', 'art_access', 'mail_alias')) && $this->$ability == 'Y') {
-            $query = "UPDATE account_request SET $ability = ".$mysql->escape_string($approved)." WHERE id = ".$this->db_id;
+        if (array_key_exists($ability, $this->abilities)) {
+            $voucher = $_SESSION['user']->uid;
+            $query = "UPDATE account_groups ".
+                        "SET verdict = ".$mysql->escape_string($approved).",".
+                           " voucher = ". $mysql->escape_string($voucher) .
+                     " WHERE id = ".$this->abilities[$ability]['id'] . 
+                       " AND cn = " . $mysql->escape_string($ability);
             $result = $mysql->query($query);
-            $this->$ability = $approved;
-            $this->abilities[] = $ability;
-        } elseif ($ability == 'svn_access' && $this->svn_access == 'Y') { 
-            $query = "UPDATE account_request SET svn_access = ".$mysql->escape_string($approved)." WHERE id = ".$this->db_id;
-            $result = $mysql->query($query);
-            $this->svn_access = $approved;
-            $this->abilities[] = $approved;
+            $this->abilities[$ability]['verdict'] = $approved;
+            $this->abilities[$ability]['voucher'] = $approved;
         } else {
             return;
         }
-        $this->abilities = array_unique($this->abilities);
-        // if every ability is processed
-        if (!in_array ($this->svn_access, array ('R', 'Y')) &&
-            !in_array ($this->ftp_access, array ('R', 'Y')) &&
-            !in_array ($this->web_access, array ('R', 'Y')) &&
-            !in_array ($this->art_access, array ('R', 'Y')) &&
-            !in_array ($this->bugzilla_access, array ('R', 'Y')) &&
-            !in_array ($this->mail_alias, array ('R', 'Y')))
-        { 
-            //TODO: send email to accounts@gnome.org
-            $query = "UPDATE account_request SET maintainer_approved = 'approved' WHERE id = ".$this->db_id;
-            $result = $mysql->query($query);
-
+        
+        // has every ability been processed?
+        $verdict_status = $this->verdict_status();
+        if (count(array_diff($verdict_status, array('R', 'A'))) == 0) {
+            // Requested groups have either all been approved or have been rejected.
+            // Note: If at least one access has been approved, this means the 
+            // account is approved
             
-            # Inform account owner
+            $new_account_status =  (in_array('A', $verdict_status)) ? 'S' : 'R';
+            $this->update_status($new_account_status);
+        }
+    }
+
+    function update_status($new_status) {
+        global $config;
+
+        if ($this->status == $new_status)
+            return; // paranoia
+
+        $mysql = MySQLUtil::singleton($config->accounts_db_url);
+        $query = "UPDATE account_request SET status = " . $mysql->escape_string($new_status) . " WHERE id = ".$this->db_id;
+        $result = $mysql->query($query);
+
+        $this->status = $new_status;
+
+        if ($new_status == 'V') { // Vouchers needed
+            $subject = "New account request: voucher needed";
+            $ldap_info = array ();
+            $all_maintainers = array();
+
+            foreach ($this->abilities as $group => $ability) {
+                if ($ability['verdict'] != 'P')
+                    continue;
+
+                $maintainers = Module::get_maintainers($ability['voucher_group'], $ldap_info);
+                foreach ($maintainers as $maintainer) { 
+                    if (array_key_exists($maintainer, $ldap_info)) { 
+                        if (!array_key_exists($maintainer, $all_maintainers))
+                            $all_maintainers[$maintainer] = array();
+
+                        $all_maintainers[$maintainer][] = $group;
+                    }
+                }
+            }
+            foreach ($all_maintainers as $maintainer => $groups) {
+                $mailbody = $this->_create_email('maintainerapproval', 'maintainer_approval', array ('maintainername' => $ldap_info[$maintainer]['cn'][0], 'maintainermodule' => $groups));
+                $error = $this->_send_email($mailbody, $ldap_info[$maintainer]['mail'][0], $subject);
+                if(PEAR::isError($error))
+                    return $error;
+            }
+        } elseif ($new_status == 'S') { // Awaiting setup by accounts team
+            # Inform accounts team
             $mailbody = $this->_create_email('informaccounts', 'inform_accounts');
             $error = $this->_send_email($mailbody, 'accounts@gnome.org', 'New account request: ' . $this->uid);
 
-            # Inform account owner
+            # Inform requester
             $mailbody = $this->_create_email('statuschange', 'requestor_status_change', array ('status' => 'approved'));
-            $error = $this->_send_email($mailbody, $this->email, 'New account request: status change');
-        }
-        
-        if (in_array ($this->svn_access, array ('R', 'N')) &&
-            in_array ($this->ftp_access, array ('R', 'N')) &&
-            in_array ($this->web_access, array ('R', 'N')) &&
-            in_array ($this->art_access, array ('R', 'N')) &&
-            in_array ($this->bugzilla_access, array ('R', 'N')) &&
-            in_array ($this->mail_alias, array ('R', 'N')))
-        {
-                
-            $query = "UPDATE account_request SET maintainer_approved = 'rejected' WHERE id = ".$this->db_id;
-            $result = $mysql->query($query);
-                
+            $error = $this->_send_email($mailbody, $this->mail, 'New account request: status change');
+        } elseif ($new_status == 'R') { // Rejected
             # Inform account owner
             $mailbody = $this->_create_email('statuschange', 'requestor_status_change', array ('status' => 'rejected'));
-            $error = $this->_send_email($mailbody, $this->email, 'New account request: rejected');
+            $error = $this->_send_email($mailbody, $this->mail, 'New account request: rejected');
         }
-        
-    }
 
-    function update_verdict($verdict) {
-        global $config;
-
-        // TODO: Inform the user in case of a rejection verdict
-
-        $mysql = MySQLUtil::singleton($config->accounts_db_url);
-        $query = "UPDATE account_request SET verdict = " . $mysql->escape_string($verdict) . " WHERE maintainer_approved = 'approved' AND id = ".$this->db_id;
-        $result = $mysql->query($query);
+        return $result;
     }
     
-    function get_pending_actions ($type = 'gnomemodule', $arg = '') { 
+    function get_accountsteam_actions() { 
         global $config;
         
         $return = array ();
         $mysql = MySQLUtil::singleton($config->accounts_db_url);
-        switch ($type) { 
-            case "gnomemodule": 
-                $query = "SELECT id FROM account_request WHERE mail_approved = 'approved' AND gnomemodule = ".$mysql->escape_string($arg)." AND maintainer_approved = 'pending'";
-                break;
-            case "translation":
-                $query = "SELECT id FROM account_request WHERE mail_approved = 'approved' AND translation = ".$mysql->escape_string($arg)." AND maintainer_approved = 'pending'";
-                break;
-            case "ftp_access":
-                $query = "SELECT id FROM account_request WHERE mail_approved = 'approved' AND ftp_access = 'Y'";
-                break;
-            case "web_access":
-                $query = "SELECT id FROM account_request WHERE mail_approved = 'approved' AND web_access = 'Y'";
-                break;
-            case "bugzilla_access":
-                $query = "SELECT id FROM account_request WHERE mail_approved = 'approved' AND bugzilla_access = 'Y'";
-                break;
-            case "membctte":
-                $query = "SELECT id FROM account_request WHERE mail_approved = 'approved' AND membctte = 'Y'";
-                break;
-            case "art_access":
-                $query = "SELECT id FROM account_request WHERE mail_approved = 'approved' AND art_access = 'Y'";
-                break;
-            case "mail_alias":
-                $query = "SELECT id FROM account_request WHERE mail_approved = 'approved' AND mail_alias = 'Y'";
-                break;
-            case "accountsteam":
-                $query = "SELECT id FROM account_request WHERE maintainer_approved = 'approved' AND verdict = 'pending'";
-                break;
+        $query = "SELECT id " .
+                   "FROM account_request ".
+                  "WHERE status = 'S' ";
+
+        $result = $mysql->query($query);
+        while ($row = mysql_fetch_array($result)) { 
+            $account = new Account ($row['id']);
+            $return[] = $account;
         }
+        return $return;
+    }
+    
+    function get_pending_actions ($vouch_group = 'gnomecvs') { 
+        global $config;
+        
+        $return = array ();
+        $mysql = MySQLUtil::singleton($config->accounts_db_url);
+        $query = "SELECT DISTINCT account_request.id AS id " .
+                   "FROM account_request ".
+             "INNER JOIN account_groups ".
+                     "ON account_request.id = account_groups.request_id " .
+                  "WHERE status = 'V' ".
+                    "AND verdict = 'P' ".
+                    "AND voucher_group IN (". 
+                         implode(',', array_map(array($mysql, 'escape_string'),
+                                                $vouch_group)) . ")";
+
         $result = $mysql->query($query);
         while ($row = mysql_fetch_array($result)) { 
             $account = new Account ($row['id']);
@@ -576,7 +412,7 @@ class Account {
         global $config;
 
         // Prepare mail body template variables
-        $maildom = new DOMDocument('1.0','UTF-8');
+        $maildom = new DOMDocument('1.0', 'UTF-8');
         $mailnode = $maildom->appendChild($maildom->createElement($mailnodename));
         $mailnode->setAttribute("mode", $config->mode);
         $mailnode->setAttribute("baseurl", $config->base_url);
@@ -585,10 +421,14 @@ class Account {
         
         if (!is_null($extra_mailnodes)) {
             foreach ($extra_mailnodes as $key=>$value) {
-                $node = $mailnode->appendChild($maildom->createElement($key));
-                $node->appendChild($maildom->createTextNode($value));
+                $items = is_array($value) ? $value : array($value);
+                foreach ($items as $item) {
+                    $node = $mailnode->appendChild($maildom->createElement($key));
+                    $node->appendChild($maildom->createTextNode($item));
+                }
             }
         }
+        error_log($maildom->saveXML());
 
         // Process the mail body template
         $stylesheet = new DOMDocument('1.0','UTF-8');
@@ -631,21 +471,18 @@ class Account {
     function fill_user($user) {
         $user->uid = $this->uid;
         $user->cn = $this->cn;
-        $user->mail = $this->email;
+        $user->mail = $this->mail;
         $user->authorizedKeys = $this->authorizationkeys;
 
         # TODO: Should set description to a small log (mention who approved the 
         # various requests)
 
-        if (in_array("svn_access", $this->abilities)) {$user->groups[] = 'gnomecvs';}
-        if (in_array("web_access", $this->abilities)) {$user->groups[] = 'gnomeweb';}
-        if (in_array("bugzilla_access", $this->abilities)) {$user->groups[] = 'bugzilla';}
-        if (in_array("art_access", $this->abilities)) {$user->groups[] = 'artweb';}
-        if (in_array("membctte", $this->abilities)) {$user->groups[] = 'membctte';}
-        if (in_array("mail_alias", $this->abilities)) {$user->groups[] = 'mailusers';}
+        foreach ($this->abilities as $groupname => $groupinfo) {
+            if ($groupinfo['verdict'] == 'A') {
+                $user->groups[] = $groupname;
+            }
+        }
         $user->groups = array_unique($user->groups);
-
-        #if ($this->svn_access == "N" && $this->ftp_access  == "N" && $this->web_access  == "N" && $this->bugzilla_access  == "N" && $this->membctte  == "N" && $this->art_access  == "N" && $this->mail_alias == "N") {
     }
 }
 ?>

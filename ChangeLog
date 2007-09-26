@@ -1,3 +1,21 @@
+2007-09-26  Olav Vitters  <olav@bkor.dhs.org>
+
+	Rewrite how the accounts are handled.
+
+	* docs/sql/mango.sql:
+	* lib/account.php:
+	* lib/module.php:
+	* lib/user.php:
+	* templates/maintainer_approval.xsl:
+	* www/index.php:
+	* www/index.xsl:
+	* www/list_accounts.php:
+	* www/list_accounts.xsl:
+	* www/new_account.php:
+	* www/new_account.xsl:
+	* www/verify_mail.php:
+	* www/verify_mail.xsl:
+
 2007-09-24  Olav Vitters  <olav@bkor.dhs.org>
 
 	* lib/user.php: Don't check the key length. Too many existing users
