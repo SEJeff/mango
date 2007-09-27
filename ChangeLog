@@ -1,5 +1,17 @@
 2007-09-27  Olav Vitters  <olav@bkor.dhs.org>
 
+	Fix wording so it look more like English.
+
+	* lib/page.php:
+	* templates/authtoken_mail_verification.xsl:
+	* templates/maintainer_approval.xsl:
+	* templates/requestor_status_change.xsl:
+	* www/login.xsl:
+	* www/new_account.xsl:
+	* www/verify_mail.xsl:
+
+2007-09-27  Olav Vitters  <olav@bkor.dhs.org>
+
 	Be more paranoid.
 
 	* lib/user.php: Check for valid user.

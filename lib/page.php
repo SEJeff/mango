@@ -114,6 +114,7 @@ class Page {
 		$pagenode->setAttribute("baseurl", $config->base_url);
 		$pagenode->setAttribute("thisurl", $thisurl);
 		$pagenode->setAttribute("token", Page::generate_token());
+		$pagenode->setAttribute("support", $config->support_email);
 
 		/* Add page generation date */
 		$pagenode->setAttribute("date", strftime("%d %B %y %T %Z"));

@@ -24,7 +24,7 @@
      <p class="error">Login failed</p>
     </xsl:when>
     <xsl:otherwise>
-     <p>To access protected services on this website, please log in to identify yourself. If you want to request a new account click on the '<a href="new_account.php">new account</a>' link.</p>
+     <p>To access protected services on this website, please log in to identify yourself. If you want to request a new account click on the <a href="new_account.php">new account</a> link.</p>
     </xsl:otherwise>
    </xsl:choose>
 

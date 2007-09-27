@@ -32,13 +32,13 @@
    </p>
    </xsl:if>
    <xsl:if test="boolean(account_added)">
-	<p>Your account request has been received. Please check your e-mail,
-	  and visit the link posted to you so as to verify your e-mail address.
-	  Note that, no further action will be handled before your validating
-	  your e-mail address. Once you validate your e-mail address,
-	  responsible maintainer will process your application.</p>
+	<p>Your account request has been received. The next step in your
+	  application is to verify your email address. Please check your e-mail
+	  and visit the link posted to you. Note that your application cannot
+	  be seen until you have verified your email address.<br />
+	  To ensure a speedy response, please check your email right away.</p>
 	<p>For any further questions, please contact <a
-	    href="mailto:support@gnome.org">support@gnome.org</a>.</p>
+	    href="mailto:{/page/@support}"><xsl:value-of select='/page/@support'/></a>.</p>
   </xsl:if>
   <xsl:if test="not(boolean(alreadyadded)) and not(boolean(account_added))">
     <p>Note: Please read the following page first: <a href="http://live.gnome.org/NewAccounts">http://live.gnome.org/NewAccounts</a>.</p>
@@ -189,7 +189,7 @@
       </th>
       <td>
        For GNOME SVN and the ability to install new modules, 
-       please select the module who can vouch for for:
+       please select who can vouch for you:
        <div><label for="vouch_dev">GNOME module: </label>
        	 	<select name="vouch_dev" id="vouch_dev">
        	 	<xsl:if test="count(gnomemodule) = 0 or not(boolean(group[@cn='gnomecvs']))">

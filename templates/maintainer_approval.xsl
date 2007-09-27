@@ -23,7 +23,7 @@ is likely due to one of the other maintainers being faster than you.
 
 The person requesting the GNOME account provided the following information:
 Name: <xsl:value-of select="account/cn"/>
-Email adress: <xsl:value-of select="account/email"/>
+Email adress: <xsl:value-of select="account/mail"/>
 Request userid: <xsl:value-of select="account/uid"/>
 Comment:
 <xsl:value-of select="account/comment"/>

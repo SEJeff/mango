@@ -13,11 +13,11 @@
   <xsl:template match="statuschange">Dear <xsl:value-of select="account/cn"/>,
     
 <xsl:choose>
-      <xsl:when test="status='approved'">Your account request has been approved by all required maintainers.
+<xsl:when test="status='approved'">Your account request has been approved by the maintainers/coordinators.
 
-The request will now be forwarded to the GNOME Accounts Team for a
-final check. When this has been completed, the account will be set
-up. You will receive an email when that happens.</xsl:when>
+The request will be forwarded to the GNOME Accounts Team for a final
+check. When this has been completed, the account will be set up. You
+will receive an email when that happens.</xsl:when>
       <xsl:otherwise>Your account request has been denied.
 
 Please ask the maintainers of the modules you requested an account for

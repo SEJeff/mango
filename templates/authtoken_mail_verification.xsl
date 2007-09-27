@@ -17,8 +17,8 @@ please follow the link below in order to confirm your e-mail address:
 
 <xsl:value-of select="authtokenlink"/>
 
-Please note that your request cannot be processed by the responsible
-person unless you validate your e-mail address. 
+Please note that your e-mail address needs to be verified before a maintainer
+can vouch for you. 
 
 Note: This is an automated mail. Please do not respond to this mail. You
 can send your questions to the accounts team e-mail address.
