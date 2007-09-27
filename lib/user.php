@@ -168,7 +168,7 @@ class User {
 		}
 		$entries = ldap_get_entries($ldap, $result);
                 if ($entries['count'] == 0)
-                    return PEAR:raiseError('No such user');
+                    return PEAR::raiseError('No such user');
 
 		$user = User::absorb($entries[0]);
 		
