@@ -23,6 +23,12 @@ function check_permissions(&$dom, &$pagenode, $group) {
 }
 
 /* Start the session */
+ini_set('session.bug_compat_42', false);
+ini_set('session.bug_compat_warn', true);
+ini_set('session.hash_function', 1);
+ini_set('session.hash_bits_per_character', 6);
+session_cache_limiter('private, must-revalidate');
+
 session_start();
 
 Page::validate_post();

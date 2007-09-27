@@ -107,7 +107,10 @@ class Login {
 				Login::loginform(true, new PEAR_Error("Multiple LDAP posixAccount records found for '".$login."'"));
 				return;
 			}
-			// The presence of a 'user' entry in the session marks them as logged in
+                        // SECURITY: Avoid session fixation attacks
+                        session_regenerate_id(true); 
+
+                        // The presence of a 'user' entry in the session marks them as logged in
 			$_SESSION['user'] = User::absorb($entries[0]);
 
 			// What groups are we in?

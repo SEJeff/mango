@@ -124,7 +124,7 @@ class NewUser {
         // If this user was created upon an account request, 
         // update the status of that account
         if (!is_null($this->account)) {
-            $this->account->update_verdict('approved');
+            $this->account->update_status('A');
         }
 
         // Inform the user (email)

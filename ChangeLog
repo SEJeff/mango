@@ -1,3 +1,14 @@
+2007-09-27  Olav Vitters  <olav@bkor.dhs.org>
+
+	Be more paranoid.
+
+	* lib/user.php: Check for valid user.
+	* www/common.php: Change session settings to be more secure.
+	* www/login.php:  Avoid session fixation attacks by use of
+	session_regenerate_id.
+	* www/new_user.php: Use update_status instead of obsolete
+	update_verdict.
+
 2007-09-26  Olav Vitters  <olav@bkor.dhs.org>
 
 	Rewrite how the accounts are handled.
