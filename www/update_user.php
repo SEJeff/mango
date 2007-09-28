@@ -62,7 +62,7 @@ class UpdateUser {
 			$uid = $_REQUEST['uid'];
 			$container = new UpdateUser($uid);
 			if($container->error) {
-				Page::redirect("/list_users.php?errmsg=".urlencode($container->error));
+				Page::sendRedirect("/list_users.php?errmsg=".urlencode($container->error));
 				return;
 			}
 			$_SESSION[SESSIONID] = $container;

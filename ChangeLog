@@ -1,3 +1,8 @@
+2007-09-28  Olav Vitters  <olav@bkor.dhs.org>
+
+	* www/common.php: Don't cache any session data.
+	* www/update_user.php: It is sendRedirect, not redirect.
+
 2007-09-27  Olav Vitters  <olav@bkor.dhs.org>
 
 	Fix wording so it look more like English.
