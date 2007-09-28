@@ -197,6 +197,7 @@
        	 	</xsl:if>
 		<option value=''>None</option>
       		<xsl:for-each select="gnomemodule">
+			<xsl:sort select="@cn"/>
       			<xsl:element name="option">
       			<xsl:if test="boolean(@selected)">
       				<xsl:attribute name="selected"/>
@@ -215,7 +216,8 @@
        	 		<xsl:attribute name="disabled" />
        	 	</xsl:if>
 		<option value=''>None</option>
-      		<xsl:for-each select="translation">
+		<xsl:for-each select="translation">
+			<xsl:sort select="@cn"/>
       			<xsl:element name="option">
       			<xsl:if test="boolean(@selected)">
       				<xsl:attribute name="selected"/>

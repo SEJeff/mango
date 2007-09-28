@@ -1,5 +1,9 @@
 2007-09-28  Olav Vitters  <olav@bkor.dhs.org>
 
+	* www/new_account.xsl: Sort the modules by name.
+
+2007-09-28  Olav Vitters  <olav@bkor.dhs.org>
+
 	* www/common.php: Don't cache any session data.
 	* www/update_user.php: It is sendRedirect, not redirect.
 
