@@ -19,6 +19,8 @@ class NewAccount {
 	function NewAccount() {
 		$this->account = new Account();
 		$this->added = false;
+		$this->vouch_dev  = '';
+		$this->vouch_i18n = '';
 	}
 
 	
