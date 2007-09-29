@@ -1,3 +1,7 @@
+2007-09-29  Olav Vitters  <olav@bkor.dhs.org>
+
+	* templates/inform_accounts.xsl: Ehr, forgot to add to the repos.
+
 2007-09-28  Olav Vitters  <olav@bkor.dhs.org>
 
 	* www/new_account.xsl: Sort the modules by name.
