@@ -1,3 +1,10 @@
+2007-10-01  Olav Vitters  <olav@bkor.dhs.org>
+
+	* lib/account.php: Don't allow usernames to consist of just one of the
+	given names (first/last name).
+	* www/list_foundationmembers.php: Only look at $_REQUEST['page'] if it is a number.
+	* www/list_users.php: Only look at $_REQUEST['page'] if it is a number.
+
 2007-09-29  Olav Vitters  <olav@bkor.dhs.org>
 
 	* templates/inform_accounts.xsl: Ehr, forgot to add to the repos.

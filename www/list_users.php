@@ -107,7 +107,7 @@ class ListUsers {
 		$listnode = $pagenode->appendChild($dom->createElement("listusers"));
 
 		// Check for page change
-		if(isset($_REQUEST['page'])) {
+		if(isset($_REQUEST['page']) && ctype_digit($_REQUEST['page'])) {
 			$this->users->goto_page($_REQUEST['page']);
 		}
 

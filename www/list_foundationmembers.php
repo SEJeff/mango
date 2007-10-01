@@ -116,7 +116,7 @@ class ListFoundationMembers {
         $listnode = $pagenode->appendChild($dom->createElement("listfoundationmembers"));
 
         // Check for page change
-        if(isset($_REQUEST['page'])) {
+        if(isset($_REQUEST['page']) && ctype_digit($_REQUEST['page'])) {
             $this->foundationmembers->goto_page($_REQUEST['page']);
         }
 

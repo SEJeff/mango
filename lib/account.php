@@ -168,6 +168,14 @@ class Account {
         if (empty ($this->cn)) { 
             $error[] = 'cn';
         }
+        if (!empty($this->cn) && !empty($this->uid)) {
+            foreach(explode(' ', $this->cn) as $name) {
+                if(strtolower($name) === $this->uid) {
+                    $error[] = 'uid'; # UID should not just be the first/last name
+                    break;
+                }
+            }
+        }
         if (empty ($this->mail)) { 
             $error[] = 'mail';
         } elseif (!preg_match('/^[\w\.\+\-=]+@[\w\.\-]+\.[\w\-]+$/', $this->mail)) {
