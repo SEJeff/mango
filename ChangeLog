@@ -1,3 +1,8 @@
+2007-10-03  Olav Vitters  <olav@bkor.dhs.org>
+
+	* templates/inform_accounts.xsl: Email address is now in <mail>; not
+	in <email>.
+
 2007-10-01  Olav Vitters  <olav@bkor.dhs.org>
 
 	* lib/account.php: Don't allow usernames to consist of just one of the
