@@ -270,7 +270,6 @@ class Account {
 
         // Check if we need vouchers
         $verdicts = $this->verdict_status();
-        error_log("verdicts: " . implode(", ", $verdicts));
         if (in_array('P', $verdicts)) {
             $this->update_status('V'); // There are pending requests
         } else {
@@ -283,9 +282,7 @@ class Account {
     function verdict_status () {
         $tmp = array();
 
-        error_log(count($this->abilities));
         foreach ($this->abilities as $key => $ability) {
-            error_log("ability status check: $key");
             $tmp[$ability['verdict']] = 1;
         }
         
@@ -436,7 +433,6 @@ class Account {
                 }
             }
         }
-        error_log($maildom->saveXML());
 
         // Process the mail body template
         $stylesheet = new DOMDocument('1.0','UTF-8');

@@ -294,17 +294,18 @@ class Module {
         $entries = ldap_get_entries($ldap, $result);
         if ($entries['count'] > 0) {
             $entry_count = $entries['count'];
-            for ($i=0; $i < $entry_count; $i++) { 
-                $entry_uid = $entries[$i]['maintaineruid'][0];
-                $maintainers[] = $entry_uid;
-            }
+            for ($i=0; $i < $entry_count; $i++)
+                for ($j=0; $j < $entries[$i]['maintaineruid']['count']; $j++)
+                    $maintainers[] = $entries[$i]['maintaineruid'][$j];
+            
             $ldapcriteria = "(&(objectClass=posixAccount)(|(uid= " . implode(')(uid=', array_map(array('LDAPUtil', 'ldap_quote'), $maintainers)) . ")))";
             $result = ldap_search($ldap, $config->ldap_basedn, $ldapcriteria, array ('uid', 'mail', 'cn'));
             if (!$result) { 
                 return PEAR::raiseError("LDAP search failed: ".ldap_error($ldap));
             }
             $mail_entries = ldap_get_entries($ldap, $result);
-            if ($mail_entries['count'] > 0) { 
+            $entry_count = $mail_entries['count'];
+            if ($entry_count > 0) { 
                 for ($i=0; $i < $entry_count; $i++) { 
                     $entry_uid = $mail_entries[$i]['uid'][0];
                 
