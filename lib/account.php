@@ -234,7 +234,7 @@ class Account {
             $node->setAttribute('cn', $ability);
         }
         $node = $formnode->appendChild($dom->createElement('authorizationkeys'));
-        $node->appendChild($dom->createTextNode(join ('\n', $this->authorizationkeys)));
+        $node->appendChild($dom->createTextNode(join ("\n", $this->authorizationkeys)));
     }
         
     function ability_from_form($ability, $vouchgroup = null) { 
