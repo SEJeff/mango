@@ -7,8 +7,6 @@
 
   <xsl:output method="html" encoding="UTF-8" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" />
   
-  <xsl:param name="libgo.channel">undefined</xsl:param>
-
   <xsl:template match="page">
     <xsl:param name="channel"><xsl:value-of select="$libgo.channel"/></xsl:param>
    <html>

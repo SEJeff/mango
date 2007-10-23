@@ -1,5 +1,9 @@
 2007-10-23  Olav Vitters  <olav@bkor.dhs.org>
 
+	* www/page.xsl: Don't define libgo.channel twice.
+
+2007-10-23  Olav Vitters  <olav@bkor.dhs.org>
+
 	* www/index.xsl: Use correct attribute for the email address.
 
 2007-10-20  Olav Vitters  <olav@bkor.dhs.org>
