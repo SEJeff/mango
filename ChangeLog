@@ -1,3 +1,7 @@
+2007-10-27  Olav Vitters  <olav@bkor.dhs.org>
+
+	* www/verify_mail.xsl: Set libgo.channel.
+
 2007-10-23  Olav Vitters  <olav@bkor.dhs.org>
 
 	* www/page.xsl: Don't define libgo.channel twice.
