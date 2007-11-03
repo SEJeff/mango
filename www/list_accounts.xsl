@@ -30,7 +30,7 @@
       <xsl:sort select="@uid"/>
       <tr class="row-{position() mod 2}">
        <td valign="top">
-        <a href="mailto:{mail}">
+        <a href="mailto:{@mail}">
          <xsl:apply-templates select="@uid"/>
         </a>
        </td>
