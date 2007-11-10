@@ -11,21 +11,50 @@
  
   <xsl:template match="listaccounts">
    <xsl:apply-templates select="error"/>
-    <xsl:choose>
-   <xsl:when test="boolean(account)" >
-	<p> 
-       	Pending new account request:
-    <form name='f' method='POST' action="{script}">
-		<table class="results" cellspacing="0" cellpadding="5">
-			<caption>Results</caption>
-			<thead>
-			<th>UID</th>
-			<th>Name</th>
-			<th>Approved For</th>
-			<th>Created On</th>
-			<th>Action</th>
-			</thead>
-			<tbody>
+  <p> 
+   Pending new account request:
+   <form method="GET" action="{$script}" id="filterform" name="filterform">
+    <table class="navigation">
+     <caption>Navigation</caption>
+     <tr>
+      <td>
+       Search: <input type="text" name="filter_keyword" value="{filter/keyword}" onchange="this.form.submit()"/>
+       <noscript>
+        <input type="submit" value="&gt; &gt;"/>
+       </noscript>
+       <select name="filter_status">
+	 <option value="S">Awaiting setup</option>
+	 <option value="V">Awaiting vouchers</option>
+	 <option value="M">Awaiting mail verification</option>
+	 <option value="A">Created</option>
+	 <option value="R">Rejected</option>
+       </select>
+      </td>
+      <td align="right">
+       <xsl:if test="boolean(user)">
+        Page <xsl:value-of select="pagedresults/page_num"/> of <xsl:value-of select="pagedresults/total_pages"/>
+       </xsl:if>
+       <span class="smallprint">(<xsl:value-of select="pagedresults/total_results"/> accounts found)</span>
+       <xsl:if test="pagedresults/page_num &gt; 1">
+        <a class="button" href="{$script}?page={pagedresults/page_num - 1}">&lt;&lt; Prev</a>
+       </xsl:if>
+       <xsl:if test="pagedresults/page_num &lt; pagedresults/total_pages">
+        <a class="button" href="{$script}?page={pagedresults/page_num + 1}">Next &gt;&gt;</a>
+       </xsl:if>
+      </td>
+     </tr>
+    </table>
+   </form>
+     <table class="results" cellspacing="0" cellpadding="5">
+       <caption>Results</caption>
+       <thead>
+	 <th>UID</th>
+	 <th>Name</th>
+	 <th>Approved For</th>
+	 <th>Created On</th>
+	 <th>Action</th>
+      </thead>
+      <tbody>
      <xsl:for-each select="account">
       <xsl:sort select="@uid"/>
       <tr class="row-{position() mod 2}">
@@ -49,22 +78,21 @@
         <xsl:apply-templates select="@createdon"/>
        </td>
        <td valign="top">
-	 <a class="button" href="new_user.php?reload=true&amp;account={@db_id}">New user</a><input type="submit" value="Reject" />
+	 <xsl:if test='(@status = "S") or (@status = "V")'><a class="button" href="new_user.php?reload=true&amp;account={@db_id}">New user</a></xsl:if>
+	 <xsl:if test='not((@status = "R") or (@status = "A"))'>
+	   <form name='f' method='POST' action="{script}" style='display: inline'>
+             <input type="hidden" name="mango_token" value="{/page/@token}"/>
+	     <input type="hidden" name="reject" value="{@db_id}"/>
+	     <input type="submit" value="Reject" />
+	   </form>
+	 </xsl:if>
        </td>
       </tr>
      </xsl:for-each>
      </tbody>
     </table>
-    </form>
     <br/>
    </p>
-   </xsl:when>
-   <xsl:otherwise>
-    <p>
-      There are no pending account requests.
-    </p>
-   </xsl:otherwise>
-  </xsl:choose>
   </xsl:template>
    
 </xsl:stylesheet>

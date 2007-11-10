@@ -373,19 +373,20 @@ class Account {
         return $result;
     }
     
-    function get_accountsteam_actions() { 
+    function get_accountsteam_actions($keyword, $status) { 
         global $config;
-        
+
+        if (empty($status)) $status = 'S';
+
         $return = array ();
         $mysql = MySQLUtil::singleton($config->accounts_db_url);
         $query = "SELECT id " .
                    "FROM account_request ".
-                  "WHERE status = 'S' ";
+                  "WHERE status = " . $mysql->escape_string($status);
 
         $result = $mysql->query($query);
         while ($row = mysql_fetch_array($result)) { 
-            $account = new Account ($row['id']);
-            $return[] = $account;
+            $return[] = $row['id'];
         }
         return $return;
     }

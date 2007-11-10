@@ -1,3 +1,10 @@
+2007-11-11  Olav Vitters  <olav@bkor.dhs.org>
+
+	* lib/account.php: Allow to select accounts in a status other than
+	'S'. Filtering doesn't work yet.
+	* www/list_accounts.php: Allow to reject accounts.
+	* www/list_accounts.xsl:
+
 2007-10-27  Olav Vitters  <olav@bkor.dhs.org>
 
 	* www/verify_mail.xsl: Set libgo.channel.
