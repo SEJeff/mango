@@ -21,7 +21,7 @@
 
   <xsl:template match="account">
     <dt>
-      User <a href="mailto:{@mail}"><xsl:value-of select="@cn"/></a> with comment:<br />
+      User <a href="mailto:{@mail}"><xsl:value-of select="@cn"/></a> (userid: <xsl:value-of select="@uid"/>) with comment:<br />
       <i>"<xsl:value-of select="@comment"/>"</i>
     </dt>
     <xsl:apply-templates select='groups/group'>

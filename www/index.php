@@ -82,6 +82,7 @@ if (isset($_SESSION['user']) && is_a ($_SESSION['user'], 'User')) {
             foreach ($action_list as $account) { 
                 $vnode->appendChild($accountnode = $page->result->createElement('account'));
                 $accountnode->setAttribute('cn', $account->cn);
+                $accountnode->setAttribute('uid', $account->uid);
                 $accountnode->setAttribute('mail', $account->mail);
                 $accountnode->setAttribute('comment', $account->comment);
                 $accountnode->setAttribute('db_id', $account->db_id);

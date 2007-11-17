@@ -1,3 +1,9 @@
+2007-11-17  Olav Vitters  <olav@bkor.dhs.org>
+
+	* www/index.php: Show userid as well to allow maintainers to reject
+	invalid userids.
+	* www/index.xsl:
+
 2007-11-11  Olav Vitters  <olav@bkor.dhs.org>
 
 	* lib/account.php: Allow to select accounts in a status other than
