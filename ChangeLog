@@ -1,3 +1,8 @@
+2007-11-27  Olav Vitters  <olav@bkor.dhs.org>
+
+	* www/index.xsl: Stupid IE6 cannot approve SVN accounts due to missing
+	action="$URL".
+
 2007-11-17  Olav Vitters  <olav@bkor.dhs.org>
 
 	* www/index.php: Show userid as well to allow maintainers to reject

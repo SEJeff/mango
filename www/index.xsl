@@ -72,7 +72,7 @@
         You are logged in as <xsl:value-of select="/page/user/cn"/>.
         <xsl:if test="boolean(vouchers)">
           <p>Please approve/reject the following account requests:</p>
-          <form name="module" method="POST">
+	  <form name="module" action="{/page/@baseurl}/" method="POST">
             <input type="hidden" name="mango_token" value="{/page/@token}"/>
             <dl>
             <xsl:for-each select="vouchers">
