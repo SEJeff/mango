@@ -1,3 +1,7 @@
+2007-12-04  Olav Vitters  <olav@bkor.dhs.org>
+
+	* config.xml-gnome: Make it valid XML.
+
 2007-11-27  Olav Vitters  <olav@bkor.dhs.org>
 
 	* www/index.xsl: Stupid IE6 cannot approve SVN accounts due to missing

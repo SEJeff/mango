@@ -13,7 +13,7 @@
   <ldap_basedn>dc=gnome,dc=org</ldap_basedn>
   <ldap_users_basedn>ou=people,dc=gnome,dc=org</ldap_users_basedn>
   <ldap_groups_basedn>ou=groups,dc=gnome,dc=org</ldap_groups_basedn>
-  <ldap_modules_basedn>ou=modules,dc=gnome,dc=org</ldap_groups_basedn>
+  <ldap_modules_basedn>ou=modules,dc=gnome,dc=org</ldap_modules_basedn>
   <token_salt>nottelling</token_salt>
   <support_email>rossg@gnome.org</support_email>
   <session_path>/var/lib/mango/sessions</session_path>
