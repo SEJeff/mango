@@ -1,5 +1,19 @@
 2007-12-08  Olav Vitters  <olav@bkor.dhs.org>
 
+	patch by: Patrick Fey
+
+	* lib/module.php: Eliminate useless generic ldap authentication error
+	messages.
+
+2007-12-08  Olav Vitters  <olav@bkor.dhs.org>
+
+	reviewed by: <delete if not using a buddy>
+	patch by: <delete if not someone else's patch>
+
+	* www/new_account.php:
+
+2007-12-08  Olav Vitters  <olav@bkor.dhs.org>
+
 	patch by:  Patrick Fey
 
 	* lib/ldap.php: Return error messages raised during connection to LDAP

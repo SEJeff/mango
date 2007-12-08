@@ -80,9 +80,10 @@ class Module {
         
         // Connect to LDAP server
         $ldap = LDAPUtil::singleton();
-        if(PEAR::isError($ldap)) return $ldap;
-        if(!$ldap) {
-            return PEAR::raiseError("LDAP authentication failed");
+        
+        /* Catch PEAR error */
+        if (PEAR::isError($ldap)) {
+            return $ldap;
         }
         
         $result = ldap_search($ldap, $config->ldap_modules_basedn, $ldapcriteria, array('cn', 'description','maintainerUid'));
@@ -99,11 +100,11 @@ class Module {
         
         // Connect to LDAP server
         $ldap = LDAPUtil::singleton();
-        if(PEAR::isError($ldap)) return $ldap;
-        if(!$ldap) {
-            return PEAR::raiseError("LDAP authentication failed");
-        }
         
+        /* Catch PEAR error */
+        if (PEAR::isError($ldap)) {
+            return $ldap;
+        }
 
         // Add module entry
         $dn = "cn=".$this->cn.",".$config->ldap_modules_basedn;
@@ -139,9 +140,10 @@ class Module {
         
         // Connect to LDAP server
         $ldap = LDAPUtil::singleton();
-        if(PEAR::isError($ldap)) return $ldap;
-        if(!$ldap) {
-            return PEAR::raiseError("LDAP authentication failed");
+        
+        /* Catch PEAR error */
+        if (PEAR::isError($ldap)) {
+            return $ldap;
         }
 
         // Gather module attributes
@@ -164,9 +166,10 @@ class Module {
         
         // Connect to LDAP server
         $ldap = LDAPUtil::singleton();
-        if(PEAR::isError($ldap)) return $ldap;
-        if(!$ldap) {
-            return PEAR::raiseError("LDAP authentication failed");
+        
+        /* Catch PEAR error */
+        if (PEAR::isError($ldap)) {
+            return $ldap;
         }
         
         // Pull up existing record for comparison
