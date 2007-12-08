@@ -1,3 +1,11 @@
+# Organization
+dn: dc=example,dc=org
+o: ExampleOrganization
+objectclass: dcObject
+objectClass: organization
+objectClass: top
+dc: example
+
 # Organization Units
 dn: ou=people,dc=example,dc=org
 objectClass: organizationalUnit
@@ -24,7 +32,7 @@ mail: baris@teamforce.name.tr
 description: Mango Dev
 loginShell: /bin/bash
 homeDirectory: /home/directory
-userPassword:: e1NNRDV9aGV0QUdsdkZUdGtlSmM1YXpHQnFLRmMvY3NvPQ==
+userPassword: e1NNRDV9aGV0QUdsdkZUdGtlSmM1YXpHQnFLRmMvY3NvPQ==
 
 dn: cn=gnomeweb,ou=groups,dc=example,dc=org
 objectClass: posixGroup

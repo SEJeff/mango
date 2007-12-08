@@ -2,6 +2,12 @@
 
 	patch by:  Patrick Fey
 
+	* docs/ldif/ou.ldif: Make docs/ou.ldif work out of the box
+
+2007-12-08  Olav Vitters  <olav@bkor.dhs.org>
+
+	patch by:  Patrick Fey
+
 	* INSTALL: Improve installation instructions.
 
 2007-12-04  Olav Vitters  <olav@bkor.dhs.org>
