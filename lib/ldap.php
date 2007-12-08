@@ -6,6 +6,7 @@ class LDAPUtil {
     // Hold an instance of the class
     private static $instance;
     private $handle = null;
+    private $error = '';
    
     // A private constructor; prevents direct creation of object
     private function __construct()
@@ -15,25 +16,31 @@ class LDAPUtil {
         /* Connect to the LDAP server */
         $ldap = ldap_connect($config->ldap_url);
         if(!$ldap) {
-            return PEAR::raiseError("Unable to connect to LDAP server");
+            $this->error = PEAR::raiseError("Unable to connect to LDAP server");
+            return false;
         }
         
         /* Set protocol v3 */
         if(!ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, 3)) {
-            return PEAR::raiseError("Could not switch LDAP connection to protocol v3");
-        }
-
-        /* Bind to the LDAP server */
-        $bind_result = ldap_bind($ldap, $config->ldap_binddn, $config->ldap_bindpw);
-        if(!$bind_result) {
-            ldap_close($ldap);
+            $this->error = PEAR::raiseError("Could not switch LDAP connection to protocol v3");
             return false;
         }
 
+        /* Bind to the LDAP server */
+        $bind_result = @ldap_bind($ldap, $config->ldap_binddn, $config->ldap_bindpw);
+        if(!$bind_result) {
+            $bind_error = ldap_error($ldap);
+            ldap_close($ldap);
+            $this->error = PEAR::raiseError('Unable to bind to LDAP server: '.$bind_error.'.');
+            return false;
+        }
+
+        /* Everything went well,
+         * assign LDAP ressource handle */
         $this->handle = $ldap;
 
         /* Return connection handle */
-        return $ldap;
+        return true;
     }
 
     function __destruct() {
@@ -50,8 +57,14 @@ class LDAPUtil {
             $c = __CLASS__;
             self::$instance = new $c;
         }
-
-        return self::$instance->handle;
+        
+        /* If no error was raised, return LDAP ressource handle.
+         * If an error was raised, return the PEAR error object instead. */
+        if (!PEAR::isError(self::$instance->error)) {
+            return self::$instance->handle;
+        } else {
+            return self::$instance->error;
+        }
     }
    
     // Prevent users to clone the instance
