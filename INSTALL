@@ -1,43 +1,187 @@
-Roughly:
+1.) Ensure the necessary applications are installed on your system. You'll need:
 
-1) Set up the virtualhost
+* Webserver (e.g. Apache 2)
+* LDAP server (e.g. OpenLDAP 2)
+* SQL server (e.g. MySQL 5)
+* PHP5 with LDAP and MySQL support
+* PEAR (see below for a list of packages required)
+
+On a recent Debian system, install the following packages:
+
+* apache2
+* slapd
+* ldap-utils
+* mysql-server
+* mysql-client
+* php5-cgi
+* php5-ldap
+* php5-mysql
+* php-pear
+
+You might want to reconfigure web, LDAP and MySQL servers to only listen on
+localhost, if you plan to use your Mango installation for development purposes
+only.
+
+Necessary PEAR packages are listed below (Fedora package names this time): 
+
+* php-pear
+* php-pear-Net-Socket
+* php-pear-XML-Parser
+* php-pear-Mail-Mime
+* php-pear-XML-Util
+* php-pear-Auth-SASL
+* php-pear-Mail
+* php-pear-HTML-Common
+* php-pear-Net-SMTP
+
+
+2.) Check out Mango sources, if you didn't already:
+
+svn co http://svn.gnome.org/svn/mango/trunk mango
+
+
+3.) Create a session directory
+
+mkdir /where/you/checked/out/mango/sessions
+chmod 777 /where/you/checked/out/mango/sessions
+
+4.) Configure the LDAP server
+
+The ldif files in the Mango docs directory assume that you use dc=example,dc=org
+as the suffix for your LDAP directory. Start with editing the suffix variable and
+all subsequent occurences of dc=nodomain in /etc/ldap/slapd.conf to say
+"dc=example,dc=org" instead of "dc=nodomain".
+
+Create a local administrator account to import the initial example LDAP data and
+for later use with the Mango application. Insert into /etc/ldap/slapd.conf:
+
+rootdn "cn=admin,dc=example,dc=org"
+rootpw {SSHA}B3MTCdJ+bDiAUUzMuhPzcrmKG33+8Wkj
+
+You can generate a password string using the slappasswd utility.
+
+The Mango application needs a number of custom LDAP schemas to work. Import all
+schemas in docs/schemas by inserting into /etc/ldap/slapd.conf
+
+# Mango schemas
+include         /where/you/checked/out/mango/docs/schemas/cvs.schema
+include         /where/you/checked/out/mango/docs/schemas/module.schema
+inlcude         /where/you/checked/out/mango/docs/schemas/sshd.schema
+
+In the future there might be even more custom schemas. Check the directory
+docs/schemas and import all schemas you can find.
+
+Restart slapd for the changes to take effect.
+
+
+5.) Edit the example LDAP data to your liking
+
+In docs/ldif is a ldif file that contains example LDAP data you can use for
+your development installation of Mango. You might want to edit the data of the
+example user to your liking. Check docs/ldif/ou.ldif for the following section:
+
+# Initial User Account
+dn: uid=bcicek,ou=people,dc=example,dc=org
+objectClass: inetOrgPerson
+objectClass: posixAccount
+uid: bcicek
+uidNumber: 6000
+gidNumber: 6000
+cn: Baris Cicek
+sn: Baris Cicek
+mail: baris@teamforce.name.tr
+description: Mango Dev
+loginShell: /bin/bash
+homeDirectory: /home/directory
+userPassword: e1NNRDV9aGV0QUdsdkZUdGtlSmM1YXpHQnFLRmMvY3NvPQ==
+
+You might want to edit uid (in dn and uid attributes), cn, sn, mail and
+userPassword. Again, use the slappasswd utility to generate the password string.
+
+Now search for every occurence of the string bcicek and replace it with the user
+id that you chose. If this works out, you will later be able to login using
+the uid and password you chose and you will be the maintainer of the Mango
+module. Congratulations ;).
+
+
+6.) Import example LDAP data into the LDAP directory
+
+You can use ldapadd to import example LDAP data (LDAP server should be running):
+
+ldapadd -x -W -D "cn=admin,dc=example,dc=org" -f docs/ldif/ou.ldif
+
+Use the cn and password of the root account to import the data. If you encounter
+errors (e.g. you made a mistake when editing the file) use the -c option in
+subsequent imports to skip the objects already created.
+
+
+7.) Configure MySQL server
+
+Connect to the MySQL server using the mysql command line utility and create
+a user and a database for Mango (in this case we used the name mango for both):
+
+mysql -u root -p
+> CREATE DATABASE mango;
+> GRANT ALL PRIVILEGES ON mango.* TO 'mango'@'localhost' IDENTIFIED BY 'some_pass';
+> quit
+
+
+8.) Import example MySQL data into database
+
+In docs/sql are the sql files that contain the example sql data. Import these
+files into the database you just created.
+
+mysql -u root -p mango < /where/you/checked/out/mango/docs/sql/ftpmirrors.sql
+mysql -u root -p mango < /where/you/checked/out/mango/docs/sql/foundationmembers.sql
+mysql -u root -p mango < /where/you/checked/out/mango/docs/sql/mango.sql
+
+There might be more sql files in the future. Check the docs/sql directory and
+import all sql files you can find.
+
+9.) Configure web server
 
 Create a new entry in /etc/hosts:
 
 127.0.0.123  mango.gnome.local
 
-You can use whatever you want for the IP and hostname, as long as Apache will respond to it. Next, add a virtualhost file in your Apache sites dir (/etc/httpd/sites.d for RedHat, /etc/apache/sites-available for Debian/Ubuntu).
+You can use whatever you want for the IP and hostname, as long as your web server
+will respond to it. If you use Apache 2, add a virtualhost file in your Apache
+sites dir (/etc/httpd/sites.d for RedHat, /etc/apache2/sites-available for
+Debian/Ubuntu). In Debian/Ubuntu, create a symlink to your virtualhost file in
+/etc/apache2/sites-enabled to enable the site. If you use the server only for
+Mango development, you might want to remove the symlink for the default site.
 
 <VirtualHost 127.0.0.123:80>
-ServerName mango.gnome.local
-DocumentRoot /where/you/checked/out/mango/www
-ExpiresActive On
-ExpiresByType image/png "access plus 1 week"
-ExpiresByType application/xml "access plus 1 week"
-ExpiresByType text/css "access plus 1 day"
+   ServerName mango.gnome.local
+   DocumentRoot /where/you/checked/out/mango/www
+   Options Includes ExecCGI
+   AddHandler cgi-script .php
 </VirtualHost>
 
 Restart Apache for changes to take effect.
 
-2) Copy 'config-example.xml' to 'config.xml' and configure to taste. 
 
-3) Import docs/ldif/ou.ldif into your ldap directory. You might need to edit
-file for some customization. You can use ldapadd to import it (ldap server 
-should be running):
-	ldapadd -x -W -D "cn=Manager,dc=example,dc=org" -f docs/ldif/ou.ldif
+10.) Copy 'config-gnome.xml' to 'config.xml' and configure to taste. 
 
-4) You also need Pear in order to run scripts. Necessary php-pear packages are listed below. (Fedora package names, you can find appropriate packages for your
-distro as well): 
-	php-pear-Net-Socket
-	php-pear
-	php-pear-XML-Parser
-	php-pear-Mail-Mime
-	php-pear-XML-Util
-	php-pear-Auth-SASL
-	php-pear-Mail
-	php-pear-HTML-Common
-	php-pear-Net-SMTP
+This is an overview about the configuration options:
+
+* mode is either development, live or preview.
+* base_url is the url of your web server
+* secure_url is the same as base_url, just https (if you set that up).
+* accounts_db_url, mirrors_db_url and membership_db_url is the url
+  of your MySQl server (see step 7). The syntax is as follows:
+  mysql://user:password@hostname:port/database
+* smtp_url is the url of your smtp server
+* ldap_url is the url of your ldap server
+* ldap_binddn is your ldap root account (see step 4)
+* ldap_bindpw is the password of your ldap root account (see step 4)
+* ldap_usrs_basedn, ldap_groups_basedn, ldap_modules_basedn is where the
+  user, groups and module data is stored in your ldap directory (see step 5)
+* no idea what token_salt is, probably some kind of salt ;)
+* support_email is the email address of your support team (probably your own)
+* session_path is the path where sessions should be stored (see step 3)
 
 
-5) Connect to http://mango.gnome.local/ (or whatever you set it up to be) and off you go.
-
+11.) Connect to http://mango.gnome.local/ (or whatever you set it up to be)
+and off you go. If everything worked, you should be able to login using the
+example user you created earlier in step 6.
