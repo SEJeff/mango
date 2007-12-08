@@ -1,5 +1,12 @@
 2007-12-08  Olav Vitters  <olav@bkor.dhs.org>
 
+	patch by: Patrick Fey
+
+	* lib/ldap.php: Use ldap url instead of hostname to connect to ldap
+	server.
+
+2007-12-08  Olav Vitters  <olav@bkor.dhs.org>
+
 	patch by:  Patrick Fey
 
 	* docs/ldif/ou.ldif: Make docs/ou.ldif work out of the box

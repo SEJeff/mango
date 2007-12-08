@@ -12,12 +12,8 @@ class LDAPUtil {
     {
          global $config;
 
-        /* Extract the hostname */
-        $url_parts = parse_url($config->ldap_url);
-        $hostname = $url_parts['host'];
-
         /* Connect to the LDAP server */
-        $ldap = ldap_connect($hostname);
+        $ldap = ldap_connect($config->ldap_url);
         if(!$ldap) {
             return PEAR::raiseError("Unable to connect to LDAP server");
         }
