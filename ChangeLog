@@ -2,6 +2,13 @@
 
 	patch by: Patrick Fey
 
+	* www/new_account.php: Catch ldap authentication error in
+	new_account.php.
+
+2007-12-08  Olav Vitters  <olav@bkor.dhs.org>
+
+	patch by: Patrick Fey
+
 	* lib/module.php: Eliminate useless generic ldap authentication error
 	messages.
 

@@ -63,7 +63,13 @@ class NewAccount {
 		    $formnode->appendChild ($dom->createElement('alreadyadded'));
 
 		$gnomemodules = Module::listmodule($result, "devmodule");
+		if(PEAR::isError($gnomemodules)) {
+			exit("Error: ".$gnomemodules->getMessage());
+		}
 		$translationmodules = Module::listmodule($result, "translationmodule");
+		if(PEAR::isError($translationmodules)) {
+			exit("Error: ".$translationmodules->getMessage());
+		}
 		if ($gnomemodules['count'] > 0) { 
 			for ($i = 0; $i < $gnomemodules['count']; $i++) { 
 				$usernode = $formnode->appendChild($dom->createElement("gnomemodule"));
