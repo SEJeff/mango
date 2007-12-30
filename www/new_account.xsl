@@ -225,7 +225,7 @@
       			<xsl:attribute name="value">
       				<xsl:value-of select="@cn" />
       			</xsl:attribute>
-      			<xsl:value-of select="@cn" />
+      			<xsl:value-of select="@desc" />
       			</xsl:element>
       		</xsl:for-each>
 		</select>

@@ -84,6 +84,7 @@ class NewAccount {
 			for ($i = 0; $i < $translationmodules['count']; $i++) { 
 				$usernode = $formnode->appendChild($dom->createElement("translation"));
 				$usernode->setAttribute('cn', $translationmodules[$i]['cn'][0]);
+				$usernode->setAttribute('desc', $translationmodules[$i]['description'][0]);
 				if ($this->vouch_i18n == $translationmodules[$i]['cn'][0]) { 
 					$usernode->setAttribute('selected', '1');
 				}
