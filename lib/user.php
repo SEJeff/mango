@@ -13,6 +13,7 @@ class User {
 		
 	// Details of the groups the user is in
 	var $groups;
+        var $uid_from_ldap;
 
 	// Has 'pubkeyauthenticationuser' objectclass set?
 	var $pubkeyauthenticationuser;
