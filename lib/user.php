@@ -445,8 +445,9 @@ class User {
 	
 	function validate() {
 		$errors = array();
-                if($user->uid_from_ldap empty($this->uid)
-                   || (!$user->uid_from_ldap && !preg_match("/^[a-z]{1,12}$/", $this->uid))) {
+                if(empty($this->uid) || (!$user->uid_from_ldap
+                                         && !preg_match("/^[a-z]{1,12}$/",
+                                                        $this->uid))) {
 			$errors[] = "uid";
 		}
 		if(empty($this->cn))
