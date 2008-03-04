@@ -1,3 +1,7 @@
+2008-03-04  Olav Vitters  <olav@bkor.dhs.org>
+
+	* lib/user.php: Don't validate uid again for users existing in LDAP.
+
 2007-12-08  Olav Vitters  <olav@bkor.dhs.org>
 
 	patch by: Patrick Fey

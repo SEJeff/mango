@@ -20,6 +20,7 @@ class User {
 	function User() {
 		$this->authorizedKeys = array();
 		$this->groups = array();
+                $this->uid_from_ldap = false;
 		$this->pubkeyauthenticationuser = false;
 	}
 
@@ -185,6 +186,8 @@ class User {
 			$groups[] = $entries[$i]['cn'][0];
 		}
 		$user->groups = $groups;
+
+                $user->uid_from_ldap = true;
 		
 		// Tidy up		
 
@@ -442,7 +445,8 @@ class User {
 	
 	function validate() {
 		$errors = array();
-		if(empty($this->uid) || !preg_match("/^[a-z]{1,12}$/", $this->uid)) {
+                if($user->uid_from_ldap empty($this->uid)
+                   || (!$user->uid_from_ldap && !preg_match("/^[a-z]{1,12}$/", $this->uid))) {
 			$errors[] = "uid";
 		}
 		if(empty($this->cn))
