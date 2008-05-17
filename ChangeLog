@@ -1,3 +1,11 @@
+2008-05-17  Olav Vitters  <olav@bkor.dhs.org>
+
+	* lib/user.php: When adding new SSH keys: Only add
+	pubkeyAuthenticationUser objectclass if that objectclass is missing
+	instead of assuming it isn't there if there aren't any SSH keys.
+	Allows adding of SSH keys for people who had their SSH key removed due
+	to Debian/Ubuntu SSH security issue.
+
 2008-03-04  Olav Vitters  <olav@bkor.dhs.org>
 
 	* lib/user.php: Don't validate uid again for users existing in LDAP.

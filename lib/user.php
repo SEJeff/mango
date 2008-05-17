@@ -283,7 +283,7 @@ class User {
             foreach($newkeys as $key) {
                 $keychanges['authorizedKey'][] = $key;
             }
-            if(count($olduser->authorizedKeys) == 0) {
+            if (!$olduser->pubkeyauthenticationuser) {
                 $keychanges['objectclass'][] = "pubkeyAuthenticationUser";
                 $changes[] = "pubkeyauthenabled";
             }
