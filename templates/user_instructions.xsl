@@ -11,7 +11,7 @@
   <xsl:output method="text" encoding="UTF-8" omit-xml-declaration="yes"/>
 
   <xsl:template match="user_instructions"><xsl:variable
-      name="output"><xsl:if test="boolean(change[@id='keyadded'])"><xsl:call-template 
+      name="output"><xsl:if test="boolean(change[@id='keysadded'])"><xsl:call-template 
 	  name="keysadded"/></xsl:if><xsl:if
 	test="boolean(change[@id='joined-group' and @cn='gnomecvs']) or
 	(boolean(change[@id='newuser']) and
