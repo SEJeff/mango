@@ -11,7 +11,8 @@
   <xsl:output method="text" encoding="UTF-8" omit-xml-declaration="yes"/>
 
   <xsl:template match="user_instructions"><xsl:variable
-      name="output"><xsl:if
+      name="output"><xsl:if test="boolean(change[@id='keyadded'])"><xsl:call-template 
+	  name="keysadded"/></xsl:if><xsl:if
 	test="boolean(change[@id='joined-group' and @cn='gnomecvs']) or
 	(boolean(change[@id='newuser']) and
 	boolean(user/group[@cn='gnomecvs']))"><xsl:call-template
@@ -83,5 +84,22 @@ OK, your <xsl:value-of select="user/uid"/>@gnome.org email alias should be worki
 hour from now. Remember to follow the rules outlined on
 http://developer.gnome.org/doc/policies/accounts/mail.html when using
 your mail alias.
+</xsl:template><xsl:template name="keysadded">
+One or more SSH keys has been added to your GNOME account. It will take
+up to an hour before these changes are reflected on the server.
+
+The following SSH keys are currently set on your account:
+<xsl:for-each select="user/authorizedKey">
+  <xsl:choose>
+    <xsl:when test="boolean(@fingerprint)">
+      <xsl:value-of select="@fingerprint"/>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="concat(substring(., 0, 20), '...', substring(., string-length(.) - 40))"/>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:for-each>
+
+
 </xsl:template>
 </xsl:stylesheet>

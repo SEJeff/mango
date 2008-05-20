@@ -282,6 +282,13 @@ class User {
             $keychanges = array();
             foreach($newkeys as $key) {
                 $keychanges['authorizedKey'][] = $key;
+
+                $fingerprint = is_valid_ssh_pub_key($key, False, True);
+                if ($fingerprint !== false) {
+                    $changes[] = array('id'=>'key-add', "key"=>$key, "fingerprint"=>$fingerprint);
+                } else {
+                    $changes[] = array('id'=>'key-add', "key"=>$key);
+                }
             }
             if (!$olduser->pubkeyauthenticationuser) {
                 $keychanges['objectclass'][] = "pubkeyAuthenticationUser";
@@ -444,6 +451,10 @@ class User {
         $node->appendChild($dom->createTextNode($this->description));
         foreach($this->authorizedKeys as $authorizedKey) {
             $node = $formnode->appendChild($dom->createElement("authorizedKey"));
+            $fingerprint = is_valid_ssh_pub_key($key, False, True);
+            if ($fingerprint !== false) {
+                $node->setAttribute("fingerprint", $fingerprint);
+            }
             $node->appendChild($dom->createTextNode($authorizedKey));
         }
         foreach($this->groups as $group) {

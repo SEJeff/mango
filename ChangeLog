@@ -1,6 +1,12 @@
 2008-05-20  Olav Vitters  <olav@bkor.dhs.org>
 
 	* lib/user.php:
+	* templates/user_instructions.xsl: Inform the user regarding SSH key
+	changes. Initial version.. untested.
+
+2008-05-20  Olav Vitters  <olav@bkor.dhs.org>
+
+	* lib/user.php:
 	* templates/user_instructions.xsl:
 	* www/new_user.php:
 	* www/update_user.xsl: Prepare work to inform the user regarding key
