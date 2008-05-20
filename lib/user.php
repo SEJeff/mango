@@ -275,7 +275,7 @@ class User {
                 $pe = PEAR::raiseError("LDAP (user keys) delete failed: ".ldap_error($ldap));
                 return $pe;
             }
-            $changes[] = array('id'=>"keysremoved")
+            $changes[] = array('id'=>"keysremoved");
         }
         $newkeys = array_diff($this->authorizedKeys, $olduser->authorizedKeys);
         if(is_array($newkeys) && count($newkeys) > 0) {
