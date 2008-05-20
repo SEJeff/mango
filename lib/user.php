@@ -363,7 +363,7 @@ class User {
         if (empty($body))
             return false;
 
-        $changes[] = array('id'=>"informed-user');
+        $changes[] = array('id'=>'informed-user');
 
         $subject = $is_new_account ?
                'Your new GNOME account' :
