@@ -1,5 +1,10 @@
 2008-05-20  Olav Vitters  <olav@bkor.dhs.org>
 
+	* lib/user.php: Typo fix.
+	* www/update_user.php: Allow the inform_user function to be ran.
+
+2008-05-20  Olav Vitters  <olav@bkor.dhs.org>
+
 	* lib/user.php:
 	* templates/user_instructions.xsl: Inform the user regarding SSH key
 	changes. Initial version.. untested.

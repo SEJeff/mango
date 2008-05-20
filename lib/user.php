@@ -451,7 +451,7 @@ class User {
         $node->appendChild($dom->createTextNode($this->description));
         foreach($this->authorizedKeys as $authorizedKey) {
             $node = $formnode->appendChild($dom->createElement("authorizedKey"));
-            $fingerprint = is_valid_ssh_pub_key($key, False, True);
+            $fingerprint = is_valid_ssh_pub_key($authorizedKey, False, True);
             if ($fingerprint !== false) {
                 $node->setAttribute("fingerprint", $fingerprint);
             }

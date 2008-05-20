@@ -148,6 +148,7 @@ class UpdateUser {
 			$result = $this->process_general_tab($dom, $formnode);
 		elseif($this->tab == "sshkeys")
 			$result = $this->process_sshkeys_tab($dom, $formnode);
+                        $inform_changes = true;
 		elseif($this->tab == "groups") {
                         $result = $this->process_groups_tab($dom, $formnode);
                         $inform_changes = true;
