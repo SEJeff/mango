@@ -179,11 +179,14 @@ class UpdateUser {
 
 		// Report successes
 		if(is_array($result)) {
-                        if ($inform_changes) $this->user->inform_user($result);
-			foreach($result as $change) {
-				$node = $formnode->appendChild($dom->createElement("change"));
-				$node->setAttribute("id", $change);
-			}
+                    if ($inform_changes) $this->user->inform_user($result);
+
+                    foreach($result as $change) {
+                        $node = $formnode->appendChild($dom->createElement("change"));
+                        foreach ($change as $key=>$val) {
+                            $node->setAttribute($key, $val);
+                        }
+                    }
 		}
 	}
 

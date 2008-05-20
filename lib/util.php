@@ -12,8 +12,8 @@ function is_valid_ssh_pub_key($key, $check_length = True, $return_fingerprint = 
         return false;
 
     # Data should be a base64 encoded string
-    $certificate = base64_decode($data, true);
-    if ($certificate === false)
+    $certificate = base64_decode($data);
+    if ($certificate == $data)
         return false;
 
     if ($check_length) {
