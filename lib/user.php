@@ -219,15 +219,15 @@ class User {
         if($olduser->cn != $this->cn) {
             $userchanges['cn'][] = $this->cn;
             $userchanges['sn'][] = $this->cn;
-            $changes[] = array('id'=>"cn")
+            $changes[] = array('id'=>"cn");
         }
         if($olduser->mail != $this->mail) {
             $userchanges['mail'][] = $this->mail;
-            $changes[] = array('id'=>"mail")
+            $changes[] = array('id'=>"mail");
         }
         if($olduser->description != $this->description) {
             $userchanges['description'][] = $this->description;
-            $changes[] = array('id'=>"description")
+            $changes[] = array('id'=>"description");
         }
         // Dropping out of 'gnomecvs'?
         if(in_array("gnomecvs", $olduser->groups) && !in_array("gnomecvs", $this->groups)) {
@@ -243,13 +243,13 @@ class User {
         if(in_array("ftpadmin", $olduser->groups) && !in_array("ftpadmin", $this->groups)) {
             $userchanges['loginShell'][] = $this->which_shell();
             $userchanges['homeDirectory'][] = $this->which_homedir();
-            $changes[] = array('id'=>"shellaccessrevoked")
+            $changes[] = array('id'=>"shellaccessrevoked");
         }
         // Joining 'ftpadmin'?
         if(!in_array("ftpadmin", $olduser->groups) && in_array("ftpadmin", $this->groups)) {
             $userchanges['loginShell'][] = $this->which_shell();
             $userchanges['homeDirectory'][] = $this->which_homedir();
-            $changes[] = array('id'=>"shellaccessgranted")
+            $changes[] = array('id'=>"shellaccessgranted");
         }
         if(count($userchanges) > 0) {
             $result = ldap_modify($ldap, $dn, $userchanges);
@@ -268,7 +268,7 @@ class User {
             }
             if(count($this->authorizedKeys) == 0) {
                 $keychanges['objectclass'][] = "pubkeyAuthenticationUser";
-                $changes[] = array('id'=>"pubkeyauthdisabled")
+                $changes[] = array('id'=>"pubkeyauthdisabled");
             }
             $result = ldap_mod_del($ldap, $dn, $keychanges);
             if(!$result) {
@@ -285,14 +285,14 @@ class User {
             }
             if (!$olduser->pubkeyauthenticationuser) {
                 $keychanges['objectclass'][] = "pubkeyAuthenticationUser";
-                $changes[] = array('id'=>"pubkeyauthenabled")
+                $changes[] = array('id'=>"pubkeyauthenabled");
             }
             $result = ldap_mod_add($ldap, $dn, $keychanges);
             if(!$result) {
                 $pe = PEAR::raiseError("LDAP (user keys) add failed: ".ldap_error($ldap));
                 return $pe;
             }
-            $changes[] = array('id'=>"keysadded")
+            $changes[] = array('id'=>"keysadded");
         }
 
         // What groups are we dropping out of?
