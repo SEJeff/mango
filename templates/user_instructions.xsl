@@ -92,14 +92,20 @@ The following SSH keys are currently set on your account:
 <xsl:for-each select="user/authorizedKey">
   <xsl:choose>
     <xsl:when test="boolean(@fingerprint)">
-      <xsl:value-of select="@fingerprint"/>
+      <xsl:value-of select="@fingerprint"/><xsl:text>
+</xsl:text>
     </xsl:when>
     <xsl:otherwise>
-      <xsl:value-of select="concat(substring(., 0, 20), '...', substring(., string-length(.) - 40))"/>
+      <xsl:value-of select="concat(substring(., 0, 20), '...', substring(., string-length(.) - 40))"/><xsl:text>
+</xsl:text>
     </xsl:otherwise>
   </xsl:choose>
 </xsl:for-each>
 
 
+To see the fingerprint of your public SSH key, run:
+  ssh-keygen -l
+or:
+  ssh-keygen -l -f $FILE
 </xsl:template>
 </xsl:stylesheet>

@@ -1,5 +1,11 @@
 2008-05-20  Olav Vitters  <olav@bkor.dhs.org>
 
+	* templates/user_instructions.xsl: Whenever an SSH key is added,
+	inform the user about *all* the SSH keys currently set on the account.
+	Could be better, but oh well.
+
+2008-05-20  Olav Vitters  <olav@bkor.dhs.org>
+
 	* lib/user.php: Typo fix.
 	* www/update_user.php: Allow the inform_user function to be ran.
 
