@@ -1,3 +1,11 @@
+2008-05-20  Olav Vitters  <olav@bkor.dhs.org>
+
+	* lib/user.php:
+	* templates/user_instructions.xsl:
+	* www/new_user.php:
+	* www/update_user.xsl: Prepare work to inform the user regarding key
+	changes.
+
 2008-05-17  Olav Vitters  <olav@bkor.dhs.org>
 
 	* lib/user.php: When adding new SSH keys: Only add

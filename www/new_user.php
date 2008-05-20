@@ -128,7 +128,7 @@ class NewUser {
         }
 
         // Inform the user (email)
-        $changes = array('newuser');
+        $changes = array(array('id'=>'newuser'));
         $this->user->inform_user($changes);
 
         // Report success

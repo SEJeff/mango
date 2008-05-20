@@ -219,15 +219,15 @@ class User {
         if($olduser->cn != $this->cn) {
             $userchanges['cn'][] = $this->cn;
             $userchanges['sn'][] = $this->cn;
-            $changes[] = "cn";
+            $changes[] = array('id'=>"cn")
         }
         if($olduser->mail != $this->mail) {
             $userchanges['mail'][] = $this->mail;
-            $changes[] = "mail";
+            $changes[] = array('id'=>"mail")
         }
         if($olduser->description != $this->description) {
             $userchanges['description'][] = $this->description;
-            $changes[] = "description";
+            $changes[] = array('id'=>"description")
         }
         // Dropping out of 'gnomecvs'?
         if(in_array("gnomecvs", $olduser->groups) && !in_array("gnomecvs", $this->groups)) {
@@ -243,13 +243,13 @@ class User {
         if(in_array("ftpadmin", $olduser->groups) && !in_array("ftpadmin", $this->groups)) {
             $userchanges['loginShell'][] = $this->which_shell();
             $userchanges['homeDirectory'][] = $this->which_homedir();
-            $changes[] = "shellaccessrevoked";
+            $changes[] = array('id'=>"shellaccessrevoked")
         }
         // Joining 'ftpadmin'?
         if(!in_array("ftpadmin", $olduser->groups) && in_array("ftpadmin", $this->groups)) {
             $userchanges['loginShell'][] = $this->which_shell();
             $userchanges['homeDirectory'][] = $this->which_homedir();
-            $changes[] = "shellaccessgranted";
+            $changes[] = array('id'=>"shellaccessgranted")
         }
         if(count($userchanges) > 0) {
             $result = ldap_modify($ldap, $dn, $userchanges);
@@ -268,14 +268,14 @@ class User {
             }
             if(count($this->authorizedKeys) == 0) {
                 $keychanges['objectclass'][] = "pubkeyAuthenticationUser";
-                $changes[] = "pubkeyauthdisabled";
+                $changes[] = array('id'=>"pubkeyauthdisabled")
             }
             $result = ldap_mod_del($ldap, $dn, $keychanges);
             if(!$result) {
                 $pe = PEAR::raiseError("LDAP (user keys) delete failed: ".ldap_error($ldap));
                 return $pe;
             }
-            $changes[] = "keysremoved";
+            $changes[] = array('id'=>"keysremoved")
         }
         $newkeys = array_diff($this->authorizedKeys, $olduser->authorizedKeys);
         if(is_array($newkeys) && count($newkeys) > 0) {
@@ -285,14 +285,14 @@ class User {
             }
             if (!$olduser->pubkeyauthenticationuser) {
                 $keychanges['objectclass'][] = "pubkeyAuthenticationUser";
-                $changes[] = "pubkeyauthenabled";
+                $changes[] = array('id'=>"pubkeyauthenabled")
             }
             $result = ldap_mod_add($ldap, $dn, $keychanges);
             if(!$result) {
                 $pe = PEAR::raiseError("LDAP (user keys) add failed: ".ldap_error($ldap));
                 return $pe;
             }
-            $changes[] = "keysadded";
+            $changes[] = array('id'=>"keysadded")
         }
 
         // What groups are we dropping out of?
@@ -307,7 +307,7 @@ class User {
                     $pe = PEAR::raiseError("LDAP (group '$group') delete failed: ".ldap_error($ldap));
                     return $pe;
                 }
-                $changes[] = "left-".$group;
+                $changes[] = array('id'=>"left-group", 'cn'=>$group);
             }
         }
         $newgroups = array_diff($this->groups, $olduser->groups);
@@ -321,7 +321,7 @@ class User {
                     $pe = PEAR::raiseError("LDAP (group '$group') add failed: ".ldap_error($ldap));
                     return $pe;
                 }
-                $changes[] = "joined-".$group;
+                $changes[] = array('id'=>"joined-group", 'cn'=>$group);
             }
         }
         
@@ -341,10 +341,16 @@ class User {
         $usernode = $mailnode->appendChild($maildom->createElement("user"));
         $this->add_to_node($maildom, $usernode);
 
+        $is_new_account = false;
+
         // Report successes
         foreach($changes as $change) {
             $node = $mailnode->appendChild($maildom->createElement("change"));
-            $node->setAttribute("id", $change);
+            foreach ($change as $key=>$val) {
+                $node->setAttribute($key, $val);
+            }
+
+            if ($change['id'] == 'newuser') $is_new_account = true;
         }
 
         // Process the mail body template
@@ -357,7 +363,9 @@ class User {
         if (empty($body))
             return false;
 
-        $subject = in_array('newuser', $changes) ?
+        $changes[] = array('id'=>"informed-user');
+
+        $subject = $is_new_account ?
                'Your new GNOME account' :
                'Changes to your GNOME account';
 

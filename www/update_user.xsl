@@ -343,6 +343,9 @@
     <xsl:when test="@id='authtokensent'">
      <p>Authentication token sent</p>
     </xsl:when>
+    <xsl:when test="@id='informed-user'">
+     <p>User received an email explaining (some?) of the changes</p>
+    </xsl:when>
     <xsl:when test="@id='welcomesent'">
      <p>Welcome message sent</p>
     </xsl:when>

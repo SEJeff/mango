@@ -12,15 +12,15 @@
 
   <xsl:template match="user_instructions"><xsl:variable
       name="output"><xsl:if
-	test="boolean(change[@id='joined-gnomecvs']) or
+	test="boolean(change[@id='joined-group' and @cn='gnomecvs']) or
 	(boolean(change[@id='newuser']) and
 	boolean(user/group[@cn='gnomecvs']))"><xsl:call-template
 	  name="svnintro"/></xsl:if><xsl:if
-	test="boolean(change[@id='joined-ftpadmin']) or
+	test="boolean(change[@id='joined-group' and @cn='ftpadmin']) or
 	(boolean(change[@id='newuser']) and
 	boolean(user/group[@cn='ftpadmin']))"><xsl:call-template
 	  name="shellintro" /></xsl:if><xsl:if
-	test="boolean(change[@id='joined-mailusers']) or
+	test="boolean(change[@id='joined-group' and @cn='mailusers']) or
 	(boolean(change[@id='newuser']) and
 	boolean(user/group[@cn='mailusers']))"><xsl:call-template
 	  name="mailintro"/></xsl:if></xsl:variable><xsl:if
