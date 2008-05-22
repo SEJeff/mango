@@ -266,10 +266,13 @@ class User {
             foreach($removedkeys as $key) {
                 $keychanges['authorizedKey'][] = $key;
             }
-            if(count($this->authorizedKeys) == 0) {
+            if ($this->->pubkeyauthenticationuser
+                && count($this->authorizedKeys) == 0)
+            {
                 $keychanges['objectclass'][] = "pubkeyAuthenticationUser";
                 $changes[] = array('id'=>"pubkeyauthdisabled");
             }
+
             $result = ldap_mod_del($ldap, $dn, $keychanges);
             if(!$result) {
                 $pe = PEAR::raiseError("LDAP (user keys) delete failed: ".ldap_error($ldap));
