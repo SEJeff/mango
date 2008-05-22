@@ -164,7 +164,7 @@
         </input>
         <label for="group-ftpadmin">FTP upload</label>
        </div>
-       Foundation options:<br/>
+       <br/>Foundation options:<br/>
        <div>
         <input type="checkbox" name="group-foundation" id="group-foundation">
          <xsl:if test="boolean(group[@cn='foundation'])">
@@ -181,7 +181,7 @@
         </input>
         <label for="group-mailusers">Has a cool 'gnome.org' mail alias</label>
        </div>
-       Shell access:<br/>
+       <br/>Shell access:<br/>
        <div>
         <input type="checkbox" name="group-bugzilla" id="group-bugzilla">
          <xsl:if test="boolean(group[@cn='bugzilla'])">
@@ -222,7 +222,7 @@
         </input>
         <label for="group-artweb">Artweb admin</label>
        </div>
-       Mango related:<br/>
+       <br/>Mango related:<br/>
        <div>
         <input type="checkbox" name="group-accounts" id="group-accounts">
          <xsl:if test="boolean(group[@cn='accounts'])">
