@@ -266,7 +266,7 @@ class User {
             foreach($removedkeys as $key) {
                 $keychanges['authorizedKey'][] = $key;
             }
-            if ($this->->pubkeyauthenticationuser
+            if ($this->pubkeyauthenticationuser
                 && count($this->authorizedKeys) == 0)
             {
                 $keychanges['objectclass'][] = "pubkeyAuthenticationUser";
