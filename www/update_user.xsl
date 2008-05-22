@@ -147,6 +147,7 @@
        Groups/options
       </th>
       <td>
+       Developer options:<br/>
        <div>
         <input type="checkbox" name="group-gnomecvs" id="group-gnomecvs">
          <xsl:if test="boolean(group[@cn='gnomecvs'])">
@@ -163,14 +164,7 @@
         </input>
         <label for="group-ftpadmin">FTP upload</label>
        </div>
-       <div>
-        <input type="checkbox" name="group-gnomeweb" id="group-gnomeweb">
-         <xsl:if test="boolean(group[@cn='gnomeweb'])">
-          <xsl:attribute name="checked"/>
-         </xsl:if>
-        </input>
-        <label for="group-gnomeweb">Web admin</label>
-       </div>
+       Foundation options:<br/>
        <div>
         <input type="checkbox" name="group-foundation" id="group-foundation">
          <xsl:if test="boolean(group[@cn='foundation'])">
@@ -187,6 +181,7 @@
         </input>
         <label for="group-mailusers">Has a cool 'gnome.org' mail alias</label>
        </div>
+       Shell access:<br/>
        <div>
         <input type="checkbox" name="group-bugzilla" id="group-bugzilla">
          <xsl:if test="boolean(group[@cn='bugzilla'])">
@@ -196,28 +191,12 @@
         <label for="group-bugzilla">Bugzilla dude(/dudess)</label>
        </div>
        <div>
-        <input type="checkbox" name="group-accounts" id="group-accounts">
-         <xsl:if test="boolean(group[@cn='accounts'])">
+        <input type="checkbox" name="group-gnomeweb" id="group-gnomeweb">
+         <xsl:if test="boolean(group[@cn='gnomeweb'])">
           <xsl:attribute name="checked"/>
          </xsl:if>
         </input>
-        <label for="group-accounts">Accounts team dude(/dudess)</label>
-       </div>
-       <div>
-        <input type="checkbox" name="group-membctte" id="group-membctte">
-         <xsl:if test="boolean(group[@cn='membctte'])">
-          <xsl:attribute name="checked"/>
-         </xsl:if>
-        </input>
-        <label for="group-membctte">Membership committee dude(/dudess)</label>
-       </div>
-       <div>
-        <input type="checkbox" name="group-sysadmin" id="group-sysadmin">
-         <xsl:if test="boolean(group[@cn='sysadmin'])">
-          <xsl:attribute name="checked"/>
-         </xsl:if>
-        </input>
-        <label for="group-sysadmin">Sysadmin team dude(/dudess)</label>
+        <label for="group-gnomeweb">Web admin</label>
        </div>
        <div>
         <input type="checkbox" name="group-buildmaster" id="group-buildmaster">
@@ -242,6 +221,31 @@
          </xsl:if>
         </input>
         <label for="group-artweb">Artweb admin</label>
+       </div>
+       Mango related:<br/>
+       <div>
+        <input type="checkbox" name="group-accounts" id="group-accounts">
+         <xsl:if test="boolean(group[@cn='accounts'])">
+          <xsl:attribute name="checked"/>
+         </xsl:if>
+        </input>
+        <label for="group-accounts">Accounts team dude(/dudess)</label>
+       </div>
+       <div>
+        <input type="checkbox" name="group-membctte" id="group-membctte">
+         <xsl:if test="boolean(group[@cn='membctte'])">
+          <xsl:attribute name="checked"/>
+         </xsl:if>
+        </input>
+        <label for="group-membctte">Membership committee dude(/dudess)</label>
+       </div>
+       <div>
+        <input type="checkbox" name="group-sysadmin" id="group-sysadmin">
+         <xsl:if test="boolean(group[@cn='sysadmin'])">
+          <xsl:attribute name="checked"/>
+         </xsl:if>
+        </input>
+        <label for="group-sysadmin">Sysadmin team dude(/dudess)</label>
        </div>
       </td>
      </tr>
