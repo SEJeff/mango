@@ -1,5 +1,10 @@
 2008-05-22  Olav Vitters  <olav@bkor.dhs.org>
 
+	* www/update_user.xsl: Link back to the list_users.php and show the
+	userid being edited.
+
+2008-05-22  Olav Vitters  <olav@bkor.dhs.org>
+
 	* www/update_user.xsl: Group the groups. Meaning: developer related
 	groups together, foundation stuff together, etc.
 
