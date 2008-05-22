@@ -1,5 +1,9 @@
 2008-05-22  Olav Vitters  <olav@bkor.dhs.org>
 
+	* templates/user_instructions.xsl: Fix Danglish.
+
+2008-05-22  Olav Vitters  <olav@bkor.dhs.org>
+
 	* www/update_user.php: Add foundation membership group.
 	* www/update_user.xsl:
 

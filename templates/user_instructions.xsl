@@ -85,7 +85,7 @@ hour from now. Remember to follow the rules outlined on
 http://developer.gnome.org/doc/policies/accounts/mail.html when using
 your mail alias.
 </xsl:template><xsl:template name="keysadded">
-One or more SSH keys has been added to your GNOME account. It will take
+One or more SSH keys have been added to your GNOME account. It will take
 up to an hour before these changes are reflected on the server.
 
 The following SSH keys are currently set on your account:
