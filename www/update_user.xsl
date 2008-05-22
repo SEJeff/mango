@@ -172,6 +172,22 @@
         <label for="group-gnomeweb">Web admin</label>
        </div>
        <div>
+        <input type="checkbox" name="group-foundation" id="group-foundation">
+         <xsl:if test="boolean(group[@cn='foundation'])">
+          <xsl:attribute name="checked"/>
+         </xsl:if>
+        </input>
+        <label for="group-foundation">Foundation member</label>
+       </div>
+       <div>
+        <input type="checkbox" name="group-mailusers" id="group-mailusers">
+         <xsl:if test="boolean(group[@cn='mailusers'])">
+          <xsl:attribute name="checked"/>
+         </xsl:if>
+        </input>
+        <label for="group-mailusers">Has a cool 'gnome.org' mail alias</label>
+       </div>
+       <div>
         <input type="checkbox" name="group-bugzilla" id="group-bugzilla">
          <xsl:if test="boolean(group[@cn='bugzilla'])">
           <xsl:attribute name="checked"/>
@@ -226,14 +242,6 @@
          </xsl:if>
         </input>
         <label for="group-artweb">Artweb admin</label>
-       </div>
-       <div>
-        <input type="checkbox" name="group-mailusers" id="group-mailusers">
-         <xsl:if test="boolean(group[@cn='mailusers'])">
-          <xsl:attribute name="checked"/>
-         </xsl:if>
-        </input>
-        <label for="group-mailusers">Has a cool 'gnome.org' mail alias</label>
        </div>
       </td>
      </tr>

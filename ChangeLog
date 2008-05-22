@@ -1,3 +1,8 @@
+2008-05-22  Olav Vitters  <olav@bkor.dhs.org>
+
+	* www/update_user.php: Add foundation membership group.
+	* www/update_user.xsl:
+
 2008-05-20  Olav Vitters  <olav@bkor.dhs.org>
 
 	* templates/user_instructions.xsl: Whenever an SSH key is added,
