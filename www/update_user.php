@@ -23,6 +23,7 @@ $AFFECTEDGROUPS = array(
 	"buildmaster",
 	"buildslave",
         "foundation",
+	"membctte",
 );
 
 class UpdateUser {
