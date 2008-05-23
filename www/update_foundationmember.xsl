@@ -105,7 +105,7 @@
      <p>E-mail address updated</p>
     </xsl:when>
     <xsl:when test="@id='userid'">
-     <p></p>GNOME userid updated</p>
+     <p>GNOME userid updated</p>
     </xsl:when>
     <xsl:when test="@id='last_renewed_on'">
      <p>Last Renewal updated</p>
