@@ -32,7 +32,7 @@ Comment:
 IMPORTANT NOTE:
 1. When rejecting accounts, please email an explanation to the person
 requesting the account.
-2. Approving above account request means are responsible for whatever
+2. Approving above account request means you are responsible for whatever
 this person does on GNOME SVN. This sounds worse than it is in practice,
 but do try to follow the initial commits and guide the person in the
 beginning.

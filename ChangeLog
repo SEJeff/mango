@@ -1,5 +1,9 @@
 2008-05-23  Olav Vitters  <olav@bkor.dhs.org>
 
+	* templates/maintainer_approval.xsl: Fix typo. Patch by Patrick Fey.
+
+2008-05-23  Olav Vitters  <olav@bkor.dhs.org>
+
 	Allow membership committee to specify the GNOME userid for each
 	foundation member.
 
