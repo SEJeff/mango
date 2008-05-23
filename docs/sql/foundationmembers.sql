@@ -17,6 +17,7 @@ CREATE TABLE `foundationmembers` (
   `firstname` varchar(50) default NULL,
   `lastname` varchar(50) default NULL,
   `email` varchar(50) default NULL,
+  `userid` varchar(15) default NULL,
   `comments` text,
   `first_added` date NOT NULL,
   `last_renewed_on` timestamp NOT NULL,

@@ -123,6 +123,7 @@ class NewFoundationMember {
         $this->foundationmember->firstname = $_POST['firstname'];
         $this->foundationmember->lastname = $_POST['lastname'];
         $this->foundationmember->email = $_POST['email'];
+        $this->foundationmember->userid = $_POST['userid'];
         $this->foundationmember->comments = $_POST['comments'];
         $this->foundationmember->last_renewed_on = time();
         $this->foundationmember->need_to_renew = false;

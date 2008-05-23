@@ -11,12 +11,13 @@ class FoundationMember {
     var $firstname;
     var $lastname;
     var $email;
+    var $userid;            // GNOME userid
     var $comments;
     var $renew;             // denotes that member's membership is renewed.
     var $first_added;
     var $need_to_renew;
     var $last_renewed_on;
-    var $last_update;   
+    var $last_update;
     var $resigned_on;   // denotes time when a member retired
         
     function absorb($record) {
@@ -26,6 +27,7 @@ class FoundationMember {
         $member->lastname = $record->lastname;
         $member->email = $record->email;
         $member->comments = $record->comments;
+        $member->userid = $record->userid;
         $member->renew = false;
         $member->first_added = DateField::from_sql($record->first_added);
         $member->last_renewed_on = DateField::from_sql($record->last_renewed_on);
@@ -91,12 +93,13 @@ class FoundationMember {
         
         // Prepare query
         $query = "INSERT INTO foundationmembers (";
-        $query .= "firstname, lastname, email, comments, first_added, last_renewed_on, last_update";
+        $query .= "firstname, lastname, email, comments, userid, first_added, last_renewed_on, last_update";
         $query .= ") VALUES (";
         $query .= MySQLUtil::escape_string($this->firstname).", ";
         $query .= MySQLUtil::escape_string($this->lastname).", ";
         $query .= MySQLUtil::escape_string($this->email).", ";
         $query .= MySQLUtil::escape_string($this->comments).", ";
+        $query .= MySQLUtil::escape_string($this->userid).", ";
         $query .= MySQLUtil::escape_date($aboutnow).", ";
         $query .= MySQLUtil::escape_date($this->last_renewed_on).", ";
         $query .= MySQLUtil::escape_date($aboutnow);
@@ -169,6 +172,10 @@ class FoundationMember {
             $sql .= ", comments = ".MySQLUtil::escape_string($this->comments);
             $changes[] = "comments";
         }
+        if($oldrec->userid != $this->userid) {
+            $sql .= ", userid = ".MySQLUtil::escape_string($this->userid);
+            $changes[] = "userid";
+        }
         if($oldrec->last_renewed_on != $this->last_renewed_on) {
             $sql .= ", last_renewed_on = ".MySQLUtil::escape_date($this->last_renewed_on);
             $changes[] = "last_renewed_on";
@@ -214,6 +221,8 @@ class FoundationMember {
         $node->appendChild($dom->createTextNode($this->email));
         $node = $formnode->appendChild($dom->createElement("comments"));
         $node->appendChild($dom->createTextNode($this->comments));
+        $node = $formnode->appendChild($dom->createElement("userid"));
+        $node->appendChild($dom->createTextNode($this->userid));
         DateField::add_to($dom, $formnode, "first_added", $this->first_added);
         DateField::add_to($dom, $formnode, "last_renewed_on", $this->last_renewed_on);
         if ($this->resigned_on == null) {

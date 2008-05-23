@@ -157,6 +157,7 @@ class UpdateFoundationMember {
         $this->foundationmember->lastname = $_POST['lastname'];
         $this->foundationmember->email = $_POST['email'];
         $this->foundationmember->comments = $_POST['comments'];
+        $this->foundationmember->userid = $_POST['userid'];
         if (isset($_POST['renew']) && $_POST['renew'] == "on") {
             $this->foundationmember->renew = true;
             $this->foundationmember->last_renewed_on = time();

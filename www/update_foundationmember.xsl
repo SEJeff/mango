@@ -47,6 +47,17 @@
      </tr>
      <tr>
       <th>
+       <xsl:if test="boolean(formerror[@type='userid'])">
+        <xsl:attribute name="class">formerror</xsl:attribute>
+       </xsl:if>
+       GNOME userid
+      </th>
+      <td>
+       <input type="text" name="userid" value="{userid}" size="15"/>
+      </td>
+     </tr>
+     <tr>
+      <th>
        <xsl:if test="boolean(formerror[@type='email'])">
         <xsl:attribute name="class">formerror</xsl:attribute>
        </xsl:if>
@@ -92,6 +103,9 @@
     </xsl:when>
     <xsl:when test="@id='email'">
      <p>E-mail address updated</p>
+    </xsl:when>
+    <xsl:when test="@id='userid'">
+     <p></p>GNOME userid updated</p>
     </xsl:when>
     <xsl:when test="@id='last_renewed_on'">
      <p>Last Renewal updated</p>

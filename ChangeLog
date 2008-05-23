@@ -1,3 +1,15 @@
+2008-05-23  Olav Vitters  <olav@bkor.dhs.org>
+
+	Allow membership committee to specify the GNOME userid for each
+	foundation member.
+
+	* docs/sql/foundationmembers.sql:
+	* lib/foundationmember.php:
+	* www/new_foundationmember.php:
+	* www/new_foundationmember.xsl:
+	* www/update_foundationmember.php:
+	* www/update_foundationmember.xsl:
+
 2008-05-22  Olav Vitters  <olav@bkor.dhs.org>
 
 	* www/update_user.php: Allow changing of membership committee.
