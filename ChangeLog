@@ -1,3 +1,11 @@
+2008-05-30  Olav Vitters  <olav@bkor.dhs.org>
+
+	* docs/schemas/gnome.schema: Combination of below files, makes server
+	configuration easier.
+	* docs/schemas/cvs.schema:
+	* docs/schemas/module.schema:
+	* docs/schemas/sshd.schema:
+
 2008-05-23  Olav Vitters  <olav@bkor.dhs.org>
 
 	* templates/maintainer_approval.xsl: Fix typo. Patch by Patrick Fey.
