@@ -255,49 +255,13 @@ class User {
 
         // What's changed with the SSH keys?
         $removedkeys = array_diff($olduser->authorizedKeys, $this->authorizedKeys);
-        if(is_array($removedkeys) && count($removedkeys) > 0) {
-            $keychanges = array();
-            foreach($removedkeys as $key) {
-                $keychanges['authorizedKey'][] = $key;
-            }
-            if ($this->pubkeyauthenticationuser
-                && count($this->authorizedKeys) == 0)
-            {
-                $keychanges['objectclass'][] = "pubkeyAuthenticationUser";
-                $changes[] = array('id'=>"pubkeyauthdisabled");
-            }
+        $result = $this->_update_sshkey($ldap, $dn, $olduser, $user, false, $removedkeys, $changes, 'key-del', 'keysremoved');
+        if(PEAR::isError($result)) return $result;
 
-            $result = ldap_mod_del($ldap, $dn, $keychanges);
-            if(!$result) {
-                $pe = PEAR::raiseError("LDAP (user keys) delete failed: ".ldap_error($ldap));
-                return $pe;
-            }
-            $changes[] = array('id'=>"keysremoved");
-        }
         $newkeys = array_diff($this->authorizedKeys, $olduser->authorizedKeys);
-        if(is_array($newkeys) && count($newkeys) > 0) {
-            $keychanges = array();
-            foreach($newkeys as $key) {
-                $keychanges['authorizedKey'][] = $key;
+        $result = $this->_update_sshkey($ldap, $dn, $olduser, $user, true, $newkeys, $changes, 'key-add', 'keysadded');
+        if(PEAR::isError($result)) return $result;
 
-                $fingerprint = is_valid_ssh_pub_key($key, False, True);
-                if ($fingerprint !== false) {
-                    $changes[] = array('id'=>'key-add', "key"=>$key, "fingerprint"=>$fingerprint);
-                } else {
-                    $changes[] = array('id'=>'key-add', "key"=>$key);
-                }
-            }
-            if (!$olduser->pubkeyauthenticationuser) {
-                $keychanges['objectclass'][] = "pubkeyAuthenticationUser";
-                $changes[] = array('id'=>"pubkeyauthenabled");
-            }
-            $result = ldap_mod_add($ldap, $dn, $keychanges);
-            if(!$result) {
-                $pe = PEAR::raiseError("LDAP (user keys) add failed: ".ldap_error($ldap));
-                return $pe;
-            }
-            $changes[] = array('id'=>"keysadded");
-        }
 
         // What groups are we dropping out of?
         $removedgroups = array_diff($olduser->groups, $this->groups);
@@ -332,6 +296,40 @@ class User {
         // Tidy up      
 
         return $changes;
+    }
+
+    function _update_sshkey($ldap, $dn, $olduser, $user, $is_add, $keys, &$changes, $desc_key, $desc_change) {
+        if(!is_array($keys) || count($keys) == 0)
+            return false;
+
+        $keychanges = array();
+        foreach($keys as $key) {
+            $keychanges['authorizedKey'][] = $key;
+
+            $fingerprint = is_valid_ssh_pub_key($key, False, True);
+            if ($fingerprint !== false) {
+                $changes[] = array('id'=>$desc_key, "key"=>$key, "fingerprint"=>$fingerprint);
+            } else {
+                $changes[] = array('id'=>$desc_key, "key"=>$key);
+            }
+        }
+
+        $change_object = $is_add ? !$olduser->pubkeyauthenticationuser
+                                 : ($olduser->pubkeyauthenticationuser
+                                    && count($this->authorizedKeys) == 0);
+
+        if ($change_object) {
+            $keychanges['objectclass'][] = "pubkeyAuthenticationUser";
+        }
+
+        $result = $is_add ? ldap_mod_add($ldap, $dn, $keychanges)
+                          : ldap_mod_del($ldap, $dn, $keychanges);
+
+        if(!$result) {
+            $pe = PEAR::raiseError("LDAP (SSH keys) $desc_key failed: ".ldap_error($ldap));
+            return $pe;
+        }
+        $changes[] = array('id'=>$desc_change);
     }
 
     function inform_user(&$changes) {

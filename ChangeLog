@@ -1,5 +1,11 @@
 2008-06-01  Olav Vitters  <olav@bkor.dhs.org>
 
+	* www/update_user.xsl: Ignore individual key additions and removals.
+	* lib/user.php: Add _update_sshkey function and use it for SSH key
+	removals and additions.
+
+2008-06-01  Olav Vitters  <olav@bkor.dhs.org>
+
 	* lib/user.php: Always check key length.
 	* www/update_user.xsl: Show SSH key errors.
 

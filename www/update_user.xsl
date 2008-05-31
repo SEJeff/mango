@@ -324,6 +324,7 @@
     <xsl:when test="@id='welcomesent'">
      <p>Welcome message sent</p>
     </xsl:when>
+    <xsl:when test="@id='key-del' or @id='key-add'"></xsl:when>
     <xsl:otherwise>
      <p>Change '<xsl:value-of select="@id"/>'</p>
     </xsl:otherwise>
