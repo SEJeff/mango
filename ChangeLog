@@ -1,3 +1,10 @@
+2008-05-31  Olav Vitters  <olav@bkor.dhs.org>
+
+	* lib/user.php: Rework the which_shell and which_homedir functions.
+	They're still a bit stupid, but at least it is consistently stupid.
+	* www/index.php: Set page title to 'Main page' when user is logged in.
+	* www/page.xsl: Update copyright year.
+
 2008-05-30  Olav Vitters  <olav@bkor.dhs.org>
 
 	* docs/schemas/gnome.schema: Combination of below files, makes server

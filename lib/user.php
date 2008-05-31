@@ -428,21 +428,36 @@ class User {
         
         return $watermark + 1;
     }
-    
-    function which_shell() {
+
+    function _has_shell() {
         if(in_array("ftpadmin", $this->groups))
-            return "/bin/bash";
+            return true;
         if(in_array("gnomecvs", $this->groups))
-            return "/bin/bash";
-        return "/sbin/nologin";
+            return true;
+        if(in_array("gnomeweb", $this->groups))
+            return true;
+        if(in_array("bugzilla", $this->groups))
+            return true;
+
+        return false;
     }
-    
+
+    function which_shell() {
+        if (!$this->_has_shell())
+            return "/sbin/nologin";
+
+        # TODO:
+        #  should reuse existing shell, if any
+        return "/bin/bash";
+    }
+
     function which_homedir() {
-        if(in_array("ftpadmin", $this->groups))
-            return "/home/users/".$this->uid;
-        return "/";
+        if (!$this->_has_shell())
+            return "/";
+
+        return "/home/users/".$this->uid;
     }
-    
+
     function add_to_node(&$dom, &$formnode) {
         $node = $formnode->appendChild($dom->createElement("uid"));
         $node->appendChild($dom->createTextNode($this->uid));

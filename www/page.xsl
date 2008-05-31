@@ -86,7 +86,7 @@
 
     <div id="copyright">
      <p>
-      Copyright &#169; 2003-2007, <a href="http://www.gnome.org/">The GNOME Project</a><br />
+      Copyright &#169; 2003-2008, <a href="http://www.gnome.org/">The GNOME Project</a><br />
       GNOME and the foot logo are trademarks of the GNOME Foundation.<br />
       <a href="http://validator.w3.org/check/referer">Optimized</a> for <a href="http://www.w3.org/">standards</a>. Hosted by <a href="http://redhat.com/">Red Hat</a>.
       </p>

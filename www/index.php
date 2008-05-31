@@ -17,6 +17,8 @@ $rootnode->appendChild($element);
 $is_maintainer = false; 
 $is_coordinator = false;
 if (isset($_SESSION['user']) && is_a ($_SESSION['user'], 'User')) { 
+    $rootnode->setAttribute("title", "Main page");
+
     $vouchers = array();
     $modules = $_SESSION['user']->user_modules();
     $entry_count = $modules['count'];
