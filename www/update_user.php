@@ -131,7 +131,6 @@ class UpdateUser {
         $changes = $changes or $this->process_actions_tab($dom, $formnode);
 
         if ($changes) {
-            error_log("have changes!!");
             $formerrors = $this->user->validate();
 
             if(count($formerrors) > 0) {
@@ -178,7 +177,6 @@ class UpdateUser {
 
             $this->user->$var = $_POST[$var];
             $changes = true;
-            error_log("setting changes");
         }
 
         return $changes;
