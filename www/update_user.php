@@ -124,26 +124,27 @@ class UpdateUser {
 
         $changes = false;
         if (!empty($_POST['updateuser'])) {
-            $changes = $this->process_general_tab($dom, $formnode);
-            $changes = $changes or $this->process_sshkeys_tab($dom, $formnode);
-            $changes = $changes or $this->process_groups_tab($dom, $formnode);
-        }
-        $changes = $changes or $this->process_actions_tab($dom, $formnode);
+            $changes = ($this->process_general_tab($dom, $formnode)) or $changes; // NOTE: Make sure or $changes is last!
+            $changes = ($this->process_sshkeys_tab($dom, $formnode)) or $changes;
+            $changes = ($this->process_groups_tab($dom, $formnode)) or $changes;
 
-        if ($changes) {
-            $formerrors = $this->user->validate();
+            if ($changes) {
+                $formerrors = $this->user->validate();
 
-            if(count($formerrors) > 0) {
-                foreach($formerrors as $error) {
-                    $node = $formnode->appendChild($dom->createElement("formerror"));
-                    $node->setAttribute("type", $error);
+                if(count($formerrors) > 0) {
+                    foreach($formerrors as $error) {
+                        $node = $formnode->appendChild($dom->createElement("formerror"));
+                        $node->setAttribute("type", $error);
+                    }
+                } else {
+                    // Attempt LDAP update
+                    $result = $this->user->update();
+                    if(!PEAR::isError($result))
+                        $formnode->appendChild($dom->createElement("updated")); // Mark success
                 }
-            } else {
-                // Attempt LDAP update
-                $result = $this->user->update();
-                if(!PEAR::isError($result))
-                    $formnode->appendChild($dom->createElement("updated")); // Mark success
             }
+        } else {
+            $result = $this->process_actions_tab($dom, $formnode);
         }
 
         // Report an exception

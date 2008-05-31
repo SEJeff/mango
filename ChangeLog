@@ -1,5 +1,11 @@
 2008-06-01  Olav Vitters  <olav@bkor.dhs.org>
 
+	* www/update_user.php: Ensure all attributes of a user are updated;
+	meaning: if there are changes in the general section, the SSH keys
+	should still receive updates as well.
+
+2008-06-01  Olav Vitters  <olav@bkor.dhs.org>
+
 	* www/update_user.xsl: Make SSH keys clickable.
 
 2008-06-01  Olav Vitters  <olav@bkor.dhs.org>
