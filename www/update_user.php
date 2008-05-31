@@ -33,10 +33,10 @@ class UpdateUser {
         $user,
 
         // Groups the user belongs to that we're not responsible for
-        $othergroups;
+        $othergroups,
 
         // Tab being displayed
-        $tab;
+        $tab,
 
         // An initialisation error message
         $error;
