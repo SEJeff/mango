@@ -1,5 +1,9 @@
 2008-05-31  Olav Vitters  <olav@bkor.dhs.org>
 
+	* lib/user.php: Rework shell granting.
+
+2008-05-31  Olav Vitters  <olav@bkor.dhs.org>
+
 	* lib/user.php: Change to PHP5 style object.
 
 2008-05-31  Olav Vitters  <olav@bkor.dhs.org>

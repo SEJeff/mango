@@ -34,6 +34,7 @@ class User {
         $user->uid = $entry['uid'][0];
         $user->cn = $entry['cn'][0];
         $user->mail = $entry['mail'][0];
+        $user->homeDirectory = $entry['homeDirectory'][0];
         $user->description = $entry['description'][0];
         if(count($entry['authorizedkey']) > 0) {
             for($i = 0; $i < $entry['authorizedkey']['count']; $i++) {
@@ -233,27 +234,16 @@ class User {
             $userchanges['description'][] = $this->description;
             $changes[] = array('id'=>"description");
         }
-        // Dropping out of 'gnomecvs'?
-        if(in_array("gnomecvs", $olduser->groups) && !in_array("gnomecvs", $this->groups)) {
+
+        // Change of shell access?
+        if ($olduser->_has_shell() xor $user->_should_have_shell()) {
             $userchanges['loginShell'][] = $this->which_shell();
             $userchanges['homeDirectory'][] = $this->which_homedir();
-        }
-        // Joining 'ftpadmin'?
-        if(!in_array("gnomecvs", $olduser->groups) && in_array("gnomecvs", $this->groups)) {
-            $userchanges['loginShell'][] = $this->which_shell();
-            $userchanges['homeDirectory'][] = $this->which_homedir();
-        }
-        // Dropping out of 'ftpadmin'?
-        if(in_array("ftpadmin", $olduser->groups) && !in_array("ftpadmin", $this->groups)) {
-            $userchanges['loginShell'][] = $this->which_shell();
-            $userchanges['homeDirectory'][] = $this->which_homedir();
-            $changes[] = array('id'=>"shellaccessrevoked");
-        }
-        // Joining 'ftpadmin'?
-        if(!in_array("ftpadmin", $olduser->groups) && in_array("ftpadmin", $this->groups)) {
-            $userchanges['loginShell'][] = $this->which_shell();
-            $userchanges['homeDirectory'][] = $this->which_homedir();
-            $changes[] = array('id'=>"shellaccessgranted");
+
+            if (!$olduser->_has_shell())
+                $changes[] = array('id'=>"shellaccessrevoked")
+            else
+                $changes[] = array('id'=>"shellaccessgranted");
         }
         if(count($userchanges) > 0) {
             $result = ldap_modify($ldap, $dn, $userchanges);
@@ -434,6 +424,10 @@ class User {
     }
 
     function _has_shell() {
+        return $user->homeDirectory !== '/';
+    }
+
+    function _should_have_shell() {
         if(in_array("ftpadmin", $this->groups))
             return true;
         if(in_array("gnomecvs", $this->groups))
@@ -447,7 +441,7 @@ class User {
     }
 
     function which_shell() {
-        if (!$this->_has_shell())
+        if (!$this->_should_have_shell())
             return "/sbin/nologin";
 
         # TODO:
@@ -456,7 +450,7 @@ class User {
     }
 
     function which_homedir() {
-        if (!$this->_has_shell())
+        if (!$this->_should_have_shell())
             return "/";
 
         return "/home/users/".$this->uid;
