@@ -116,9 +116,9 @@
        SSH key(s)
       </th>
       <td>
-       <xsl:for-each select="savedkeys/key">
+       <xsl:for-each select="authorizedKey">
         <div>
-         <input type="checkbox" name="authorizedKey-{@ref}" value="{.}" checked="true"/>
+         <input type="checkbox" name="authorizedKey[]" value="{.}" checked="true"/>
 	 <span>
 	   <xsl:choose>
 	     <xsl:when test="boolean(@fingerprint)">

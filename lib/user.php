@@ -236,7 +236,7 @@ class User {
         }
 
         // Change of shell access?
-        if ($olduser->_has_shell() xor $user->_should_have_shell()) {
+        if ($olduser->_has_shell() xor $this->_should_have_shell()) {
             $userchanges['loginShell'][] = $this->which_shell();
             $userchanges['homeDirectory'][] = $this->which_homedir();
 

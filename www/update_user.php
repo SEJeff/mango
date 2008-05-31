@@ -30,9 +30,6 @@ class UpdateUser {
     // Details for the user being created
     var $user;
 
-    // Remember existing SSH keys between requests
-    var $savedKeys;
-    
     // Groups the user belongs to that we're not responsible for
     var $othergroups;
     
@@ -52,7 +49,6 @@ class UpdateUser {
         }
 
         $this->user = $user;
-        $this->savedKeys = $user->authorizedKeys;
         $this->othergroups = array_diff($user->groups, $AFFECTEDGROUPS);
         $this->tab = "general";
     }
@@ -107,20 +103,6 @@ class UpdateUser {
         
         // Add current details to form
         $this->user->add_to_node($dom, $formnode);
-        
-        // Add SSH keys with indices
-        if($this->tab == "sshkeys") {
-            $savedkeysnode = $formnode->appendChild($dom->createElement("savedkeys"));
-            foreach($this->savedKeys as $ref => $key) {
-                $keynode = $savedkeysnode->appendChild($dom->createElement("key"));
-                $fingerprint = is_valid_ssh_pub_key($key, False, True);
-                if ($fingerprint !== false) {
-                    $keynode->setAttribute("fingerprint", $fingerprint);
-                }
-                $keynode->setAttribute("ref", $ref);
-                $keynode->appendChild($dom->createTextNode($key));
-            }
-        }
         
         // Add initialisation error, if any
         if(PEAR::isError($this->error)) {
@@ -215,19 +197,12 @@ class UpdateUser {
             if(empty($key) || substr($key, 0, 3) != "ssh") continue;
             $this->user->authorizedKeys[] = $key;
         }
-        foreach($_POST as $key => $value) {
-            if(substr($key, 0, 14) == "authorizedKey-") {
-                $i = substr($key, 14);
-                if(!empty($this->savedKeys[$i]))
-                    $this->user->authorizedKeys[] = $this->savedKeys[$i];
-            }
+        foreach($_POST['authorizedKey'] as $value) {
+            $this->user->authorizedKeys[] = $value;
         }
 
         // Deduplicate keys
         $this->user->authorizedKeys = array_unique($this->user->authorizedKeys);
-
-        // Remember keys for next hit   
-        $this->savedKeys = $this->user->authorizedKeys;
 
         return true;
     }
