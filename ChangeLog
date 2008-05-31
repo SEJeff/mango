@@ -1,5 +1,9 @@
 2008-06-01  Olav Vitters  <olav@bkor.dhs.org>
 
+	* www/update_user.xsl: Make SSH keys clickable.
+
+2008-06-01  Olav Vitters  <olav@bkor.dhs.org>
+
 	* www/update_user.php: Kill the tabs. They just make updating a user
 	more annoying as not everything is on one page, plus you cannot switch
 	between 'tabs' without saving the user.

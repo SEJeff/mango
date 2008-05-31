@@ -78,8 +78,8 @@
       <td>
        <xsl:for-each select="authorizedKey">
         <div>
-         <input type="checkbox" name="authorizedKey[]" value="{.}" checked="true"/>
-	 <span>
+	 <input id="{generate-id()}" type="checkbox" name="authorizedKey[]" value="{.}" checked="true"/>
+	 <label for="{generate-id()}">
 	   <xsl:choose>
 	     <xsl:when test="boolean(@fingerprint)">
 	       <xsl:value-of select="@fingerprint"/>
@@ -88,7 +88,7 @@
 	       <xsl:value-of select="concat(substring(., 0, 20), '...', substring(., string-length(.) - 40))"/>
 	     </xsl:otherwise>
 	   </xsl:choose>
-         </span>
+         </label>
         </div>
        </xsl:for-each>
        <div>Upload additional public keys in a file (e.g. id_dsa.pub):</div>
