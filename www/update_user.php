@@ -28,18 +28,20 @@ $AFFECTEDGROUPS = array(
 
 class UpdateUser {
     // Details for the user being created
-    var $user;
 
-    // Groups the user belongs to that we're not responsible for
-    var $othergroups;
-    
-    // Tab being displayed
-    var $tab;
+    private
+        $user,
 
-    // An initialisation error message
-    var $error;
-        
-    function UpdateUser($uid) {
+        // Groups the user belongs to that we're not responsible for
+        $othergroups;
+
+        // Tab being displayed
+        $tab;
+
+        // An initialisation error message
+        $error;
+
+    function __construct($uid) {
         global $AFFECTEDGROUPS;
 
         $user = User::fetchuser($uid);

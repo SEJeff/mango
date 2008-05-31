@@ -1,5 +1,9 @@
 2008-05-31  Olav Vitters  <olav@bkor.dhs.org>
 
+	* www/update_user.php: PHP5 style object.
+
+2008-05-31  Olav Vitters  <olav@bkor.dhs.org>
+
 	* lib/user.php: Typo fix.
 	* www/update_user.php: Remove savedkey handling. Just pass the entire
 	key to the form, much easier.
