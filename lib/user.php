@@ -11,7 +11,7 @@ class User {
         $mail,
         $description,
         $authorizedKeys,
-        $homeDirectory
+        $homeDirectory,
 
         // Details of the groups the user is in
         $groups;
