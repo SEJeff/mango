@@ -491,7 +491,7 @@ class User {
             $errors[] = "mail";
         
         foreach($this->authorizedKeys as $authorizedKey) {
-            if (!is_valid_ssh_pub_key($authorizedKey, false)) {
+            if (!is_valid_ssh_pub_key($authorizedKey)) {
             $errors[] = 'keys';
             break;
             }

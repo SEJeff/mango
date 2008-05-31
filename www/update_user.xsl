@@ -73,6 +73,9 @@
   <xsl:template name="updateusersshkeys">
      <tr>
       <th>
+       <xsl:if test="boolean(formerror[@type='keys'])">
+        <xsl:attribute name="class">formerror</xsl:attribute>
+       </xsl:if>
        SSH key(s)
       </th>
       <td>
