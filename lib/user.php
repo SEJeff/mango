@@ -5,20 +5,24 @@ require_once("util.php");
 
 class User {
     // Main attributes
-    var $uid;
-    var $cn;
-    var $mail;
-    var $description;
-    var $authorizedKeys;
-        
-    // Details of the groups the user is in
-    var $groups;
-    var $uid_from_ldap;
+    public
+        $uid,
+        $cn,
+        $mail,
+        $description,
+        $authorizedKeys,
+        $homeDirectory
 
-    // Has 'pubkeyauthenticationuser' objectclass set?
-    var $pubkeyauthenticationuser;
-    
-    function User() {
+        // Details of the groups the user is in
+        $groups;
+
+    private
+        // Has 'pubkeyauthenticationuser' objectclass set?
+        $pubkeyauthenticationuser,
+        // Determines if the uid came from LDAP (avoids uid validation)
+        $uid_from_ldap;
+
+    function __construct() {
         $this->authorizedKeys = array();
         $this->groups = array();
         $this->uid_from_ldap = false;
