@@ -18,63 +18,26 @@
    <xsl:if test="boolean(.//change)">
     <xsl:apply-templates select=".//change"/>
    </xsl:if>
-   <table class="formtabs">
-    <tr>
-     <td>
-      <xsl:if test="@tab='general'">
-       <xsl:attribute name="class">selected</xsl:attribute>
-      </xsl:if>
-      <a href="{$script}?tab=general">General</a>
-     </td>
-     <td>
-      <xsl:if test="@tab='sshkeys'">
-       <xsl:attribute name="class">selected</xsl:attribute>
-      </xsl:if>
-      <a href="{$script}?tab=sshkeys">SSH Keys</a>
-     </td>
-     <td>
-      <xsl:if test="@tab='groups'">
-       <xsl:attribute name="class">selected</xsl:attribute>
-      </xsl:if>
-      <a href="{$script}?tab=groups">Groups</a>
-     </td>
-     <td>
-      <xsl:if test="@tab='actions'">
-       <xsl:attribute name="class">selected</xsl:attribute>
-      </xsl:if>
-      <a href="{$script}?tab=actions">Actions</a>
-     </td>
-    </tr>
-   </table>
    <form enctype="multipart/form-data" method="POST" action="{$script}" name="form">
     <input type="hidden" name="mango_token" value="{/page/@token}"/>
     <input type="hidden" name="uidcheck" value="{uid}"/>
-    <xsl:choose>
-     <xsl:when test="@tab='general'">
-      <xsl:call-template name="updateusergeneraltab"/>
-     </xsl:when>
-     <xsl:when test="@tab='sshkeys'">
-      <xsl:call-template name="updateusersshkeystab"/>
-     </xsl:when>
-     <xsl:when test="@tab='groups'">
-      <xsl:call-template name="updateusergroupstab"/>
-     </xsl:when>
-     <xsl:when test="@tab='actions'">
-      <xsl:call-template name="updateuseractionstab"/>
-     </xsl:when>
-     <xsl:otherwise>
-      <p class="error">Unknown tab '<xsl:value-of select="@tab"/>'.</p>
-     </xsl:otherwise>
-    </xsl:choose>
+    <table class="form">
+     <xsl:call-template name="updateusergeneral"/>
+     <xsl:call-template name="updateusersshkeys"/>
+     <xsl:call-template name="updateusergroups"/>
+    </table>
     <p>
-     <input type="submit" name="update" value="Update &gt;&gt;"/>
+     <input type="submit" name="updateuser" value="Update &gt;&gt;"/>
     </p>
+   </form>
+   <form enctype="multipart/form-data" method="POST" action="{$script}" name="form">
+    <input type="hidden" name="mango_token" value="{/page/@token}"/>
+    <input type="hidden" name="uidcheck" value="{uid}"/>
+    <xsl:call-template name="updateuseractions"/>
    </form>
   </xsl:template>
 
-  <xsl:template name="updateusergeneraltab">
-    <table class="form">
-     <caption>Update user '<xsl:value-of select="uid"/>'</caption>
+  <xsl:template name="updateusergeneral">
      <tr>
       <th>
        <xsl:if test="boolean(formerror[@type='cn'])">
@@ -105,12 +68,9 @@
        <textarea name="description" rows="5" cols="40"><xsl:value-of select="description"/></textarea>
       </td>
      </tr>
-    </table>
   </xsl:template>
 
-  <xsl:template name="updateusersshkeystab">
-    <table class="form">
-     <caption>Update user '<xsl:value-of select="uid"/>'</caption>
+  <xsl:template name="updateusersshkeys">
      <tr>
       <th>
        SSH key(s)
@@ -137,12 +97,9 @@
        <textarea name="newkeys" rows="5"><xsl:apply-templates select="newkeys"/></textarea>
       </td>
      </tr>
-    </table>
   </xsl:template>
 
-  <xsl:template name="updateusergroupstab">
-    <table class="form">
-     <caption>Update user '<xsl:value-of select="uid"/>'</caption>
+  <xsl:template name="updateusergroups">
      <tr>
       <th>
        Groups/options
@@ -250,10 +207,9 @@
        </div>
       </td>
      </tr>
-    </table>
   </xsl:template>
 
-  <xsl:template name="updateuseractionstab">
+  <xsl:template name="updateuseractions">
     <xsl:choose>
      <xsl:when test="boolean(authorisemail)">
       <xsl:call-template name="authorisemail"/>
@@ -268,15 +224,15 @@
   </xsl:template>
 
   <xsl:template name="whichaction">
-    <table class="form whichaction">
+    <table class="form">
      <tr>
-      <th colspan="2">RT3 number</th>
+      <th>RT3 number</th>
       <td>
        <input type="text" name="rt_number" value="{rt_number}"/>
       </td>
      </tr>
      <tr>
-      <td>
+      <td colspan="2">
        <p>Select an action to perform:</p>
        <ul>
         <li>
@@ -289,7 +245,6 @@
   </xsl:template>
 
   <xsl:template name="authorisemail">
-    <input type="hidden" name="confirmemail" value="yes"/>
     <table class="form">
      <tr>
       <td colspan="2">
@@ -297,19 +252,19 @@
       </td>
      </tr>
      <tr>
-      <td>To</td>
+      <th>To</th>
       <td>
        <input type="text" name="to" value="{to}" size="40"/>
       </td>
      </tr>
      <tr>
-      <td>Cc</td>
+      <th>Cc</th>
       <td>
        <input type="text" name="cc" value="{cc}" size="40"/>
       </td>
      </tr>
      <tr>
-      <td>Subject</td>
+      <th>Subject</th>
       <td>
        <input type="text" name="subject" value="{subject}" size="40"/>
       </td>
@@ -319,7 +274,11 @@
        <textarea name="body" cols="80" rows="20"><xsl:value-of select="body"/></textarea>
       </td>
      </tr>
-    </table>
+   </table>
+
+    <p>
+     <input type="submit" name="confirmemail" value="Send email &gt;&gt;"/>
+    </p>
   </xsl:template>
 
   <xsl:template name="emailsent">

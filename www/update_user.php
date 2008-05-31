@@ -35,9 +35,6 @@ class UpdateUser {
         // Groups the user belongs to that we're not responsible for
         $othergroups,
 
-        // Tab being displayed
-        $tab,
-
         // An initialisation error message
         $error;
 
@@ -52,7 +49,6 @@ class UpdateUser {
 
         $this->user = $user;
         $this->othergroups = array_diff($user->groups, $AFFECTEDGROUPS);
-        $this->tab = "general";
     }
         
     function main() {
@@ -89,14 +85,9 @@ class UpdateUser {
         // Security check
         if(!check_permissions($dom, $pagenode, GROUP)) return;
 
-        // Check for a change of tab
-        if(isset($_GET['tab'])) {
-            $this->tab = $_GET['tab'];
-        }
-
         // Start the page off
+        $this->error = null;
         $formnode = $pagenode->appendChild($dom->createElement("updateuser"));
-        $formnode->setAttribute("tab", $this->tab);
 
         // If posting details, attempt to add the new details
         if($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -117,6 +108,7 @@ class UpdateUser {
 
     function process(&$dom, &$formnode) {   
         // Check ref (in case of multiple open pages)
+        // XXX -- For security reasons, this should be moved elsewhere!
         $uidcheck = $_POST['uidcheck'];
         if($this->user->uid != $uidcheck) {
             $user = User::fetchuser($uidcheck);
@@ -129,22 +121,19 @@ class UpdateUser {
 
         // Individual tab form handlers
         $result = null;
-        $inform_changes = false;
-        if($this->tab == "general")
-            $result = $this->process_general_tab($dom, $formnode);
-        elseif($this->tab == "sshkeys") {
-            $result = $this->process_sshkeys_tab($dom, $formnode);
-            $inform_changes = true;
-        }
-        elseif($this->tab == "groups") {
-            $result = $this->process_groups_tab($dom, $formnode);
-            $inform_changes = true;
-        }
-        elseif($this->tab == "actions")
-            $result = $this->process_actions_tab($dom, $formnode);
 
-        if ($result === true) {
+        $changes = false;
+        if (!empty($_POST['updateuser'])) {
+            $changes = $this->process_general_tab($dom, $formnode);
+            $changes = $changes or $this->process_sshkeys_tab($dom, $formnode);
+            $changes = $changes or $this->process_groups_tab($dom, $formnode);
+        }
+        $changes = $changes or $this->process_actions_tab($dom, $formnode);
+
+        if ($changes) {
+            error_log("have changes!!");
             $formerrors = $this->user->validate();
+
             if(count($formerrors) > 0) {
                 foreach($formerrors as $error) {
                     $node = $formnode->appendChild($dom->createElement("formerror"));
@@ -178,17 +167,26 @@ class UpdateUser {
         }
     }
 
-    function process_general_tab(&$dom, &$formnode) {   
-        // Read form and validate
-        $this->user->cn = $_POST['cn'];
-        $this->user->mail = $_POST['mail'];
-        $this->user->description = $_POST['description'];
+    function process_general_tab(&$dom, &$formnode) {
+        $changes = false;
 
-        return true;
+        $attrs = array('cn', 'mail', 'description');
+
+        foreach($attrs as $var) {
+            if ($this->user->$var == $_POST[$var])
+                continue;
+
+            $this->user->$var = $_POST[$var];
+            $changes = true;
+            error_log("setting changes");
+        }
+
+        return $changes;
     }
 
     function process_sshkeys_tab(&$dom, &$formnode) {   
         // Read form and validate
+        // XXX - compare arrays to check if user changed
         $this->user->authorizedKeys = array();
         if($_FILES['keyfile']['tmp_name']) {
             $keyfile = file_get_contents($_FILES['keyfile']['tmp_name']);
@@ -235,10 +233,10 @@ class UpdateUser {
 
         // Was this confirmation to send?
         if(isset($_POST['confirmemail'])) {
-            $to = stripslashes($_POST['to']);
-            $cc = stripslashes($_POST['cc']);
-            $subject = stripslashes($_POST['subject']);
-            $body = stripslashes($_POST['body']);
+            $to = $_POST['to'];
+            $cc = $_POST['cc'];
+            $subject = $_POST['subject'];
+            $body = $_POST['body'];
             if($body == "") {
                 return PEAR::raiseError("No mail body supplied");
             }
@@ -269,8 +267,10 @@ class UpdateUser {
             $headers = $mime->headers($headers);
             $mail = &Mail::factory('smtp');
             $error = $mail->send($recipients, $headers, $content);
-            if(PEAR::isError($error))
-                return $error;
+            if(PEAR::isError($error)) {
+                $this->error = $error;
+                return false;
+            }
 
             // Trigger an 'e-mail sent' page
             $formnode->appendChild($dom->createElement("emailsent"));
@@ -285,7 +285,7 @@ class UpdateUser {
         $subject = "";
 
         // Was an RT number supplied?
-        if(isset($_POST['rt_number'])) {
+        if(!empty($_POST['rt_number'])) {
             $rt_number = $_POST['rt_number'];
             if(intval($rt_number) > 0) {
                 $cc = "Accounts RT Queue <accounts@gnome.org>";
@@ -304,6 +304,8 @@ class UpdateUser {
             return $this->_create_email_dom($dom, $formnode, 'authtokenmail', 'authtoken_mail',
                                             $to, $cc, $subject, array('authtoken' => $authtoken));
         }
+
+        return false;
     }
 
 
