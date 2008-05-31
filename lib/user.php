@@ -241,7 +241,7 @@ class User {
             $userchanges['homeDirectory'][] = $this->which_homedir();
 
             if (!$olduser->_has_shell())
-                $changes[] = array('id'=>"shellaccessrevoked")
+                $changes[] = array('id'=>"shellaccessrevoked");
             else
                 $changes[] = array('id'=>"shellaccessgranted");
         }
