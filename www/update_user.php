@@ -155,7 +155,7 @@ class UpdateUser {
 
         // Report successes
         if(is_array($result)) {
-            if ($inform_changes) $this->user->inform_user($result);
+            $this->user->inform_user($result);
 
             foreach($result as $change) {
                 $node = $formnode->appendChild($dom->createElement("change"));
