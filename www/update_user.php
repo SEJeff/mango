@@ -185,7 +185,6 @@ class UpdateUser {
 
     function process_sshkeys_tab(&$dom, &$formnode) {   
         // Read form and validate
-        // XXX - compare arrays to check if user changed
         $prevkeys = array_unique($this->user->authorizedKeys);
 
         $this->user->authorizedKeys = array();
