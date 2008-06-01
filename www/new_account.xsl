@@ -106,7 +106,7 @@
        SSH key(s)
       </th>
       <td>
-       <div>Upload public key file (e.g. id_dsa.pub):</div>
+       <div>Upload public key file (e.g. id_rsa.pub):</div>
        <input type="file" name="keyfile"/>
        <div>Or, cut'n'paste here:</div>
        <textarea name="newkeys" rows="3" cols="70"><xsl:apply-templates select="newkeys"/><xsl:value-of select="authorizationkeys" /></textarea>

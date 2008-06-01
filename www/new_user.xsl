@@ -73,7 +73,7 @@
          <span> <xsl:value-of select="concat(substring(., 0, 20), '...', substring(., string-length(.) - 40))"/></span>
         </div>
        </xsl:for-each>
-       <div>Upload public key file (e.g. id_dsa.pub):</div>
+       <div>Upload public key file (e.g. id_rsa.pub):</div>
        <input type="file" name="keyfile"/>
        <div>Or, cut'n'paste here:</div>
        <textarea name="newkeys" rows="5"><xsl:apply-templates select="newkeys"/></textarea>

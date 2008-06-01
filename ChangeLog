@@ -1,5 +1,16 @@
 2008-06-01  Olav Vitters  <olav@bkor.dhs.org>
 
+	Try to avoid unknown people from requesting an account by hiding the
+	new account link. Also ensure the examples refer to RSA, not DSA.
+
+	* www/index.xsl:
+	* www/login.xsl:
+	* www/new_account.xsl:
+	* www/new_user.xsl:
+	* www/update_user.xsl:
+
+2008-06-01  Olav Vitters  <olav@bkor.dhs.org>
+
 	Fix loads of E_STRICT errors and convert a few things to PHP5 style
 	classes.
 

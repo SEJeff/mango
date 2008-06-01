@@ -24,7 +24,9 @@
      <p class="error">Login failed</p>
     </xsl:when>
     <xsl:otherwise>
-     <p>To access protected services on this website, please log in to identify yourself. If you want to request a new account click on the <a href="new_account.php">new account</a> link.</p>
+      <p>To access the services on this website, please log in to
+        identify yourself. If you want to request a new account see
+        the <a href="http://live.gnome.org/NewAccounts">instructions on the wiki</a>.</p>
     </xsl:otherwise>
    </xsl:choose>
 
@@ -44,8 +46,7 @@
       <td><input type="password" name="password"/></td>
      </tr>
     <tr>
-      <th><small>(<a href="new_account.php?reload=true">new account</a>)</small></th>
-      <td align="right"><input type="submit" value="Login" /></td>
+      <td colspan="2" align="right"><input type="submit" value="Login" /></td>
     </tr>
     </table>
    </form>

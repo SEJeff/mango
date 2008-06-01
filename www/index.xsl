@@ -43,9 +43,9 @@
         <p>This site hosts Mango, a system to assist GNOME administrative
           volunteers to maintain the data held in our LDAP and MySQL
           database (users, groups, mirrors etc).</p>
-        <p>To access protected services on this website, please log in to
-          identify yourself. If you want to request a new account click
-          on the '<a href="new_account.php">new account</a>' link.</p>
+        <p>To access the services on this website, please log in to
+          identify yourself. If you want to request a new account see
+	  the <a href="http://live.gnome.org/NewAccounts">instructions on the wiki</a>.</p>
         <form method="post" action="login.php" name="f">
           <input type="hidden" name="action" value="login"/>
           <input type="hidden" name="mango_token" value="{/page/@token}"/>
@@ -59,8 +59,7 @@
               <td><input type="password" name="password"/></td>
             </tr>
             <tr>
-              <th><small>(<a href="new_account.php?reload=true">new account</a>)</small></th>
-              <td align="right"><input type="submit" value="Login" /></td>
+              <td colspan="2" align="right"><input type="submit" value="Login" /></td>
             </tr>
             </table>
         </form>
