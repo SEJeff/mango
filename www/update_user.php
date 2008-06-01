@@ -132,6 +132,9 @@ class UpdateUser {
                 $formerrors = $this->user->validate();
 
                 if(count($formerrors) > 0) {
+                    $node = $formnode->appendChild($dom->createElement("error"));
+                    $node->appendChild($dom->createTextNode('User not updated! Correct the fields marked red.'));
+
                     foreach($formerrors as $error) {
                         $node = $formnode->appendChild($dom->createElement("formerror"));
                         $node->setAttribute("type", $error);
@@ -193,7 +196,7 @@ class UpdateUser {
             $newkeys .= file_get_contents($_FILES['keyfile']['tmp_name']);
         }
         $newkeys .= "\n".$_POST['newkeys'];
-        $newkeys = split("\n", $newkeylist);
+        $newkeys = split("\n", $newkeys);
         foreach($newkeys as $key) {
             if(empty($key) || substr($key, 0, 3) != "ssh") continue;
             $this->user->authorizedKeys[] = $key;

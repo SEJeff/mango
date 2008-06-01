@@ -1,5 +1,12 @@
 2008-06-01  Olav Vitters  <olav@bkor.dhs.org>
 
+	* lib/mysql.php: Avoid notice when password is empty.
+	* lib/user.php:
+	* www/update_user.php: Complain loudly if user wasn't updated due to
+	validation errors.
+
+2008-06-01  Olav Vitters  <olav@bkor.dhs.org>
+
 	* lib/util.php: Add array_same helper function.
 	* www/update_user.php: Fix logic once again (PHP is weird). Further,
 	check if the user was changed before attempting an update.

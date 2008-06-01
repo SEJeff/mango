@@ -34,7 +34,7 @@ class User {
         $user->uid = $entry['uid'][0];
         $user->cn = $entry['cn'][0];
         $user->mail = $entry['mail'][0];
-        $user->homeDirectory = $entry['homeDirectory'][0];
+        $user->homeDirectory = $entry['homedirectory'][0];
         $user->description = $entry['description'][0];
         if(count($entry['authorizedkey']) > 0) {
             for($i = 0; $i < $entry['authorizedkey']['count']; $i++) {
@@ -255,7 +255,7 @@ class User {
 
         // What's changed with the SSH keys?
         $removedkeys = array_diff($olduser->authorizedKeys, $this->authorizedKeys);
-        $result = $this->_update_sshkey($ldap, $dn, $olduser, $user, false, $removedkeys, $changes, 'key-del', 'keysremoved');
+        $result = $this->_update_sshkey($ldap, $dn, $olduser, false, $removedkeys, $changes, 'key-del', 'keysremoved');
         if(PEAR::isError($result)) return $result;
 
         $newkeys = array_diff($this->authorizedKeys, $olduser->authorizedKeys);

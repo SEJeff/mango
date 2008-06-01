@@ -16,7 +16,7 @@ class MySQLUtil {
         $hostname = $url_parts['host'];
         # $scheme = $url_parts['scheme']; -- we don't care about the scheme, only support MySQL for now
         $login = $url_parts['user'];
-        $passwd = $url_parts['pass'];
+        $passwd = empty($url_parts['pass']) ? '' : $url_parts['pass'];
         $dbname = substr($url_parts['path'], 1);
 
         /* Connect to the LDAP server */
