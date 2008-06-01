@@ -259,7 +259,7 @@ class User {
         if(PEAR::isError($result)) return $result;
 
         $newkeys = array_diff($this->authorizedKeys, $olduser->authorizedKeys);
-        $result = $this->_update_sshkey($ldap, $dn, $olduser, $user, true, $newkeys, $changes, 'key-add', 'keysadded');
+        $result = $this->_update_sshkey($ldap, $dn, $olduser, true, $newkeys, $changes, 'key-add', 'keysadded');
         if(PEAR::isError($result)) return $result;
 
 
@@ -298,7 +298,7 @@ class User {
         return $changes;
     }
 
-    function _update_sshkey($ldap, $dn, $olduser, $user, $is_add, $keys, &$changes, $desc_key, $desc_change) {
+    function _update_sshkey($ldap, $dn, $olduser, $is_add, $keys, &$changes, $desc_key, $desc_change) {
         if(!is_array($keys) || count($keys) == 0)
             return false;
 
@@ -422,7 +422,7 @@ class User {
     }
 
     function _has_shell() {
-        return $user->homeDirectory !== '/';
+        return $this->homeDirectory !== '/';
     }
 
     function _should_have_shell() {

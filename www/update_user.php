@@ -188,10 +188,11 @@ class UpdateUser {
         $prevkeys = array_unique($this->user->authorizedKeys);
 
         $this->user->authorizedKeys = array();
+        $newkeys = "";
         if($_FILES['keyfile']['tmp_name']) {
-            $keyfile = file_get_contents($_FILES['keyfile']['tmp_name']);
+            $newkeys .= file_get_contents($_FILES['keyfile']['tmp_name']);
         }
-        $newkeylist = $keyfile."\n".$_POST['newkeys'];
+        $newkeys .= "\n".$_POST['newkeys'];
         $newkeys = split("\n", $newkeylist);
         foreach($newkeys as $key) {
             if(empty($key) || substr($key, 0, 3) != "ssh") continue;
