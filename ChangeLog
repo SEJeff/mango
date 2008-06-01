@@ -1,5 +1,9 @@
 2008-06-01  Olav Vitters  <olav@bkor.dhs.org>
 
+	* lib/page.php: Convert to PHP5 style object.
+
+2008-06-01  Olav Vitters  <olav@bkor.dhs.org>
+
 	* lib/mysql.php: Avoid notice when password is empty.
 	* lib/user.php:
 	* www/update_user.php: Complain loudly if user wasn't updated due to

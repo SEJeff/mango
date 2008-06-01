@@ -13,18 +13,18 @@ require_once("../lib/config.php");
  * @package Mango
  */
 class Page {
-	var $result;
+	public $result;
 	
-	var $stylesheet;
+	private $stylesheet;
 	
-	function Page($stylesheet) {
+	function __construct($stylesheet) {
 		$this->stylesheet = $stylesheet;
 		$this->result = new DOMDocument();
                 $node = $this->result->createProcessingInstruction("xml-stylesheet", "href=\"".$this->stylesheet."\" type=\"text/xsl\"");
                 $this->result->appendChild($node);
 	}
 
-	function validate_post() {
+	public function validate_post() {
 		// SECURITY: Protect against CSRF (POST only)
 		// Based upon the method used by Michal Cihar (michal@cihar.com), phpMyAdmin (GPL)
 		if($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -44,7 +44,7 @@ class Page {
 	/**
 	 * Process the given input file using the given stylesheet
 	 */
-	function process($filename) {
+	public function process($filename) {
 		$this->result->loadXML(file_get_contents($filename));
 		$this->send();
 	}
@@ -52,7 +52,7 @@ class Page {
 	/**
 	 * Parse the content with the stylesheet
 	 */
-	function send() {
+	public function send() {
                 /* Grab root node */
                 $dom = $this->result;
 		$xpath = new DOMXPath($dom);
@@ -104,7 +104,7 @@ class Page {
 	 * @access public
 	 * @since 1.0
 	 */
-	function _add_dynamic_data(&$dom, &$pagenode) {
+	public function _add_dynamic_data(&$dom, &$pagenode) {
 		global $config;
 
 		/* Add runtime mode and useful URLs */
@@ -147,7 +147,7 @@ class Page {
 	 * @access public
 	 * @since 1.0
 	 */
-	function sendError($response_code) {
+	public function sendError($response_code) {
 		header($_SERVER['SERVER_PROTOCOL']." ".$response_code);
 	}
 	
@@ -159,7 +159,7 @@ class Page {
 	 * @access public
 	 * @since 1.0
 	 */
-	function sendRedirect($url) {
+	public function sendRedirect($url) {
 		header("Location: $url");
 	}
 
@@ -169,7 +169,7 @@ class Page {
 	 * @access public
 	 * @since 1.0
 	 */
-	function generate_token() {
+	public function generate_token() {
 		if (!isset($_SESSION[' token_bits '])) {
 			$_SESSION[' token_bits '] = sha1(uniqid(rand(), true));
 		}
