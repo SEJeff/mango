@@ -6,7 +6,30 @@
   <accounts_db_url>mysql://gnome:gnome@localhost.localdomain:3306/gnome</accounts_db_url>
   <mirrors_db_url>mysql://gnome:gnome@localhost.localdomain:3306/gnome</mirrors_db_url>
   <membership_db_url>mysql://gnome:gnome@localhost.localdomain:3306/gnome</membership_db_url>
-  <smtp_url>smtp://localhost/</smtp_url>
+
+  <!-- Mail backend (either sendmail or smtp) -->
+  <mail_backend>smtp</mail_backend>
+  <!-- Path to sendmail (sendmail backend) -->
+  <mail_sendmail_path>/usr/bin/sendmail</mail_sendmail_path>
+  <!-- Additional options for sendmail (sendmail backend) -->
+  <mail_sendmail_args>-i</mail_sendmail_args>
+  <!-- SMTP server hostname (smtp backend) -->
+  <mail_smtp_host>localhost</mail_smtp_host>
+  <!-- SMTP server port (smtp backend) -->
+  <mail_smtp_port>25</mail_smtp_port>
+  <!-- Whether or not to use SMTP authentication (smtp backend) -->
+  <mail_smtp_auth>0</mail_smtp_auth>
+  <!-- Username to use for SMTP authentication (smtp backend) -->
+  <mail_smtp_username>johndoe</mail_smtp_username>
+  <!-- Password to use for SMTP authentication (smtp backend) -->
+  <mail_smtp_password>nottelling</mail_smtp_password>
+  <!-- Value to give when sending EHLO or HELO (smtp backend) -->
+  <mail_smtp_localhost>mango.gnome.org</mail_smtp_localhost>
+  <!-- SMTP connection timeout (smtp backend) -->
+  <mail_smtp_timeout>30</mail_smtp_timeout>
+  <!-- Whether or not to use persistent SMTP connections (smtp backend) -->
+  <mail_smtp_persist>0</mail_smtp_persist>  
+
   <ldap_url>ldap://localhost/</ldap_url>
   <ldap_binddn>cn=Manager,dc=gnome,dc=org</ldap_binddn>
   <ldap_bindpw>nottelling</ldap_bindpw>
@@ -16,5 +39,9 @@
   <ldap_modules_basedn>ou=modules,dc=gnome,dc=org</ldap_modules_basedn>
   <token_salt>nottelling</token_salt>
   <support_email>rossg@gnome.org</support_email>
+
+  <!-- Email address of person(s) who handles account management -->
+  <account_email>accounts@gnome.org</account_email>  
+  
   <session_path>/var/lib/mango/sessions</session_path>
 </config>

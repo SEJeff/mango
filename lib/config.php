@@ -8,66 +8,49 @@ require_once("PEAR.php");
  * Site-wide configuration object
  */
 class SiteConfig {
-	// Date config last read from disk
-	var $cached_date;
+    public
+        $cached_date,       // Date config last read from disk
+        $mode,              // Runtime mode (Live/Preview/Development)
+        $base_url,          // Base URL
 
-	// Runtime mode (Live/Preview/Development)
-	var $mode;
+        $accounts_db_url,   // Mirrors MySQL database URL
+        $mirrors_db_url,    // Mirrors MySQL database URL
+        $membership_db_url, // Foundation membership MySQL database URL
 
-	// Base URL
-	var $base_url;
+        $mail_backend,       // Mail backend
+        $mail_sendmail_path, // Path to sendmail (sendmail backend)
+        $mail_sendmail_args, // Additional options for sendmail (sendmail backend)
+        $mail_smtp_host,     // SMTP server hostname (smtp backend)
+        $mail_smtp_port,     // SMTP server port (smtp backend)
+        $mail_smtp_auth,     // Whether or not to use smtp authentication (smtp backend)
+        $mail_smtp_username, // Username to use for SMTP authentication (smtp backend)
+        $mail_smtp_password, // Password to use for SMTP authentication (smtp backend)
+        $mail_smtp_localhost, // Value to give when sending EHLO or HELO (smtp backend)
+        $mail_smtp_timeout,  // SMTP connection timeout
+        $mail_smtp_persist,  // Whether or not to use persistent SMTP connections (smtp backend)
 
-	// Mirrors MySQL database URL
-	var $accounts_db_url;
-	
-	// Mirrors MySQL database URL
-	var $mirrors_db_url;
+        $ldap_url,            // LDAP URL
+        $ldap_binddn,         // LDAP bind DN
+        $ldap_bindpw,         // LDAP bind PW
+        $ldap_basedn,         // LDAP base DN
+        $ldap_users_basedn,   // LDAP users base DN
+        $ldap_groups_basedn,  // LDAP groups base DN
+        $ldap_modules_basedn, // LDAP modules base DN
+        $ldap_aliases_basedn, // LDAP aliases base DN
 
-	// Foundation membership MySQL database URL
-	var $membership_db_url;
+        $token_salt,          // Salt to be used in e-mail tokens
 
-	// SMTP URL
-	var $smtp_url;
+        $support_email,       // Support e-mail
+        $account_email,       // Email address of person(s) who handles account management -->
 
-	// LDAP URL
-	var $ldap_url;
+        $session_path;        // Session save path
 
-	// LDAP bind DN
-	var $ldap_binddn;
-
-	// LDAP bind PW
-	var $ldap_bindpw;
-
-	// LDAP base DN
-	var $ldap_basedn;
-
-	// LDAP users base DN
-	var $ldap_users_basedn;
-
-	// LDAP groups base DN
-	var $ldap_groups_basedn;
-
-	// LDAP modules base DN
-	var $ldap_modules_basedn;
-	
-	// LDAP aliases base DN
-	var $ldap_aliases_basedn;
-
-	// Salt to be used in e-mail tokens
-	var $token_salt;
-	
-	// Support e-mail
-	var $support_email;
-
-	// Session save path
-	var $session_path;
-
-	/*
-	 * Constructor. Modify configuration stuff here.
-	 */
-	function SiteConfig() {
-		$this->cached_date = time();
-	}
+    /*
+     * Constructor. Modify configuration stuff here.
+     */
+    function __construct() {
+        $this->cached_date = time();
+    }
 
 	/*
 	 * Read from the configuration file
@@ -101,87 +84,30 @@ class SiteConfig {
                 return true;
 	}
 
-	/*
-	 * Read configuration from given node
-	 */
-	function read_from($node) {
-		$children = $node->childNodes;
-		
-		// Running mode
-		if($node->nodeType == XML_ELEMENT_NODE && $node->tagName == "mode")
-			$this->mode = $children->item(0)->textContent;
+    /*
+     * Read configuration from given node
+     */
+    function read_from($node) {
+        $children = $node->childNodes;
 
-		// Base URL
-		if($node->nodeType == XML_ELEMENT_NODE && $node->tagName == "base_url")
-			$this->base_url = $children->item(0)->textContent;
+        if ($node->nodeType == XML_ELEMENT_NODE) {
+            $tagname = $node->tagName;
 
-		// Accounts database URL
-		if($node->nodeType == XML_ELEMENT_NODE && $node->tagName == "accounts_db_url")
-			$this->accounts_db_url = $children->item(0)->textContent;
-			
-		// Mirors database URL
-		if($node->nodeType == XML_ELEMENT_NODE && $node->tagName == "mirrors_db_url")
-			$this->mirrors_db_url = $children->item(0)->textContent;
+            if (property_exists($this, $tagname))
+                $this->$tagname = $children->item(0)->textContent;
+        }
 
-		// Membership database URL
-		if($node->nodeType == XML_ELEMENT_NODE && $node->tagName == "membership_db_url")
-			$this->membership_db_url= $children->item(0)->textContent;
+        foreach (array('mail_smtp_auth', 'mail_smtp_persist') as $tagname)
+            $this->$tagname = (boolean) $this->$tagname;
 
-		// SMTP e-mail server information
-		if($node->nodeType == XML_ELEMENT_NODE && $node->tagName == "smtp_url")
-			$this->smtp_url = $children->item(0)->textContent;
-
-		// LDAP server URL
-		if($node->nodeType == XML_ELEMENT_NODE && $node->tagName == "ldap_url")
-			$this->ldap_url = $children->item(0)->textContent;
-
-		// LDAP bind DN
-		if($node->nodeType == XML_ELEMENT_NODE && $node->tagName == "ldap_binddn")
-			$this->ldap_binddn = $children->item(0)->textContent;
-
-		// LDAP bind password
-		if($node->nodeType == XML_ELEMENT_NODE && $node->tagName == "ldap_bindpw")
-			$this->ldap_bindpw = $children->item(0)->textContent;
-
-		// LDAP base DN
-		if($node->nodeType == XML_ELEMENT_NODE && $node->tagName == "ldap_basedn")
-			$this->ldap_basedn = $children->item(0)->textContent;
-
-		// LDAP users base DN
-		if($node->nodeType == XML_ELEMENT_NODE && $node->tagName == "ldap_users_basedn")
-			$this->ldap_users_basedn = $children->item(0)->textContent;
-
-		// LDAP groups base DN
-		if($node->nodeType == XML_ELEMENT_NODE && $node->tagName == "ldap_groups_basedn")
-			$this->ldap_groups_basedn = $children->item(0)->textContent;
-
-		// LDAP modules base DN
-		if($node->nodeType == XML_ELEMENT_NODE && $node->tagName == "ldap_modules_basedn")
-			$this->ldap_modules_basedn = $children->item(0)->textContent;
-
-		// LDAP aliases base DN
-		if($node->nodeType == XML_ELEMENT_NODE && $node->tagName == "ldap_aliases_basedn")
-			$this->ldap_aliases_basedn = $children->item(0)->textContent;
-				
-		// Token salt
-		if($node->nodeType == XML_ELEMENT_NODE && $node->tagName == "token_salt")
-			$this->token_salt = $children->item(0)->textContent;
-				
-		// Support e-mail
-		if($node->nodeType == XML_ELEMENT_NODE && $node->tagName == "support_email")
-			$this->support_email = $children->item(0)->textContent;
-
-		// Session save path
-		if($node->nodeType == XML_ELEMENT_NODE && $node->tagName == "session_path")
-			$this->session_path = $children->item(0)->textContent;
-	}
+    }
 }
 
 // Set global config variable
 $config = new SiteConfig();
 $result = $config->read();
 if(PEAR::isError($result)) {
-	exit("Error: ".$result->getMessage());
+    exit("Error: ".$result->getMessage());
 }
 
 // Set session save path

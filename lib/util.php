@@ -1,5 +1,8 @@
 <?
 
+require_once('Mail.php');
+require_once('Mail/mime.php');
+
 function is_valid_ssh_pub_key($key, $check_length = True, $return_fingerprint = false) {
     if(empty($key) || substr($key, 0, 4) != "ssh-")
         return false;
@@ -40,6 +43,49 @@ function array_same($array1, $array2) {
             || count(array_diff($array1, $array2)) > 0
             || count(array_diff($array2, $array1)) > 0);
 
+}
+
+function send_mail($recipients, $subject, $headers, $body) {
+    global $config;
+    
+    $mime = new Mail_Mime();
+    $mime->setTXTBody($body);
+    $mime_params = array(
+        'head_charset' => 'UTF-8',
+        'head_encoding' => 'quoted-printable',
+        'text_charset' => 'UTF-8'
+    );
+    $content = $mime->get($mime_params);
+    $headers = $mime->headers($headers);
+
+
+    $cfg_sendmails = array('sendmail_path', 'sendmail_args');
+    $cfg_smtps = array('host', 'port', 'auth', 'username', 'password', 'localhost',
+                       'timeout', 'persist');
+
+    $cfgprefix = $config->mail_backend == 'smtp' ? 'mail_smtp_' : 'mail_';
+    $cfgopts = $config->mail_backend == 'smtp' ? $cfg_smtps : $cfg_sendmails;
+
+    foreach ($cfgopts as $opt) {
+        $cfgopt = $cfgprefix . $opt;
+        if (!empty($config->$cfgopt))
+            $mail_params[$opt] = $config->$cfgopt;
+    }
+
+    // DEVELOPMENT mode
+    if ($config->mode == 'development') {
+        // Always send mail to support address
+        $recipients = $config->support_email;
+
+        // Enable SMTP debug mode
+        // if ($config->mail_backend == 'smtp') {
+        //   $mail_params['debug'] = true;
+        // }
+    }
+
+    // Send mail
+    $mail = &Mail::factory($config->mail_backend, $mail_params);
+    return $mail->send($recipients, $headers, $content);
 }
 
 ?>

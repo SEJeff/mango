@@ -1,5 +1,31 @@
 2008-06-01  Olav Vitters  <olav@bkor.dhs.org>
 
+	Add configuration options for mail backend. Patch by Patrick Fey
+	with slight modifications by me.
+
+	* INSTALL: Document the new configuration options.
+	* config.xml-gnome: Add new configuration options to example file.
+	* lib/config.php: Add new config option. Olav: rewrite it to avoid
+	repeating the same code plus convert to PHP5 class.
+
+	* lib/util.php: Add send_mail function. Olav: slightly modified to
+	avoid repeating the same code and only to set the mail params which
+	have been set in the config.
+
+	* lib/user.php: Make use of send_mail function.
+	* www/list_foundationmembers.php: Make use of send_mail function.
+	* www/new_foundationmember.php: Make use of send_mail function.
+	* www/update_foundationmember.php: Make use of send_mail function.
+
+	* lib/account.php: Pass account_email config option to the templates.
+	Make use of send_mail function.
+	* templates/authtoken_mail_verification.xsl: Use account_email.
+	* templates/inform_accounts.xsl: Use account_email.
+	* templates/maintainer_approval.xsl: Use account_email.
+	* templates/requestor_status_change.xsl: Use account_email.
+
+2008-06-01  Olav Vitters  <olav@bkor.dhs.org>
+
 	* lib/page.php: Convert to PHP5 style object.
 
 2008-06-01  Olav Vitters  <olav@bkor.dhs.org>

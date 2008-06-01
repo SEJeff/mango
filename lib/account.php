@@ -2,8 +2,6 @@
 
 require_once("mysql.php");
     
-require_once("Mail.php");
-require_once("Mail/mime.php");
 require_once("module.php");
 require_once("util.php");
 
@@ -424,7 +422,8 @@ class Account {
         $mailnode->setAttribute("baseurl", $config->base_url);
         $usernode = $mailnode->appendChild($maildom->createElement("account"));
         $this->add_to_node($maildom, $usernode);
-        
+        $supportnode = $mailnode->appendChild($maildom->createElement('account_email'));
+        $supportnode->appendChild($maildom->createTextNode($config->account_email));
         if (!is_null($extra_mailnodes)) {
             foreach ($extra_mailnodes as $key=>$value) {
                 $items = is_array($value) ? $value : array($value);
@@ -448,29 +447,15 @@ class Account {
     function _send_email($mailbody, $to, $subject) {
         global $config;
 
-        $mime = new Mail_Mime();
         $headers = array(
-                "Reply-To" => "Mango <accounts@gnome.org>",
-                "From" => "Mango <accounts@gnome.org>",
-                "To" => $to,
-                "Subject" => $subject,
-        );
-        $params = array(
-                'head_charset' => 'UTF-8',
-                'head_encoding' => 'quoted-printable',
-                'text_charset' => 'UTF-8',
-        );
-        $mime->setTXTBody($mailbody);
-        $content = $mime->get($params);
-        $headers = $mime->headers($headers);
-        $mail = &Mail::factory('smtp');
+            'Reply-To' => '<'.$config->account_email.'>',
+            'From' => 'Mango <'.$config->account_email.'>',
+            'To' => '<'.$to.'>',
+            'Subject' => $subject,
 
-        // DEBUG: Send to support address for debugging purposes
-        if ($config->mode != 'live')
-            $to = $config->support_email;
+        );
 
-        $error = $mail->send($to, $headers, $content);
-        return $error;
+        return send_mail($to, $subject, $headers, $mailbody);
     }
 
     function fill_user($user) {

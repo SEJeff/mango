@@ -52,6 +52,6 @@ Note: This is an automated mail. Please do not respond to this mail. You
 can send your questions to the accounts team e-mail address. 
 -- 
 The GNOME Accounts Team
-&lt;accounts@gnome.org&gt;
+&lt;<xsl:value-of select="account_email"/>&gt;
   </xsl:template>   
 </xsl:stylesheet>

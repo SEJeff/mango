@@ -171,7 +171,19 @@ This is an overview about the configuration options:
 * accounts_db_url, mirrors_db_url and membership_db_url is the url
   of your MySQl server (see step 7). The syntax is as follows:
   mysql://user:password@hostname:port/database
-* smtp_url is the url of your smtp server
+* mail_backend chooses the mail backend to use (either sendmail or smtp)
+* mail_sendmail_path is the path to sendmail, if sendmail backend is used
+* mail_sendmail_args are additional arguments for sendmail (sendmail backend)
+* mail_smtp_host is the SMTP server hostname (smtp backend)
+* mail_smtp_port is the SMTP server port (smtp backend)
+* mail_smtp_auth specifies whether or not to use SMTP authentication,
+  use 0 for false and 1 for true (smtp backend)
+* mail_smtp_username is the username to use for SMTP authentication (smtp backend)
+* mail_smtp_password is the password to use for SMTP authentication (smtp backend)
+* mail_smtp_localhost is the value to give when sending EHLO or HELO (smtp backend)
+* mail_smtp_timeout is a timeout for the SMTP connection (smtp backend)
+* mail_smtp_persist specifies whether or not to use persistent SMTP connections,
+  use 0 for false and 1 for true (smtp backend)
 * ldap_url is the url of your ldap server
 * ldap_binddn is your ldap root account (see step 4)
 * ldap_bindpw is the password of your ldap root account (see step 4)
@@ -179,8 +191,8 @@ This is an overview about the configuration options:
   user, groups and module data is stored in your ldap directory (see step 5)
 * no idea what token_salt is, probably some kind of salt ;)
 * support_email is the email address of your support team (probably your own)
+* account_email is the email address of those who handle account management
 * session_path is the path where sessions should be stored (see step 3)
-
 
 11.) Connect to http://mango.gnome.local/ (or whatever you set it up to be)
 and off you go. If everything worked, you should be able to login using the

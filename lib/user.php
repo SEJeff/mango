@@ -371,26 +371,15 @@ class User {
                'Your new GNOME account' :
                'Changes to your GNOME account';
 
-        $mime = new Mail_Mime();
-        $mime->setTXTBody($body);
+        $to = $this->mail;
         $headers = array(
-            "Reply-To" => "Mango <accounts@gnome.org>",
-            "From" => "Mango <accounts@gnome.org>",
-            "To" => $this->mail,
-            "Subject" => $subject,
+            'Reply-To' => '<'.$config->account_email.'>',
+            'From' => 'Mango <'.$config->account_email.'>',
+            'To' => '<'.$to.'>',
+            'Subject' => $subject
         );
-        $params = array(
-            'head_charset' => 'UTF-8',
-            'head_encoding' => 'quoted-printable',
-            'text_charset' => 'UTF-8',
-        );
-        $content = $mime->get($params);
-        $headers = $mime->headers($headers);
-        $mail = &Mail::factory('smtp');
-        $recipient = ($config->mode == 'live') ? $this->mail : $config->support_email;
-        $error = $mail->send($recipient, $headers, $content);
 
-        return $error;
+        return send_mail($to, $subject, $headers, $body);
     }
 
     function _next_uidnumber(&$ldap) {

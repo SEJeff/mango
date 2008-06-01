@@ -3,6 +3,7 @@
 
 require_once("../lib/page.php");
 require_once("../lib/foundationmember.php");
+require_once('../lib/util.php');
 
 define('STYLESHEET', 'update_foundationmember.xsl');
 define('SESSIONID', 'update_foundationmember');
@@ -116,24 +117,14 @@ class UpdateFoundationMember {
                 // Replacing member name to template-mail body
                 $body = str_replace('<member>', $membername, $body);
                 $recipients = array ($to, $cc);
-                $mime = new Mail_Mime();
-                $mime->setTXTBody($body);
                 $headers = array(
-                    "Reply-To" => "<membership-committee@gnome.org>",
-                    "From" => "GNOME Foundation Membership Committee <membership-committee@gnome.org>",
-                    "To" => $to,
-                    "Cc" => $cc,
-                    "Subject" => $subject,
+                    'Reply-To' => '<membership-committee@gnome.org>',
+                    'From' => 'GNOME Foundation Membership Committee <membership-committee@gnome.org>',
+                    'To' => $membername.' <'.$to.'>',
+                    'Cc' => '<'.$cc.'>',
+                    'Subject' => $subject
                 );
-                $params = array(
-                    'head_charset' => 'UTF-8',
-                    'head_encoding' => 'quoted-printable',
-                    'text_charset' => 'UTF-8',
-                );
-                $content = $mime->get($params);
-                $headers = $mime->headers($headers);
-                $mail = &Mail::factory('smtp');
-                $error = $mail->send($recipients, $headers, $content);
+                $error = send_mail($recipients, $subject, $headers, $body);
                 if(PEAR::isError($error))
                     return $error;
                 
