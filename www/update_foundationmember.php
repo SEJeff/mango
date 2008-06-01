@@ -17,7 +17,7 @@ class UpdateFoundationMember {
         
     function UpdateFoundationMember($id) {
         $foundationmember = FoundationMember::fetchmember($id);
-        if(!is_a($foundationmember, "FoundationMember")) {
+        if(!$foundationmember instanceof FoundationMember) {
             $this->error = $foundationmember;
             return;
         }
@@ -25,10 +25,10 @@ class UpdateFoundationMember {
         $this->foundationmember = $foundationmember;
     }
         
-    function main() {
+   static function main() {
         // Check session for previous instance
-        $container = $_SESSION[SESSIONID];
-        if(!is_a($container, "UpdateFoundationMember") || isset($_REQUEST['id'])) {
+        $container = isset($_SESSION[SESSIONID]) ? $_SESSION[SESSIONID] : null;
+        if(!$container instanceof UpdateFoundationMember || isset($_REQUEST['id'])) {
             $id = $_REQUEST['id'];
             $container = new UpdateFoundationMember($id);
             $_SESSION[SESSIONID] = $container;
@@ -80,7 +80,7 @@ class UpdateFoundationMember {
         $idcheck = $_POST['idcheck'];
         if($this->foundationmember->id != $idcheck) {
             $foundationmember = FoundationMember::fetchmember($idcheck);
-            if(!is_a($foundationmember, "FoundationMember")) {
+            if(!$foundationmember instanceof FoundationMember) {
                 $this->error = $foundationmember;
                 return;
             }

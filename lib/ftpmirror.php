@@ -4,15 +4,16 @@ require_once("mysql.php");
 
 class FTPMirror {
 	// Main attributes
-	var $id;
-	var $name;
-	var $url;
-	var $location;
-	var $email;
-	var $comments;
-	var $description;
-	var $active;
-	var $last_update;
+    private
+	    $id,
+	    $name,
+	    $url,
+	    $location,
+	    $email,
+	    $comments,
+	    $description,
+	    $active,
+	    $last_update;
 		
 	function absorb($record) {
 		$mirror = new FTPMirror();
@@ -28,7 +29,7 @@ class FTPMirror {
 		return $mirror;
 	}
 	
-	function listmirrors(&$results) {
+	static function listmirrors(&$results) {
 		global $config;
 		
 		// If no results...
@@ -95,7 +96,7 @@ class FTPMirror {
 		return true;
 	}
 
-	function fetchmirror($id) {
+	static function fetchmirror($id) {
 		global $config;
 		
         // Get database connection
@@ -127,7 +128,7 @@ class FTPMirror {
 		/* Get old record */
 		$oldrec = FTPMirror::fetchmirror($this->id);
 		if(PEAR::isError($oldrec)) return $oldrec;
-		if(!is_a($oldrec, "FTPMirror")) {
+		if(!$oldrec instanceof FTPMirror) {
 			return PEAR::raiseError("No FTP mirror exists for the id '".$this->id."'");
 		}
 

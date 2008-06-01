@@ -28,10 +28,10 @@ class ListAccounts {
     }
     
     
-    function main() {
+   static function main() {
         // Check session for previous instance
-        $container = $_SESSION[SESSIONID];
-        if(!is_a($container, "ListAccounts") || isset($_REQUEST['reload'])) {
+        $container = isset($_SESSION[SESSIONID]) ? $_SESSION[SESSIONID] : null;
+        if(!$container instanceof ListAccounts || isset($_REQUEST['reload'])) {
             $container = new ListAccounts();
             $container->reload();
             $_SESSION[SESSIONID] = $container;

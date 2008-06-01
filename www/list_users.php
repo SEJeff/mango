@@ -71,12 +71,12 @@ class ListUsers {
 		$this->users = new PagedResults($results);
 	}
 	
-	function main() {
+	static function main() {
 		global $config;
 
 		// Check session for previous instance
-		$container = $_SESSION[SESSIONID];
-		if(!is_a($container, "ListUsers") || isset($_REQUEST['reload'])) {
+		$container = isset($_SESSION[SESSIONID]) ? $_SESSION[SESSIONID] : null;
+		if(!$container instanceof ListUsers || isset($_REQUEST['reload'])) {
 			$container = new ListUsers();
 			$container->reload();
 			$_SESSION[SESSIONID] = $container;

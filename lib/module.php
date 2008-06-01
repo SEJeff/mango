@@ -5,18 +5,17 @@ require_once("user.php");
 
 class Module {
     // Main attributes
-    var $cn;
-    var $description;
+    public
+        $cn,
+        $description,
         
-    // Details of the maintainers for this module
-    var $maintainerUids;
+        $maintainerUids,     // Details of the maintainers for this module
 
-    // Has 'localizationModule' objectclass set?
-    var $localizationModule;
-    var $localizationTeam;
-    var $mailingList;
+        $localizationModule, // Has 'localizationModule' objectclass set?
+        $localizationTeam,
+        $mailingList;
         
-    function Module() {
+    function __construct() {
         $this->maintainerUids = array();
         $this->localizationModule = false;
     }
@@ -44,7 +43,7 @@ class Module {
         return $module;
     }
     
-    function listmodule(&$results, $moduletype = "all") {
+    static function listmodule(&$results, $moduletype = "all") {
         global $config;
         
         // Process list of CNs into an LDAP search criteria
@@ -93,7 +92,7 @@ class Module {
         $entries = ldap_get_entries($ldap, $result);
         
         return $entries;
-    }           
+    }
     
     function addmodule() {
         global $config;
@@ -175,7 +174,7 @@ class Module {
         // Pull up existing record for comparison
         $oldmodule = Module::fetchmodule($this->cn);
         if(PEAR::isError($oldmodule)) return $oldmodule;
-        if(!is_a($oldmodule, "Module")) {
+        if(!$oldmodule instanceof Module) {
             return PEAR::raiseError("No module (".$this->cn.") found!");
         }
         

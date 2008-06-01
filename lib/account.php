@@ -76,7 +76,7 @@ class Account {
             $this->is_mail_verified = 'N';
             $this->is_new_account = 'Y';
             $this->status = 'M';
-            $this->timestamp = date ('Y-m-d H:m:s');
+            $this->timestamp = gmdate ('Y-m-d H:m:s');
             $this->abilities = array ();
             $this->mail_token = $this->create_token();
         }
@@ -91,7 +91,7 @@ class Account {
         $random_file = fopen("/dev/urandom", "r");
         $random_bytes = base64_encode(fgets($random_file, 20));
         fclose($random_file);
-        return sha1('mango'.date('c').$salt.$random_bytes);
+        return sha1('mango'.gmdate('c').$salt.$random_bytes);
     }
     
     function add_account () { 
@@ -371,7 +371,7 @@ class Account {
         return $result;
     }
     
-    function get_accountsteam_actions($keyword, $status) { 
+    static function get_accountsteam_actions($keyword, $status) { 
         global $config;
 
         if (empty($status)) $status = 'S';
@@ -389,7 +389,7 @@ class Account {
         return $return;
     }
     
-    function get_pending_actions ($vouch_group = 'gnomecvs') { 
+    static public function get_pending_actions ($vouch_group = 'gnomecvs') { 
         global $config;
         
         $return = array ();

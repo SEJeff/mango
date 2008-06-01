@@ -16,7 +16,7 @@ class UpdateFTPMirror {
 		
 	function UpdateFTPMirror($id) {
 		$ftpmirror = FTPMirror::fetchmirror($id);
-		if(!is_a($ftpmirror, "FTPMirror")) {
+		if(!$ftpmirror instanceof FTPMirror) {
 			$this->error = $ftpmirror;
 			return;
 		}
@@ -24,10 +24,10 @@ class UpdateFTPMirror {
 		$this->ftpmirror = $ftpmirror;
 	}
 		
-	function main() {
+       static function main() {
 		// Check session for previous instance
-		$container = $_SESSION[SESSIONID];
-		if(!is_a($container, "UpdateFTPMirror") || isset($_REQUEST['id'])) {
+		$container = isset($_SESSION[SESSIONID]) ? $_SESSION[SESSIONID] : null;
+		if(!$container instanceof UpdateFTPMirror || isset($_REQUEST['id'])) {
 			$id = $_REQUEST['id'];
 			$container = new UpdateFTPMirror($id);
 			$_SESSION[SESSIONID] = $container;
@@ -79,7 +79,7 @@ class UpdateFTPMirror {
 		$idcheck = $_POST['idcheck'];
 		if($this->ftpmirror->id != $idcheck) {
 			$ftpmirror = FTPMirror::fetchmirror($idcheck);
-			if(!is_a($ftpmirror, "FTPMirror")) {
+			if(!$ftpmirror instanceof FTPMirror) {
 				$this->error = $ftpmirror;
 				return;
 			}

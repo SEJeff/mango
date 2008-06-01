@@ -1,5 +1,36 @@
 2008-06-01  Olav Vitters  <olav@bkor.dhs.org>
 
+	Fix loads of E_STRICT errors and convert a few things to PHP5 style
+	classes.
+
+	* lib/account.php:
+	* lib/authtoken.php:
+	* lib/foundationmember.php:
+	* lib/ftpmirror.php:
+	* lib/ldap.php:
+	* lib/module.php:
+	* lib/page.php:
+	* lib/user.php:
+	* www/common.php:
+	* www/index.php:
+	* www/list_accounts.php:
+	* www/list_foundationmembers.php:
+	* www/list_ftpmirrors.php:
+	* www/list_modules.php:
+	* www/list_users.php:
+	* www/login.php:
+	* www/new_account.php:
+	* www/new_foundationmember.php:
+	* www/new_ftpmirror.php:
+	* www/new_module.php:
+	* www/new_user.php:
+	* www/update_foundationmember.php:
+	* www/update_ftpmirror.php:
+	* www/update_module.php:
+	* www/update_user.php:
+
+2008-06-01  Olav Vitters  <olav@bkor.dhs.org>
+
 	Add configuration options for mail backend. Patch by Patrick Fey
 	with slight modifications by me.
 

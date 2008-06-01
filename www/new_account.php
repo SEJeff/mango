@@ -24,10 +24,10 @@ class NewAccount {
 	}
 
 	
-	function main() {
+       static function main() {
 		// Check session for previous instance
-		$container = $_SESSION[SESSIONID];
-		if(!is_a($container, "NewAccount") || isset($_REQUEST['reload'])) {
+		$container = isset($_SESSION[SESSIONID]) ? $_SESSION[SESSIONID] : null;
+		if(!$container instanceof NewAccount || isset($_REQUEST['reload'])) {
 			$container = new NewAccount();
 			$_SESSION[SESSIONID] = $container;
 		}

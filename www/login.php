@@ -7,7 +7,7 @@ require_once("../lib/user.php");
 define('STYLESHEET', 'login.xsl');
 
 class Login {
-	function loginform($failed, $pe = NULL) {
+	static function loginform($failed, $pe = NULL) {
 		$page = new Page(STYLESHEET);
 		$dom =& $page->result;
 		$rootnode = $dom->createElement("page");
@@ -26,7 +26,7 @@ class Login {
 		return;
 	}
 
-	function logoutform() {
+	static function logoutform() {
 		$page = new Page(STYLESHEET);
 		$dom =& $page->result;
 		$rootnode = $dom->appendChild($dom->createElement("page"));
@@ -36,7 +36,7 @@ class Login {
 		return;
 	}
 
-	function loggedin() {
+	static function loggedin() {
 		global $config;
 
 		if(isset($_REQUEST['redirect'])) {
@@ -48,7 +48,7 @@ class Login {
 		return;
 	}
 
-	function main() {
+	static function main() {
 		global $config;
 
 		/* Logout? */
@@ -60,10 +60,10 @@ class Login {
 		}
                 
                 // Already logged in? Show loggedin form
-                if (isset($_SESSION['user']) && is_a ($_SESSION['user'], 'User'))
+                if (isset($_SESSION['user']) && $_SESSION['user'] instanceof User)
                     Login::loggedin();
 
-		if($_REQUEST['action'] == "login") {
+		if(isset($_REQUEST['action']) && $_REQUEST['action'] == "login") {
 			if(!isset($_POST['login']) || !isset($_POST['password'])) {
 				Login::loginform(false);
 				return;
@@ -138,7 +138,7 @@ class Login {
 		Login::loginform(false);
 	}
 
-	function connectToLDAP($uid, $password) {
+	static function connectToLDAP($uid, $password) {
 		global $config;
 
 		/* Extract the hostname */

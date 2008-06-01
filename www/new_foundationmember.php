@@ -17,10 +17,10 @@ class NewFoundationMember {
         $this->foundationmember = new FoundationMember();
     }
         
-    function main() {
+   static function main() {
         // Check session for previous instance
-        $container = $_SESSION[SESSIONID];
-        if(!is_a($container, "NewFoundationMember") || isset($_REQUEST['reload'])) {
+        $container = isset($_SESSION[SESSIONID]) ? $_SESSION[SESSIONID] : null;
+        if(!$container instanceof NewFoundationMember || isset($_REQUEST['reload'])) {
             $container = new NewFoundationMember();
             $_SESSION[SESSIONID] = $container;
         }

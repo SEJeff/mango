@@ -7,18 +7,19 @@ require_once("datefield.php");
 
 class FoundationMember {
     // Main attributes
-    var $id;
-    var $firstname;
-    var $lastname;
-    var $email;
-    var $userid;            // GNOME userid
-    var $comments;
-    var $renew;             // denotes that member's membership is renewed.
-    var $first_added;
-    var $need_to_renew;
-    var $last_renewed_on;
-    var $last_update;
-    var $resigned_on;   // denotes time when a member retired
+    public
+        $id,
+        $firstname,
+        $lastname,
+        $email,
+        $userid,            // GNOME userid
+        $comments,
+        $renew,             // denotes that member's membership is renewed.
+        $first_added,
+        $need_to_renew,
+        $last_renewed_on,
+        $last_update,
+        $resigned_on;   // denotes time when a member retired
         
     function absorb($record) {
         $member = new FoundationMember();
@@ -43,7 +44,7 @@ class FoundationMember {
         return $member;
     }
     
-    function listmembers(&$results) {
+    static function listmembers(&$results) {
         global $config;
         
         // If no results...
@@ -117,7 +118,7 @@ class FoundationMember {
         return true;
     }
 
-    function fetchmember($id) {
+    static function fetchmember($id) {
         global $config;
         
         // Get database connection
@@ -149,7 +150,7 @@ class FoundationMember {
         /* Get old record */
         $oldrec = FoundationMember::fetchmember($this->id);
         if(PEAR::isError($oldrec)) return $oldrec;
-        if(!is_a($oldrec, "FoundationMember")) {
+        if(! $oldrec instanceof FoundationMember) {
             return PEAR::raiseError("No Foundation member exists for the id '".$this->id."'");
         }
 

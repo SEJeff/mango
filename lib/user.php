@@ -29,7 +29,7 @@ class User {
         $this->pubkeyauthenticationuser = false;
     }
 
-    function absorb($entry) {
+    static function absorb($entry) {
         $user = new User();
         $user->uid = $entry['uid'][0];
         $user->cn = $entry['cn'][0];
@@ -52,7 +52,7 @@ class User {
         return $user;
     }
     
-    function listusers(&$results) {
+    static function listusers(&$results) {
         global $config;
         
         // Process list of UIDs into an LDAP search criteria
@@ -82,7 +82,7 @@ class User {
         return $entries;
     }           
     
-    function adduser() {
+    public function adduser() {
         global $config;
         
         // Connect to LDAP server
@@ -156,7 +156,7 @@ class User {
 
     // by default this searches for 'uid', but can handle other things as well
     // NOTE: will always pick the first user returned!
-    function fetchuser($search_for, $attribute = "uid") {
+    static function fetchuser($search_for, $attribute = "uid") {
         global $config;
         
         // Connect to LDAP server
@@ -200,7 +200,7 @@ class User {
         return $user;
     }
     
-    function update() {
+    public function update() {
         global $config;
         
         // Connect to LDAP server
@@ -213,7 +213,7 @@ class User {
         // Pull up existing record for comparison
         $olduser = User::fetchuser($this->uid);
         if(PEAR::isError($olduser)) return $olduser;
-        if(!is_a($olduser, "User")) {
+        if(!$olduser instanceof User) {
             return PEAR::raiseError("No user (".$this->uid.") found!");
         }
         

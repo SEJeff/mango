@@ -16,10 +16,10 @@ class NewModule {
 		$this->module = new Module();
 	}
 		
-	function main() {
+       static function main() {
 		// Check session for previous instance
-		$container = $_SESSION[SESSIONID];
-		if(!is_a($container, "NewModule") || isset($_REQUEST['reload'])) {
+		$container = isset($_SESSION[SESSIONID]) ? $_SESSION[SESSIONID] : null;
+		if(!$container instanceof NewModule || isset($_REQUEST['reload'])) {
 			$container = new NewModule();
 			$_SESSION[SESSIONID] = $container;
 		}

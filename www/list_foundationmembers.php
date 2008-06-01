@@ -81,12 +81,12 @@ class ListFoundationMembers {
         $this->foundationmembers = new PagedResults($results);
     }
     
-    function main() {
+   static function main() {
         global $config;
 
         // Check session for previous instance
-        $container = $_SESSION[SESSIONID];
-        if(!is_a($container, "ListFoundationMembers") || isset($_REQUEST['reload'])) {
+        $container = isset($_SESSION[SESSIONID]) ? $_SESSION[SESSIONID] : null;
+        if(!$container instanceof ListFoundationMembers || isset($_REQUEST['reload'])) {
             $container = new ListFoundationMembers();
             $container->reload();
             $_SESSION[SESSIONID] = $container;
@@ -134,7 +134,7 @@ class ListFoundationMembers {
         // ...other filters...
         if (isset($_POST['renew'])) {
             $foundationmember = FoundationMember::fetchmember($_POST['renew']);
-            if(!is_a($foundationmember, "FoundationMember")) {
+            if(!$foundationmember instanceof FoundationMember) {
                 $this->error = $foundationmember;
             } else {
                 $buffer = $foundationmember->renew();

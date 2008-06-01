@@ -73,7 +73,7 @@ class LDAPUtil {
         trigger_error('Clone is not allowed.', E_USER_ERROR);
     }
 
-    function ldap_quote($str) {
+    static function ldap_quote($str) {
         return str_replace(
             array( '\\', ' ', '*', '(', ')' ),
             array( '\\5c', '\\20', '\\2a', '\\28', '\\29' ),

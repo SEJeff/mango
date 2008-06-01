@@ -24,19 +24,13 @@ $AFFECTEDGROUPS = array(
 class NewUser {
     // Stage
 
-    // Details for the user being created
-    var $user;
+    private
+        $user,      // Details for the user being created
+        $account,   // Details of the account request
+        $savedKeys, // Remember existing SSH keys between requests
+        $mailbody;  // Mail template to use
 
-    // Details of the account request
-    var $account;
-
-    // Remember existing SSH keys between requests
-    var $savedKeys;
-    
-    // Mail template to use
-    var $mailbody;
-
-    function NewUser($accountid = null) {
+    function __construct($accountid = null) {
         $this->user = new User();
         $this->savedKeys = array();
         $this->sendemail = true;
@@ -50,10 +44,10 @@ class NewUser {
         }
     }
 
-    function main() {
+    static function main() {
         // Check session for previous instance
-        $container = $_SESSION[SESSIONID];
-        if(!is_a($container, "NewUser") || isset($_REQUEST['reload'])) {
+        $container = isset($_SESSION[SESSIONID]) ? $_SESSION[SESSIONID] : null;
+        if(!$container instanceof NewUser || isset($_REQUEST['reload'])) {
             $container = isset($_REQUEST['account']) ?
                          new NewUser($_REQUEST['account']) : new NewUser();
             $_SESSION[SESSIONID] = $container;
@@ -72,7 +66,7 @@ class NewUser {
         $_SESSION[SESSIONID] = $container;
     }
     
-    function service(&$dom) {
+    public function service(&$dom) {
         // A page node is mandatory
         $dom->appendChild($pagenode = $dom->createElement("page"));
         $pagenode->setAttribute("title", "New User");
@@ -102,7 +96,7 @@ class NewUser {
         return;
     }
 
-    function process(&$dom, &$formnode) {   
+    public function process(&$dom, &$formnode) {   
         // Read form and validate
         $formerrors = $this->readform();
         if(count($formerrors) > 0) {
@@ -141,7 +135,7 @@ class NewUser {
         return;
     }
     
-    function readform() {
+    public function readform() {
         global $AFFECTEDGROUPS;
 
         // Save any keys from the last form     
@@ -169,7 +163,7 @@ class NewUser {
         if($_FILES['keyfile']['tmp_name']) {
             $keyfile = file_get_contents($_FILES['keyfile']['tmp_name']);
         }
-        $newkeylist = $keyfile."\n".$_POST['newkeys'];
+        $newkeylist = $keyfile . "\n" . $_POST['newkeys'];
         $newkeys = split("\n", $newkeylist);
         foreach($newkeys as $key) {
             if(empty($key) || substr($key, 0, 3) != "ssh") continue;

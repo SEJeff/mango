@@ -6,7 +6,7 @@ require_once("../lib/user.php");
 /* Check permissions */
 function check_permissions(&$dom, &$pagenode, $group) {
 	$user = $_SESSION['user'];
-	if(!$user || !is_a($user, "User")) {
+	if(!$user || !$user instanceof User) {
 		$pagenode->appendChild($dom->createElement("notloggedin"));
                 $pagenode->setAttribute("title", "Login required");
 		return false;

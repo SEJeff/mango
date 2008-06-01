@@ -18,7 +18,7 @@ class UpdateModule {
 	function UpdateModule($cn) {
 
 		$module = Module::fetchmodule($cn);
-		if(!is_a($module, "Module")) {
+		if(!$module instanceof Module) {
 			$this->error = $module;
 			return;
 		}
@@ -26,10 +26,10 @@ class UpdateModule {
 		$this->module = $module;
 	}
 		
-	function main() {
+       static function main() {
 		// Check session for previous instance
-		$container = $_SESSION[SESSIONID];
-		if(!is_a($container, "UpdateModule") || isset($_REQUEST['cn'])) {
+		$container = isset($_SESSION[SESSIONID]) ? $_SESSION[SESSIONID] : null;
+		if(!$container instanceof UpdateModule || isset($_REQUEST['cn'])) {
 			$cn = $_REQUEST['cn'];
 			$container = new UpdateModule($cn);
 			if($container->error) {

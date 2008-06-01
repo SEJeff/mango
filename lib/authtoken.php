@@ -224,7 +224,7 @@ $WORDS = array("A", "ABE", "ACE", "ACT", "AD", "ADA", "ADD",
 "YEAR", "YELL", "YOGA", "YOKE");
 
 class AuthToken {
-    function extract(&$bytes, $start, $bits) {
+    static function extract(&$bytes, $start, $bits) {
         $i = $start / 8;
         $res = 0;
 
@@ -240,7 +240,7 @@ class AuthToken {
         return $res;
     }
 
-    function pad(&$bytes) {
+    static function pad(&$bytes) {
         $parity = 0;
         for($i = 0; $i < 32; $i++) {
             $parity += AuthToken::extract($bytes, $i * 2, 2);
@@ -249,7 +249,7 @@ class AuthToken {
         return $bytes .= chr(($parity << 6) % 256);
     }
 
-    function read_key() {
+    static function read_key() {
         $f = fopen("/dev/random", "r");
         $key = fread($f, 8);
         fclose($f);
@@ -257,7 +257,7 @@ class AuthToken {
         return $key;
     }
 
-    function generate() {
+    static function generate() {
         global $WORDS;
 
         $bytes = AuthToken::read_key();

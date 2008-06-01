@@ -42,7 +42,7 @@ class UpdateUser {
         global $AFFECTEDGROUPS;
 
         $user = User::fetchuser($uid);
-        if(!is_a($user, "User")) {
+        if(!$user instanceof User) {
             $this->error = $user;
             return;
         }
@@ -51,10 +51,10 @@ class UpdateUser {
         $this->othergroups = array_diff($user->groups, $AFFECTEDGROUPS);
     }
         
-    function main() {
+    static function main() {
         // Check session for previous instance
-        $container = $_SESSION[SESSIONID];
-        if(!is_a($container, "UpdateUser") || isset($_REQUEST['uid'])) {
+        $container = isset($_SESSION[SESSIONID]) ? $_SESSION[SESSIONID] : null;
+        if(!$container instanceof UpdateUser || isset($_REQUEST['uid'])) {
             $uid = $_REQUEST['uid'];
             $container = new UpdateUser($uid);
             if($container->error) {
@@ -112,7 +112,7 @@ class UpdateUser {
         $uidcheck = $_POST['uidcheck'];
         if($this->user->uid != $uidcheck) {
             $user = User::fetchuser($uidcheck);
-            if(!is_a($user, "User")) {
+            if(!$user instanceof User) {
                 $this->error = $user;
                 return;
             }

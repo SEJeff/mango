@@ -24,7 +24,7 @@ class Page {
                 $this->result->appendChild($node);
 	}
 
-	public function validate_post() {
+	static public function validate_post() {
 		// SECURITY: Protect against CSRF (POST only)
 		// Based upon the method used by Michal Cihar (michal@cihar.com), phpMyAdmin (GPL)
 		if($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -117,13 +117,13 @@ class Page {
 		$pagenode->setAttribute("support", $config->support_email);
 
 		/* Add page generation date */
-		$pagenode->setAttribute("date", strftime("%d %B %y %T %Z"));
+		$pagenode->setAttribute("date", gmstrftime("%d %B %y %T %Z"));
 
 		/* If user registered in session, add info */
 		if (isset ($_SESSION['user']))
 			$user = $_SESSION['user'];
 			
-		if(isset($user) && is_a($user, "User") && !isset($_REQUEST['logout'])) {
+		if(isset($user) && $user instanceof User && !isset($_REQUEST['logout'])) {
 			$pagenode->appendChild($usernode = $dom->createElement("user"));
 			$usernode->appendChild($node = $dom->createElement("cn"));
 			$node->appendChild($dom->createTextNode($user->cn));
@@ -169,7 +169,7 @@ class Page {
 	 * @access public
 	 * @since 1.0
 	 */
-	public function generate_token() {
+	static function generate_token() {
 		if (!isset($_SESSION[' token_bits '])) {
 			$_SESSION[' token_bits '] = sha1(uniqid(rand(), true));
 		}

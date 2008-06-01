@@ -16,7 +16,7 @@ $rootnode->appendChild($element);
 // Check if user is a maintainer of a module or language
 $is_maintainer = false; 
 $is_coordinator = false;
-if (isset($_SESSION['user']) && is_a ($_SESSION['user'], 'User')) { 
+if (isset($_SESSION['user']) && $_SESSION['user'] instanceof User) { 
     $rootnode->setAttribute("title", "Main page");
 
     $vouchers = array();

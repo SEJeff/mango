@@ -70,12 +70,12 @@ class ListModules {
 		$this->modules = new PagedResults($results);
 	}
 	
-	function main() {
+       static function main() {
 		global $config;
 
 		// Check session for previous instance
-		$container = $_SESSION[SESSIONID];
-		if(!is_a($container, "ListModules") || isset($_REQUEST['reload'])) {
+		$container = isset($_SESSION[SESSIONID]) ? $_SESSION[SESSIONID] : null;
+		if(!$container instanceof ListModules || isset($_REQUEST['reload'])) {
 			$container = new ListModules();
 			$container->reload();
 			$_SESSION[SESSIONID] = $container;
