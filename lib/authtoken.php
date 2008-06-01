@@ -224,51 +224,52 @@ $WORDS = array("A", "ABE", "ACE", "ACT", "AD", "ADA", "ADD",
 "YEAR", "YELL", "YOGA", "YOKE");
 
 class AuthToken {
-	function extract(&$bytes, $start, $bits) {
-		$i = $start / 8;
-		$res = 0;
+    function extract(&$bytes, $start, $bits) {
+        $i = $start / 8;
+        $res = 0;
 
-		if($i < strlen($bytes))
-			$res |= ord($bytes{$i}) << 16;
-		if($i + 1 < strlen($bytes))
-			$res |= ord($bytes{$i + 1}) << 8;
-		if($i + 2 < strlen($bytes))
-			$res |= ord($bytes{$i + 2});
+        if($i < strlen($bytes))
+            $res |= ord($bytes{$i}) << 16;
+        if($i + 1 < strlen($bytes))
+            $res |= ord($bytes{$i + 1}) << 8;
+        if($i + 2 < strlen($bytes))
+            $res |= ord($bytes{$i + 2});
 
-		$res = $res & (0xffffff >> ($start % 8));
-		$res = $res >> (24 - $bits - ($start % 8));
-		return $res;
-	}
+        $res = $res & (0xffffff >> ($start % 8));
+        $res = $res >> (24 - $bits - ($start % 8));
+        return $res;
+    }
 
-	function pad(&$bytes) {
-		$parity = 0;
-		for($i = 0; $i < 32; $i++) {
-			$parity += AuthToken::extract($bytes, $i * 2, 2);
-		}
+    function pad(&$bytes) {
+        $parity = 0;
+        for($i = 0; $i < 32; $i++) {
+            $parity += AuthToken::extract($bytes, $i * 2, 2);
+        }
 
-		return $bytes .= chr(($parity << 6) % 256);
-	}
+        return $bytes .= chr(($parity << 6) % 256);
+    }
 
-	function read_key() {
-		$f = fopen("/dev/random", "r");
-		$key = fread($f, 8);
-		fclose($f);
-		return $key;
-	}
+    function read_key() {
+        $f = fopen("/dev/random", "r");
+        $key = fread($f, 8);
+        fclose($f);
 
-	function generate() {
-		global $WORDS;
+        return $key;
+    }
 
-		$bytes = AuthToken::read_key();
-		$bytes = AuthToken::pad($bytes);
-		$value = "";
-		for($i = 0; $i < 6; $i++) {
-        		$value .= $WORDS[AuthToken::extract($bytes, 11 * $i, 11)]." ";
-		}
-		$value = trim($value);
+    function generate() {
+        global $WORDS;
 
-		return $value;
-	}
+        $bytes = AuthToken::read_key();
+        $bytes = AuthToken::pad($bytes);
+        $value = "";
+        for($i = 0; $i < 6; $i++) {
+            $value .= $WORDS[AuthToken::extract($bytes, 11 * $i, 11)]." ";
+        }
+        $value = trim($value);
+
+        return $value;
+    }
 }
 
 ?>
