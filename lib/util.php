@@ -34,4 +34,12 @@ function is_valid_ssh_pub_key($key, $check_length = True, $return_fingerprint = 
     return $return_fingerprint ? rtrim(chunk_split(md5($certificate), 2, ':'), ':') . ' ' . $comment : true;
 }
 
+function array_same($array1, $array2) {
+    # Note: assumes no duplicate entries!
+    return (count($array1) != count($array2)
+            || count(array_diff($array1, $array2)) > 0
+            || count(array_diff($array2, $array1)) > 0);
+
+}
+
 ?>

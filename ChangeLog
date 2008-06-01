@@ -1,5 +1,11 @@
 2008-06-01  Olav Vitters  <olav@bkor.dhs.org>
 
+	* lib/util.php: Add array_same helper function.
+	* www/update_user.php: Fix logic once again (PHP is weird). Further,
+	check if the user was changed before attempting an update.
+
+2008-06-01  Olav Vitters  <olav@bkor.dhs.org>
+
 	* www/update_user.xsl: Ignore individual key additions and removals.
 	* lib/user.php: Add _update_sshkey function and use it for SSH key
 	removals and additions.

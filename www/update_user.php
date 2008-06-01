@@ -124,9 +124,9 @@ class UpdateUser {
 
         $changes = false;
         if (!empty($_POST['updateuser'])) {
-            $changes = ($this->process_general_tab($dom, $formnode)) or $changes; // NOTE: Make sure or $changes is last!
-            $changes = ($this->process_sshkeys_tab($dom, $formnode)) or $changes;
-            $changes = ($this->process_groups_tab($dom, $formnode)) or $changes;
+            $changes = $this->process_general_tab($dom, $formnode) ? true : $changes; // NOTE: Needs to be like this
+            $changes = $this->process_sshkeys_tab($dom, $formnode) ? true : $changes;
+            $changes = $this->process_groups_tab($dom, $formnode)  ? true : $changes;
 
             if ($changes) {
                 $formerrors = $this->user->validate();
@@ -186,6 +186,8 @@ class UpdateUser {
     function process_sshkeys_tab(&$dom, &$formnode) {   
         // Read form and validate
         // XXX - compare arrays to check if user changed
+        $prevkeys = array_unique($this->user->authorizedKeys);
+
         $this->user->authorizedKeys = array();
         if($_FILES['keyfile']['tmp_name']) {
             $keyfile = file_get_contents($_FILES['keyfile']['tmp_name']);
@@ -203,11 +205,13 @@ class UpdateUser {
         // Deduplicate keys
         $this->user->authorizedKeys = array_unique($this->user->authorizedKeys);
 
-        return true;
+        return array_same($prevkeys, $this->user->authorizedKeys);
     }
     
     function process_groups_tab(&$dom, &$formnode) {    
         global $AFFECTEDGROUPS;
+
+        $prevgroups = array_unique($this->user->groups);
 
         // Read form and validate
         $this->user->groups = array();
@@ -223,8 +227,8 @@ class UpdateUser {
         // Mix other groups back in
         if(is_array($this->othergroups))
             $this->user->groups = array_merge($this->user->groups, $this->othergroups);
-        
-        return true;
+
+        return array_same($prevgroups, $this->user->groups);
     }
 
     function process_actions_tab(&$dom, &$formnode) {
