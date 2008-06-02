@@ -3,38 +3,111 @@
 require_once('Mail.php');
 require_once('Mail/mime.php');
 
+class SSHMessage {
+
+    private
+        $idx,
+        $data_len,
+        $data;
+
+    function __construct($data) {
+        $this->idx = 0;
+        $this->data = $data;
+        $this->data_len = strlen($data);
+    }
+
+    function _get_bytes($nr) {
+        if (($this->idx + $nr) > $this->data_len)
+            throw Exception('Not enough bytes available in SSH message');
+
+        $this->idx += $nr;
+        return substr($this->data, $this->idx - $nr, $nr);
+    }
+
+    function get_int() {
+        # XXX - Weird
+        $arr = unpack('N', $this->_get_bytes(4));
+        return $arr[1];
+    }
+
+    function get_string() {
+        return $this->_get_bytes($this->get_int());
+    }
+}
+
+function bit_length($data) {
+    $hbyte = ord($data[0]);
+    $bitlen = strlen($data) * 8;
+    $check = 0x80;
+    while ($check && !($hbyte & $check)) {
+        $check >>= 1;
+        $bitlen -= 1;
+    }
+    return $bitlen;
+}
+
+
 function is_valid_ssh_pub_key($key, $check_length = True, $return_fingerprint = false) {
+    $keytype = '';
+    $length = 0;
+    $hash = '';
+    $comment = '';
+
     if(empty($key) || substr($key, 0, 4) != "ssh-")
-        return false;
+        return array(false, $keytype, $length, $hash, $comment);
 
     # Split the data
     list($format, $data, $comment) = explode(" ", $key, 3);
 
     # Format should be DSA or RSA
     if ($format != "ssh-dss" && $format != "ssh-rsa")
-        return false;
+        return array(false, $keytype, $length, $hash, $comment);
+
+    $keytype = $format == 'ssh-dss' ? 'DSA' : 'RSA';
 
     # Data should be a base64 encoded string
     $certificate = base64_decode($data);
     if ($certificate == $data)
-        return false;
+        return array(false, $keytype, $length, $hash, $comment);
+
+    $hash = rtrim(chunk_split(md5($certificate), 2, ':'), ':');
+
+    if ($check_length or $return_fingerprint) {
+        try {
+            $msg = new SSHMessage($certificate);
+            $type = $msg->get_string();
+
+            if ($type != $format)
+                return array(false, $keytype, $length, $hash, $comment);
+
+            if ($format == 'ssh-rsa') {
+                $e = $msg->get_string();
+                $n = $msg->get_string();
+                $length = bit_length($n);
+            }
+            else {
+                $p = $msg->get_string();
+                $q = $msg->get_string();
+                $g = $msg->get_string();
+                $y = $msg->get_string();
+                $length = bit_length($p);
+            }
+        } catch (Exception $e) {
+            return array(false, $keytype, $length, $hash, $comment);
+        }
+    }
 
     if ($check_length) {
-        # DSA certificate data is exactly 433 bytes (always 1024 bits, comparable to 1536 RSA key, has 305 of other data)
-        # RSA has to be >= 277 bytes (2048 bits, 21 bytes of other data)
-        #
-        # However, old ssh-keugen versions allowed DSA keys with != 1024 bits...
-        $cert_length = strlen($certificate);
-        if (($format == "ssh-dss" && $cert_length < 433)
-            || ($format == "ssh-rsa" && $cert_length < 277))
+        if (($format == "ssh-dss" && $length != 1024)
+            || ($format == "ssh-rsa" && $length < 2048))
         {
             # Either invalid, or not enough bits in the public key
-            return false;
+            return array(false, $keytype, $length, $hash, $comment);
         }
     }
 
     # All seems ok
-    return $return_fingerprint ? rtrim(chunk_split(md5($certificate), 2, ':'), ':') . ' ' . $comment : true;
+    return array(true, $keytype, $length, $hash, $comment);
 }
 
 function array_same($array1, $array2) {

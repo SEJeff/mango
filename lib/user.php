@@ -306,9 +306,9 @@ class User {
         foreach($keys as $key) {
             $keychanges['authorizedKey'][] = $key;
 
-            $fingerprint = is_valid_ssh_pub_key($key, False, True);
-            if ($fingerprint !== false) {
-                $changes[] = array('id'=>$desc_key, "key"=>$key, "fingerprint"=>$fingerprint);
+            $ssh = is_valid_ssh_pub_key($key, False, True);
+            if ($ssh[0] !== false) {
+                $changes[] = array('id'=>$desc_key, "key"=>$key, "fingerprint"=>"$ssh[1] $ssh[2] $ssh[3] $ssh[4]");
             } else {
                 $changes[] = array('id'=>$desc_key, "key"=>$key);
             }
@@ -454,9 +454,9 @@ class User {
         $node->appendChild($dom->createTextNode($this->description));
         foreach($this->authorizedKeys as $authorizedKey) {
             $node = $formnode->appendChild($dom->createElement("authorizedKey"));
-            $fingerprint = is_valid_ssh_pub_key($authorizedKey, False, True);
-            if ($fingerprint !== false) {
-                $node->setAttribute("fingerprint", $fingerprint);
+            $ssh = is_valid_ssh_pub_key($authorizedKey, False, True);
+            if ($ssh[0] !== false) {
+                $node->setAttribute("fingerprint", "$ssh[1] $ssh[2] $ssh[3] $ssh[4]");
             }
             $node->appendChild($dom->createTextNode($authorizedKey));
         }
@@ -478,9 +478,10 @@ class User {
             $errors[] = "mail";
         
         foreach($this->authorizedKeys as $authorizedKey) {
-            if (!is_valid_ssh_pub_key($authorizedKey)) {
-            $errors[] = 'keys';
-            break;
+            $ssh = is_valid_ssh_pub_key($authorizedKey);
+            if (!$ssh[0]) {
+                $errors[] = 'keys';
+                break;
             }
         }
 

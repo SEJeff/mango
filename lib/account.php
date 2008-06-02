@@ -204,7 +204,8 @@ class Account {
             $error[] = 'keys';
         } else {
             foreach($this->authorizationkeys as $authorizedKey) {
-                if (!is_valid_ssh_pub_key($authorizedKey)) {
+                $l = is_valid_ssh_pub_key($authorizedKey);
+                if (!$l[0]) {
                     $error[] = 'keys';
                     break;
                 }

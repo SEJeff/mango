@@ -1,5 +1,14 @@
 2008-06-02  Olav Vitters  <olav@bkor.dhs.org>
 
+	* lib/util.php: Parse the SSH public key data to determine the real
+	bit length. Change the is_valid_ssh_pub_key function to give more
+	feedback (array instead of just 'false').
+
+	* lib/account.php: Adapt to is_valid_ssh_pub_key return changes.
+	* lib/user.php: Adapt to is_valid_ssh_pub_key return changes.
+
+2008-06-02  Olav Vitters  <olav@bkor.dhs.org>
+
 	* templates/maintainer_approval.xsl: Add not about passwords.
 
 2008-06-01  Olav Vitters  <olav@bkor.dhs.org>
