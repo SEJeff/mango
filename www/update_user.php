@@ -35,6 +35,8 @@ class UpdateUser {
         // Groups the user belongs to that we're not responsible for
         $othergroups,
 
+        $has_changes,
+
         // An initialisation error message
         $error;
 
@@ -48,6 +50,7 @@ class UpdateUser {
         }
 
         $this->user = $user;
+        $this->has_changes = false;
         $this->othergroups = array_diff($user->groups, $AFFECTEDGROUPS);
     }
         
@@ -117,6 +120,7 @@ class UpdateUser {
                 return;
             }
             $this->user = $user;
+            $this->has_changes = false;
         }
 
         // Individual tab form handlers
@@ -128,7 +132,8 @@ class UpdateUser {
             $changes = $this->process_sshkeys_tab($dom, $formnode) ? true : $changes;
             $changes = $this->process_groups_tab($dom, $formnode)  ? true : $changes;
 
-            if ($changes) {
+            if ($changes || $this->has_changes) {
+                $this->has_changes = true;
                 $formerrors = $this->user->validate();
 
                 if(count($formerrors) > 0) {
@@ -159,6 +164,8 @@ class UpdateUser {
 
         // Report successes
         if(is_array($result)) {
+            $this->has_changes = false;
+
             $this->user->inform_user($result);
 
             foreach($result as $change) {

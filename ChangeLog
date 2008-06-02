@@ -1,5 +1,11 @@
 2008-06-02  Olav Vitters  <olav@bkor.dhs.org>
 
+	* www/update_user.php: Determine if an error message was shown last
+	time. If so, the saving should be tried again; even if no change was
+	made in the form.
+
+2008-06-02  Olav Vitters  <olav@bkor.dhs.org>
+
 	* lib/ber.php: Add BER decoder. Mango doesn't need it, but I thought
 	it would, so let's just add it anyway.
 
