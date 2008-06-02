@@ -1,5 +1,10 @@
 2008-06-02  Olav Vitters  <olav@bkor.dhs.org>
 
+	* lib/ber.php: Add BER decoder. Mango doesn't need it, but I thought
+	it would, so let's just add it anyway.
+
+2008-06-02  Olav Vitters  <olav@bkor.dhs.org>
+
 	* lib/util.php: Parse the SSH public key data to determine the real
 	bit length. Change the is_valid_ssh_pub_key function to give more
 	feedback (array instead of just 'false').
