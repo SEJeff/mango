@@ -1,3 +1,7 @@
+2008-06-02  Olav Vitters  <olav@bkor.dhs.org>
+
+	* templates/maintainer_approval.xsl: Add not about passwords.
+
 2008-06-01  Olav Vitters  <olav@bkor.dhs.org>
 
 	Try to avoid unknown people from requesting an account by hiding the
