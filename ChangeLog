@@ -1,5 +1,12 @@
 2008-06-03  Olav Vitters  <olav@bkor.dhs.org>
 
+	* www/index.xsl: Add a focus function to the onload handler. The
+	inline javascript executes way too early to do anything.
+	* www/login.xsl: Add a focus function to the onload handler. The
+	inline javascript executes way too early to do anything.
+
+2008-06-03  Olav Vitters  <olav@bkor.dhs.org>
+
 	* lib/module.php: Only provide current maintainers to the xml. Showing
 	all users is not useful. Further, validate the given userids (should
 	be done in a better way, but good enough for now).

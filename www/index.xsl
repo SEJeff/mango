@@ -64,7 +64,10 @@
             </table>
         </form>
       <script language="JavaScript">
+      function setf() { 
         document.forms['f'].login.focus();
+      } 
+      window.onload = setf;
       </script>
       </xsl:when>
       <xsl:otherwise>

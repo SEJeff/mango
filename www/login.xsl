@@ -51,7 +51,10 @@
     </table>
    </form>
    <script language="JavaScript">
-     document.forms['f'].login.focus();
+      function setf() { 
+        document.forms['f'].login.focus();
+      } 
+      window.onload = setf;
    </script>
 
    <!-- TODO: Think of a way of resetting forgotten passwords safely
