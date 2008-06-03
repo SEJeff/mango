@@ -1,5 +1,10 @@
 2008-06-03  Olav Vitters  <olav@bkor.dhs.org>
 
+	* www/update_module.xsl: Sort maintainers on full name and show
+	userid.
+
+2008-06-03  Olav Vitters  <olav@bkor.dhs.org>
+
 	* www/update_module.xsl: Add link back to list_modules.php.
 
 2008-06-03  Olav Vitters  <olav@bkor.dhs.org>

@@ -37,10 +37,11 @@
       </th>
       <td>
         <xsl:for-each select="maintainerUid">
+	  <xsl:sort select="key"/>
           <input type="checkbox" name="maintainerUids[]" id="{generate-id()}" 
                  checked="checked" value="{key}"/>
           <label for="{generate-id()}">
-            <xsl:value-of select="value" />
+            <xsl:value-of select="concat(value, ' (', key, ')')" />
           </label><br/>
         </xsl:for-each>
         New maintainer userid:
