@@ -28,7 +28,7 @@
        Module Name
       </th>
       <td>
-       <input type="text" name="cn" value="{cn}" size="40"/>
+       <input type="text" name="cn" value="{cn}" size="40" disabled="disabled" />
       </td>
      </tr>
      <tr>

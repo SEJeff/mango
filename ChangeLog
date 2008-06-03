@@ -1,5 +1,10 @@
 2008-06-03  Olav Vitters  <olav@bkor.dhs.org>
 
+	* www/update_module.xsl: Don't allow the module name to be edited.
+	LDAP doesn't support it.
+
+2008-06-03  Olav Vitters  <olav@bkor.dhs.org>
+
 	* www/update_module.xsl: Sort maintainers on full name and show
 	userid.
 
