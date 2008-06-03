@@ -1,3 +1,12 @@
+2008-06-03  Olav Vitters  <olav@bkor.dhs.org>
+
+	* lib/module.php: Only provide current maintainers to the xml. Showing
+	all users is not useful. Further, validate the given userids (should
+	be done in a better way, but good enough for now).
+	* www/update_module.xsl: Show checkboxes for the existing users and an
+	input box to enter a new maintainer userid. Would be nice to be able
+	to search for someones userid, but this is good enough.
+
 2008-06-02  Olav Vitters  <olav@bkor.dhs.org>
 
 	* www/update_user.php: Determine if an error message was shown last

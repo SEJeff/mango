@@ -113,7 +113,11 @@ class Module {
         $entry['cn'][] = $this->cn;
         $entry['sn'][] = $this->cn;
         foreach ($this->maintainerUids as $maintainerUid) { 
+            if (!empty($maintainerUid)
+                && !PEAR::isError(User::fetchuser($maintainerUid)))
+            {
                 $entry['maintainerUid'][] = $maintainerUid;
+            }
         }
         if(!empty($this->description))
             $entry['description'][] = $this->description;
@@ -191,9 +195,9 @@ class Module {
             if ($this->localizationModule) {
                $modulechanges['objectClass'][] = 'localizationModule';
             } else {
-            $moduledelete['objectClass'] = 'localizationModule';
-            $moduledelete['localizationTeam'] = $oldmodule->localizationTeam;
-            $moduledelete['mailingList'] = $oldmodule->mailingList;
+                $moduledelete['objectClass'] = 'localizationModule';
+                $moduledelete['localizationTeam'] = $oldmodule->localizationTeam;
+                $moduledelete['mailingList'] = $oldmodule->mailingList;
             }
             $modulechanges['objectClass'][] = 'gnomeModule';
             $modulechanges['objectClass'][] = 'inetOrgPerson';
@@ -216,6 +220,15 @@ class Module {
         }
     
         // Maintainers changed?
+        $validUids = array();
+        foreach ($this->maintainerUids as $maintainerUid) {
+            if (!empty($maintainerUid)
+                && !PEAR::isError(User::fetchuser($maintainerUid)))
+            {
+                $validUids[] = $maintainerUid;
+            }
+        }
+        $this->maintainerUids = $validUids;
         if ($oldmodule->maintainerUids != $this->maintainerUids) {
             $modulechanges['maintainerUid'] = $this->maintainerUids;
             $changes[] = 'maintainerUids';
@@ -245,17 +258,18 @@ class Module {
         $node->appendChild($dom->createTextNode($this->cn));
         $node = $formnode->appendChild($dom->createElement("description"));
         $node->appendChild($dom->createTextNode($this->description));
-        $result = array ();
-        $entries = User::listusers($result);
-        for($i = 0; $i < $entries['count']; $i++) {
+        foreach ($this->maintainerUids as $uid) {
             $usernode = $formnode->appendChild($dom->createElement("maintainerUid"));
             $usernode->appendChild($node = $dom->createElement("key"));
-            $node->appendChild($dom->createTextNode($entries[$i]['uid'][0]));
+            $node->appendChild($dom->createTextNode($uid));
+
             $usernode->appendChild($node = $dom->createElement("value"));
-            $node->appendChild($dom->createTextNode($entries[$i]['cn'][0]));
-            if (in_array ($entries[$i]['uid'][0], $this->maintainerUids)) {
-                $node = $usernode->appendChild($dom->createElement("selected"));
-                $node->appendChild($dom->createTextNode("selected"));
+
+            $user = User::fetchuser($uid);
+            if (!PEAR::isError($user)) {
+                $node->appendChild($dom->createtextNode($user->cn));
+            } else {
+                $node->appendChild($dom->createtextNode($user->cn));
             }
         }
         if ($this->localizationModule) {

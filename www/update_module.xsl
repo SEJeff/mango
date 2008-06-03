@@ -35,19 +35,15 @@
        Maintainer
       </th>
       <td>
-      	<select multiple="on" size="5" name="maintainerUids[]">
-      		<xsl:for-each select="maintainerUid">
-      			<xsl:element name="option">
-      			<xsl:if test="boolean(selected)">
-      				<xsl:attribute name="selected"/>
-      			</xsl:if>
-      			<xsl:attribute name="value">
-      				<xsl:value-of select="key" />
-      			</xsl:attribute>
-      			<xsl:value-of select="value" />
-      			</xsl:element>
-      		</xsl:for-each>
-      	</select>
+        <xsl:for-each select="maintainerUid">
+          <input type="checkbox" name="maintainerUids[]" id="{generate-id()}" 
+                 checked="checked" value="{key}"/>
+          <label for="{generate-id()}">
+            <xsl:value-of select="value" />
+          </label><br/>
+        </xsl:for-each>
+        New maintainer userid:
+        <input type="text" name="maintainerUids[]" />
       </td>
      </tr>
      <tr>
