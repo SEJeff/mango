@@ -1,5 +1,9 @@
 2008-06-03  Olav Vitters  <olav@bkor.dhs.org>
 
+	* www/update_module.xsl: Add link back to list_modules.php.
+
+2008-06-03  Olav Vitters  <olav@bkor.dhs.org>
+
 	* www/index.xsl: Add a focus function to the onload handler. The
 	inline javascript executes way too early to do anything.
 	* www/login.xsl: Add a focus function to the onload handler. The
