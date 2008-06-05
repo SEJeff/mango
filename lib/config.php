@@ -52,37 +52,37 @@ class SiteConfig {
         $this->cached_date = time();
     }
 
-	/*
-	 * Read from the configuration file
-	 */
-	function read() {
-		// Identify location of config file
-		$basedir = dirname($_SERVER['DOCUMENT_ROOT']);
-		$configfile = $basedir."/config.xml";
-		if(is_readable("/var/www/mango/config.xml"))
-			$configfile = "/var/www/mango/config.xml";
-		if(is_readable("/etc/mango/config.xml"))
-			$configfile = "/etc/mango/config.xml";
+    /*
+     * Read from the configuration file
+     */
+    function read() {
+        // Identify location of config file
+        $basedir = dirname($_SERVER['DOCUMENT_ROOT']);
+        $configfile = $basedir."/config.xml";
+        if(is_readable("/var/www/mango/config.xml"))
+            $configfile = "/var/www/mango/config.xml";
+        if(is_readable("/etc/mango/config.xml"))
+            $configfile = "/etc/mango/config.xml";
 
-		// Check file exists
-		if(!is_readable($configfile)) {
-			return PEAR::raiseError("Could not find configuration file at '".$configfile."'.");
-		}
+        // Check file exists
+        if(!is_readable($configfile)) {
+            return PEAR::raiseError("Could not find configuration file at '".$configfile."'.");
+        }
 
-		// Parse into DOM into member variables
-		$dom = new DOMDocument();
-		if(!$dom->load($configfile)) {
-			return PEAR::raiseError("Trouble parsing config. Please check it's valid XML (e.g. 'xmllint config.xml').");
-		}
+        // Parse into DOM into member variables
+        $dom = new DOMDocument();
+        if(!$dom->load($configfile)) {
+            return PEAR::raiseError("Trouble parsing config. Please check it's valid XML (e.g. 'xmllint config.xml').");
+        }
 
-		// Work through the elements
-		$root_node = $dom->firstChild;
-		$nodes = $root_node->childNodes;
-		foreach($nodes as $node)
-			$this->read_from($node);
+        // Work through the elements
+        $root_node = $dom->firstChild;
+        $nodes = $root_node->childNodes;
+        foreach($nodes as $node)
+            $this->read_from($node);
 
                 return true;
-	}
+    }
 
     /*
      * Read configuration from given node
