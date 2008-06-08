@@ -1,3 +1,7 @@
+2008-06-08  Olav Vitters  <olav@bkor.dhs.org>
+
+	* lib/util.php: Correctly throw the Exception.
+
 2008-06-03  Olav Vitters  <olav@bkor.dhs.org>
 
 	* www/update_module.xsl: Don't allow the module name to be edited.

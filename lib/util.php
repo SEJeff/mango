@@ -18,7 +18,7 @@ class SSHMessage {
 
     function _get_bytes($nr) {
         if (($this->idx + $nr) > $this->data_len)
-            throw Exception('Not enough bytes available in SSH message');
+            throw new Exception('Not enough bytes available in SSH message');
 
         $this->idx += $nr;
         return substr($this->data, $this->idx - $nr, $nr);
