@@ -1,4 +1,4 @@
 Ideas for extending this include:
  * Making it into a 'self-service' application, where authenticated GNOME hackers can update their own details (SSH keys, e-mail addresses etc). Strong encryption/authentication/security measures would be a requirement here though, I think.
  * Anonymous voting. The membership committee has officially requested a system to do this, and Mango provides a good basis. Work has already started on a basic interface for tracking members. Notes on where to go from there can be found here: <http://live.gnome.org/AnonymousVoting>.
- * test commit
+ * test commit2
