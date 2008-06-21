@@ -77,26 +77,26 @@ def edit_user(request, user):
         return HttpResponseServerError('Cannot connect to LDAP?')
 
     filter = ldap.filter.filter_format('(&(objectClass=posixAccount)(uid=%s))', (user,))
-    users = l.search_s(settings.MANGO_CFG['ldap_users_basedn'],
-                       ldap.SCOPE_SUBTREE, filter, None)
+    users = models.Users.search(filter)
 
     if len(users) != 1:
         raise Http404()
 
-    user = users[0][1]
+    user = users[0]
 
     for item in ('uid', 'cn', 'mail', 'description'):
         node = ET.SubElement(el, item)
-        node.text = user[item][0]
+        node.text = user.__dict__[item]
 
-    for key in user.get('authorizedKey', [''])[0].splitlines():
-        if key != "":
+    for key in user.__dict__.get('authorizedKey', []):
+        # TODO:
+        #  - add fingerprint of above keys
+        if key:
             node = ET.SubElement(el, 'authorizedKey')
             node.text = key
 
-    # TODO:
-    #  - add fingerprint of above keys
-    #  - add groups
+    for group in user.groups:
+        node = ET.SubElement(el, 'group', {'cn': group.cn})
 
     return get_xmlresponse(doc, "../../../www/update_user.xsl")
 
