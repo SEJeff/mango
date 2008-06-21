@@ -1,5 +1,11 @@
 2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/models.py (LdapObject): New class that can search for
+	something in LDAP. Is not very smart atm.
+	(Users): Uses LdapObject to store a user in.
+
+2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/urls.py: Add new view 'edit_user'.
 	* mango/views.py (edit_user): Add new view. Get uid information from
 	ldap and give it to the template. Doesn't show everything in the

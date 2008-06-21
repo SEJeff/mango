@@ -100,3 +100,39 @@ class LdapUtil(object):
 
         self.__class__.handle = l
 
+
+class LdapObject(object):
+    
+    BASEDN = None
+    MULTI_ATTRS = set(('objectClass'))
+
+    def __init__(self, dn, attrs):
+        for k, i in attrs.items():
+            if k in self.MULTI_ATTRS:
+                self.__dict__[k] = i
+            else:
+                self.__dict__[k] = i[0]
+        self.dn = dn
+
+    @classmethod
+    def search(cls, filter):
+        l = LdapUtil.singleton().handle
+        
+        base = cls.BASEDN
+
+        results = l.search_s(base, ldap.SCOPE_SUBTREE, filter, None)
+
+        items = []
+
+        for result in results:
+            items.append(cls(result[0], result[1]))
+
+        return items
+
+
+class Users(LdapObject):
+
+    BASEDN = settings.MANGO_CFG['ldap_users_basedn']
+    MULTI_ATTRS = set(('authorizedKey','objectClass'))
+
+
