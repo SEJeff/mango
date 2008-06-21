@@ -1,5 +1,9 @@
 2008-06-21  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/__init__.py: Add this file as well (moap didn't notice it).
+
+2008-06-21  Olav Vitters  <olav@bkor.dhs.org>
+
 	Try and port the mess to Python using the Django framework.
 
 	* .bzrignore: Ignore the django directory.
