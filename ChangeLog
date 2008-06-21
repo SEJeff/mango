@@ -1,5 +1,9 @@
 2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/views.py (list_users): Make use of new Users class.
+
+2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/models.py (LdapObject): New class that can search for
 	something in LDAP. Is not very smart atm.
 	(Users): Uses LdapObject to store a user in.

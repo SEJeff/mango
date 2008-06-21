@@ -51,20 +51,19 @@ def list_users(request):
         return HttpResponseServerError('Cannot connect to LDAP?')
 
     filter = '(objectClass=posixAccount)'
-    users = l.search_s(settings.MANGO_CFG['ldap_users_basedn'],
-               ldap.SCOPE_SUBTREE, filter, None)
+    users = models.Users.search(filter)
     
-    for dn, user in users:
+    for user in users:
         usernode = ET.SubElement(el, 'user')
         
         node = ET.SubElement(usernode, 'uid')
-        node.text = user['uid'][0]
+        node.text = user.uid
 
         node = ET.SubElement(usernode, 'name')
-        node.text = user['cn'][0]
+        node.text = user.cn
 
         node = ET.SubElement(usernode, 'email')
-        node.text = user['mail'][0]
+        node.text = user.mail
 
     return get_xmlresponse(doc, "../www/list_users.xsl")
 
