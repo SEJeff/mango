@@ -129,10 +129,24 @@ class LdapObject(object):
 
         return items
 
+class UserGroups(LdapObject):
+
+    BASEDN = settings.MANGO_CFG['ldap_groups_basedn']
+    MULTI_ATTRS = set(('memberUid', 'objectClass'))
+
 
 class Users(LdapObject):
 
     BASEDN = settings.MANGO_CFG['ldap_users_basedn']
     MULTI_ATTRS = set(('authorizedKey','objectClass'))
 
+    def __init__(self, *foo):
+        self._groups = None
+        super(Users, self).__init__(*foo)
 
+    @property
+    def groups(self):
+        if self._groups is None:
+            self._groups = UserGroups.search('(memberUid=%s)' % self.__dict__['uid'])
+
+        return self._groups

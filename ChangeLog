@@ -1,5 +1,11 @@
 2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/models.py (UserGroups, Users, Users.__init__, Users.groups):
+	Add UserGroups, representing an LDAP group. Make use of this group as
+	a lazily initialized property within the Users group.
+
+2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/views.py (list_users): Make use of new Users class.
 
 2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
