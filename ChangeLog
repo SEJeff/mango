@@ -1,5 +1,11 @@
 2008-06-21  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/models.py: Add LdapUtil singleton. Maintains a single
+	connection to the LDAP database.
+	* mango/views.py: Make use of the LDAP singleton.
+
+2008-06-21  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/__init__.py: Add this file as well (moap didn't notice it).
 
 2008-06-21  Olav Vitters  <olav@bkor.dhs.org>

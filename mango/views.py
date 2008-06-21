@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404, HttpResponseServerError
 from django.conf import settings
 import datetime
 
@@ -42,8 +42,9 @@ def current_datetime(request):
 
 
 def list_users(request):
-    l = ldap.initialize(settings.MANGO_CFG['ldap_url'])
-#    l.simple_bind("cn=Manager,dc=gnome,dc=org")
+    l = models.LdapUtil().handle
+    if not l:
+        return HttpResponseServerError('Cannot connect to LDAP?')
 
     filter = '(objectClass=posixAccount)'
     stuff = l.search_s(settings.MANGO_CFG['ldap_users_basedn'],

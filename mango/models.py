@@ -8,6 +8,8 @@
 # into your database.
 
 from django.db import models
+from django.conf import settings
+import ldap
 
 class AccountRequest(models.Model):
     id = models.AutoField(primary_key=True)
@@ -72,4 +74,33 @@ class Webmirrors(models.Model):
     active = models.IntegerField(null=True, blank=True)
     class Meta:
         db_table = u'webmirrors'
+
+class LdapUtil(object):
+
+    handle = None
+    instance = None
+
+    @classmethod
+    def singleton(cls):
+        if cls.instance is None:
+            try:
+                cls.instance = cls()
+            except:
+                return None
+
+        return cls.instance
+
+    def __init__(self):
+        l = ldap.initialize(settings.MANGO_CFG['ldap_url'])
+        l.protocol_version = ldap.VERSION3
+        try:
+            l.simple_bind_s(settings.MANGO_CFG['ldap_binddn'], settings.MANGO_CFG['ldap_bindpw'])
+        except:
+            return None
+
+        self.__class__.handle = l
+
+    def __del__(self):
+        if self.__class__.handle is not None:
+            self.__class__.handle..unbind_s()
 
