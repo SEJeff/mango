@@ -1,3 +1,8 @@
+2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
+
+	* mango/views.py (list_users): Return XML instead of debug text.
+	For now, just add all LDAP users in the XML.
+
 2008-06-21  Olav Vitters  <olav@bkor.dhs.org>
 
 	* mango/models.py: Add LdapUtil singleton. Maintains a single

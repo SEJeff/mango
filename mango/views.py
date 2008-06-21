@@ -42,16 +42,30 @@ def current_datetime(request):
 
 
 def list_users(request):
+    doc, root = get_xmldoc('List Users', request)
+    el = ET.SubElement(root, 'listusers')
+
     l = models.LdapUtil().handle
     if not l:
         return HttpResponseServerError('Cannot connect to LDAP?')
 
     filter = '(objectClass=posixAccount)'
-    stuff = l.search_s(settings.MANGO_CFG['ldap_users_basedn'],
+    users = l.search_s(settings.MANGO_CFG['ldap_users_basedn'],
                ldap.SCOPE_SUBTREE, filter, None)
+    
+    for dn, user in users:
+        usernode = ET.SubElement(el, 'user')
+        
+        node = ET.SubElement(usernode, 'uid')
+        node.text = user['uid'][0]
 
-    html = '<pre>%s</pre>' % "\n".join(["%s: %s" % (item[0], repr(item[1])) for item in stuff])
-    return HttpResponse(html)
+        node = ET.SubElement(usernode, 'name')
+        node.text = user['cn'][0]
+
+        node = ET.SubElement(usernode, 'email')
+        node.text = user['mail'][0]
+
+    return get_xmlresponse(doc, "../www/list_users.xsl")
 
 def test_index(request):
     doc, root = get_xmldoc('Login Page', request)
