@@ -3,6 +3,7 @@ from django.conf import settings
 import datetime
 
 import ldap
+import ldap.filter
 import models
 
 try:
@@ -66,6 +67,41 @@ def list_users(request):
         node.text = user['mail'][0]
 
     return get_xmlresponse(doc, "../www/list_users.xsl")
+
+def edit_user(request, user):
+    doc, root = get_xmldoc('Update user %s' % user, request)
+    el = ET.SubElement(root, 'updateuser')
+
+    
+    l = models.LdapUtil().handle
+    if not l:
+        return HttpResponseServerError('Cannot connect to LDAP?')
+
+    filter = ldap.filter.filter_format('(&(objectClass=posixAccount)(uid=%s))', (user,))
+    users = l.search_s(settings.MANGO_CFG['ldap_users_basedn'],
+                       ldap.SCOPE_SUBTREE, filter, None)
+
+    if len(users) != 1:
+        raise Http404()
+
+    user = users[0][1]
+
+    for item in ('uid', 'cn', 'mail', 'description'):
+        node = ET.SubElement(el, item)
+        node.text = user[item][0]
+
+    for key in user.get('authorizedKey', [''])[0].splitlines():
+        if key != "":
+            node = ET.SubElement(el, 'authorizedKey')
+            node.text = key
+
+    # TODO:
+    #  - add fingerprint of above keys
+    #  - add groups
+
+    return get_xmlresponse(doc, "../../../www/update_user.xsl")
+
+
 
 def test_index(request):
     doc, root = get_xmldoc('Login Page', request)

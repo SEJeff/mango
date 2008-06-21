@@ -1,5 +1,12 @@
 2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/urls.py: Add new view 'edit_user'.
+	* mango/views.py (edit_user): Add new view. Get uid information from
+	ldap and give it to the template. Doesn't show everything in the
+	template and also fails to do actually do anything.
+
+2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/views.py (list_users): Return XML instead of debug text.
 	For now, just add all LDAP users in the XML.
 
