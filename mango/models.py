@@ -100,7 +100,3 @@ class LdapUtil(object):
 
         self.__class__.handle = l
 
-    def __del__(self):
-        if self.__class__.handle is not None:
-            self.__class__.handle.unbind_s()
-
