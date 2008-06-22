@@ -10,7 +10,7 @@
   <xsl:variable name="script" select="'update_user.php'"/>
 
   <xsl:template match="updateuser">
-    <a href="list_users.php">Users</a> → <xsl:value-of select="uid" />
+    <a href="../..">Users</a> → <xsl:value-of select="uid" />
    <xsl:apply-templates select="error"/>
    <xsl:if test="boolean(updated)">
     <p>User updated.</p>

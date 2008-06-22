@@ -1,5 +1,10 @@
 2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
 
+	* www/list_users.xsl: Update links to Django clean urls.
+	* www/update_user.xsl: Update links to Django clean urls.
+
+2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/settings.py (ault): Hard code the base_url for now.
 	* mango/views.py (get_xmlresponse, list_users, edit_user, test_index,
 	  list_accounts): Make get_xmlresponse use base_url to provide a

@@ -51,7 +51,7 @@
       <xsl:sort select="uid"/>
       <tr class="row-{position() mod 2}">
        <td>
-        <a href="update_user.php?uid={uid}">
+        <a href="edit/{uid}/">
          <xsl:apply-templates select="uid"/>
         </a>
        </td>
