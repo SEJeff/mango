@@ -7,7 +7,7 @@
    
   <xsl:include href="common.xsl" />
 
-  <xsl:variable name="script" select="'new_ftpmirror.php'"/>
+  <xsl:variable name="script" select="'.'"/>
   
   <xsl:template match="newftpmirror">
    <xsl:apply-templates select="error"/>

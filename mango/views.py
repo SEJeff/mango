@@ -1,4 +1,4 @@
-from django.http import HttpResponse, Http404, HttpResponseServerError
+from django.http import HttpResponse, Http404, HttpResponseServerError, HttpResponseRedirect
 from django.conf import settings
 from django.core.paginator import InvalidPage, QuerySetPaginator
 from django.db.models import Q
@@ -218,6 +218,18 @@ def edit_mirror(request, pk):
     mirror.add_to_xml(ET, el)
 
     return get_xmlresponse(doc, "update_ftpmirror.xsl")
+
+def add_mirror(request):
+    doc, root = get_xmldoc('New mirror', request)
+    el = ET.SubElement(root, 'newftpmirror')
+
+    if request.method == 'POST':
+        f = models.FtpmirrorsForm(request.POST)
+        if add_form_errors_to_xml(el, f):
+            mirror = f.save()
+            return HttpResponseRedirect(u'../edit/%s' % unicode(mirror.id))
+
+    return get_xmlresponse(doc, "new_ftpmirror.xsl")
 
 def list_foundationmembers(request):
     doc, root = get_xmldoc('List Foundation Members', request)

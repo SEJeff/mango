@@ -1,5 +1,14 @@
 2008-06-23  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/models.py (Ftpmirrors.ault): Make mirror active by default.
+	* mango/urls.py: Make add_mirror view available as
+	/foundationmembers/add/.
+	* mango/views.py (add_mirror): New function. Add a new mirror. Upon
+	saving it will redirect so the mirror can be updated.
+	* www/new_ftpmirror.xsl: Update URL to reflect Django changes.
+
+2008-06-23  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/views.py (add_form_errors_to_xml, edit_mirror): Add new
 	function which checks if the form is valid. If not, it adds the errors
 	to the XML. Needs to be renamed to better clarify what it does. In
