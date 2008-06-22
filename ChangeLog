@@ -1,5 +1,13 @@
 2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/views.py (add_paginator_to_xml, list_accounts,
+	  list_foundationmembers): Paginate results from a query. Add
+	  paginated entries to the XML by use of the add_paginator_to_xml
+	  function.
+	* www/list_foundationmembers.xsl: Correct links for paginator.
+
+2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/models.py (AccountGroups): Ensure Account uid only consists of
 	lowercase letters.
 

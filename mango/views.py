@@ -1,5 +1,6 @@
 from django.http import HttpResponse, Http404, HttpResponseServerError
 from django.conf import settings
+from django.core.paginator import QuerySetPaginator
 from django.db.models import Q
 import datetime
 
@@ -48,6 +49,19 @@ def get_xmlresponse(doc, template, response=None):
     response.write(ET.tostring(ET.ProcessingInstruction('xml-stylesheet', 'href="%s/www/%s" type="text/xsl"' % (settings.MANGO_CFG['base_url'], template))))
     doc.write(response, 'utf-8')
     return response
+
+def add_paginator_to_xml(root, page):
+    """Add paginator information to the XML node specified by root
+
+    Note:
+     - In the PHP version, the XML also had the elements result_num and page_size"""
+    pagednode = ET.SubElement(root, 'pagedresults')
+    node = ET.SubElement(pagednode, 'total_results')
+    node.text = unicode(page.paginator.count)
+    node = ET.SubElement(pagednode, 'total_pages')
+    node.text = unicode(page.paginator.num_pages)
+    node = ET.SubElement(pagednode, 'page_num')
+    node.text = unicode(page.number)
 
 def current_datetime(request):
     now = datetime.datetime.now()
@@ -125,6 +139,9 @@ def list_accounts(request):
     el1 = ET.SubElement(root, 'listaccounts')
 
     accounts = models.AccountRequest.objects.all()
+    paginator = QuerySetPaginator(accounts, 25)
+    page_num = request.GET.get('page', 1)
+    accounts = paginator.page(page_num).object_list
     for account in accounts:
         el2 = ET.SubElement(el1, 'account', dict([a for a in account.__dict__.iteritems() if a[0] not in ('id', 'timestamp')]))
         el2g = ET.SubElement(el2, 'groups')
@@ -180,8 +197,13 @@ def list_foundationmembers(request):
     doc, root = get_xmldoc('List Foundation Members', request)
     el1 = ET.SubElement(root, 'listfoundationmembers')
 
+    page_num = request.GET.get('page', 1)
+
     members = models.Foundationmembers.objects.all()
-    for member in members:
+    paginator = QuerySetPaginator(members, 25)
+    page = paginator.page(page_num)
+    add_paginator_to_xml(el1, page)
+    for member in page.object_list:
         membernode = ET.SubElement(el1, 'foundationmember')
         membernode.set('id', unicode(member.id))
         for field in ('firstname', 'lastname', 'comments', 'email'):

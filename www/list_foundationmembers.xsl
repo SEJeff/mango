@@ -43,10 +43,10 @@
        </xsl:if>
        <span class="smallprint">(<xsl:value-of select="pagedresults/total_results"/> members found)</span>
        <xsl:if test="pagedresults/page_num &gt; 1">
-        <a class="button" href="{$script}?page={pagedresults/page_num - 1}">&lt;&lt; Prev</a>
+        <a class="button" href="?page={pagedresults/page_num - 1}">&lt;&lt; Prev</a>
        </xsl:if>
        <xsl:if test="pagedresults/page_num &lt; pagedresults/total_pages">
-        <a class="button" href="{$script}?page={pagedresults/page_num + 1}">Next &gt;&gt;</a>
+        <a class="button" href="?page={pagedresults/page_num + 1}">Next &gt;&gt;</a>
        </xsl:if>
       </td>
      </tr>
