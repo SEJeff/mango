@@ -176,4 +176,19 @@ def edit_mirror(request, pk):
 
     return get_xmlresponse(doc, "update_ftpmirror.xsl")
 
+def list_foundationmembers(request):
+    doc, root = get_xmldoc('List Foundation Members', request)
+    el1 = ET.SubElement(root, 'listfoundationmembers')
+
+    members = models.Foundationmembers.objects.all()
+    for member in members:
+        membernode = ET.SubElement(el1, 'foundationmember')
+        membernode.set('id', unicode(member.id))
+        for field in ('firstname', 'lastname', 'comments', 'email'):
+            node = ET.SubElement(membernode, field)
+            node.text = getattr(member, field)
+        ET.SubElement(membernode, 'id').text = unicode(member.id)
+
+    return get_xmlresponse(doc, "list_foundationmembers.xsl")
+
 

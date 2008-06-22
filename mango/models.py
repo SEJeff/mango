@@ -39,10 +39,10 @@ class AccountGroups(models.Model):
         db_table = u'account_groups'
 
 class Foundationmembers(models.Model):
-    id = models.IntegerField(primary_key=True)
-    firstname = models.CharField(max_length=150, blank=True)
-    lastname = models.CharField(max_length=150, blank=True)
-    email = models.CharField(max_length=300, blank=True)
+    id = models.AutoField(primary_key=True)
+    firstname = models.CharField(max_length=50, blank=True)
+    lastname = models.CharField(max_length=50, blank=True)
+    email = models.EmailField(max_length=255, blank=True)
     comments = models.TextField(blank=True)
     first_added = models.DateField()
     last_renewed_on = models.DateField(null=True, blank=True)
@@ -50,6 +50,10 @@ class Foundationmembers(models.Model):
     resigned_on = models.DateField(null=True, blank=True)
     class Meta:
         db_table = u'foundationmembers'
+
+class FtpmirrorsForm(ModelForm):
+    class Meta:
+        model = Foundationmembers
 
 class Ftpmirrors(models.Model):
     id = models.AutoField(primary_key=True)
@@ -165,3 +169,20 @@ class Users(LdapObject):
             self._groups = UserGroups.search('(memberUid=%s)' % self.__dict__['uid'])
 
         return self._groups
+
+    def add_to_xml(ET, formnode):
+        for item in ('uid', 'cn', 'mail', 'description'):
+            node = ET.SubElement(formnode, item)
+            node.text = user.__dict__.get(item, '')
+
+        for key in user.__dict__.get('authorizedKey', []):
+            # TODO:
+            #  - add fingerprint of above keys
+            if key:
+                node = ET.SubElement(formnode, 'authorizedKey')
+                node.text = key
+
+        for group in user.groups:
+            node = ET.SubElement(formnode, 'group', {'cn': group.cn})
+
+

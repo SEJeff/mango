@@ -1,5 +1,16 @@
 2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/models.py (Foundationmembers, FtpmirrorsForm,
+	  FtpmirrorsForm.Meta, Users.groups, Users.add_to_xml): Correct the
+	  Foundationmembers model. Add a FoundationmembersForm. Lastly, add a
+	  add_to_xml function to the Users model.
+	* mango/urls.py: Change accounts URL to requests. Also add the
+	list_foundationmembers view.
+	* mango/views.py (list_foundationmembers): Show foundation member
+	details. Far from fully working.
+
+2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/settings.py: Remove 'www' from hard coded URL.
 	* mango/views.py (get_xmlresponse): Add 'www' to template location.
 	* www/page.xsl: Add 'www' for the CSS. Update tab URLs to match Django
