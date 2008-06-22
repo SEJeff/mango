@@ -1,3 +1,8 @@
+2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
+
+	* lib/ftpmirror.php (FTPMirror): variables / attributes / whatever
+	should be public, not private.
+
 2008-06-08  Olav Vitters  <olav@bkor.dhs.org>
 
 	* lib/util.php: Correctly throw the Exception.
