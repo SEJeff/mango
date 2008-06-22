@@ -64,6 +64,16 @@ def add_paginator_to_xml(root, page):
     node = ET.SubElement(pagednode, 'page_num')
     node.text = unicode(page.number)
 
+def add_form_errors_to_xml(root, form):
+    """Adds form errors to the XML node specified by root"""
+
+    valid = form.is_valid()
+    if not valid:
+        for field, errors in form.errors.items():
+            node = ET.SubElement(root, 'formerror', {'type': field})
+
+    return valid
+
 def current_datetime(request):
     now = datetime.datetime.now()
     html = "<html><body>It is now %s.</body></html>" % now
@@ -202,7 +212,8 @@ def edit_mirror(request, pk):
 
     if request.method == 'POST':
         f = models.FtpmirrorsForm(request.POST, instance=mirror)
-        f.save()
+        if add_form_errors_to_xml(el, f):
+            f.save()
 
     mirror.add_to_xml(ET, el)
 

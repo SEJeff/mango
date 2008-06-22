@@ -22,7 +22,7 @@
        </noscript>
       </td>
       <td align="center">
-       <a class="button" href="new_ftpmirror.php?reload=true">New FTP mirror</a>
+      <a class="button" href="add/">New FTP mirror</a>
       </td>
       <td align="right">
        <xsl:if test="boolean(ftpmirror)">
