@@ -1,5 +1,13 @@
 2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/models.py (Modules): Add Modules class, reflecting the modules
+	in LDAP.
+	* mango/urls.py: Make add_account view available as /requests/add/
+	* mango/views.py (add_account): Do the bare minimum to have the XSLT
+	template display the form. Submitting doesn't work at this stage.
+
+2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/urls.py: Enable fake view_index (doesn't do anything).
 	* mango/views.py (view_index): Rename test_index to view_index
 

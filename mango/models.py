@@ -188,4 +188,8 @@ class Users(LdapObject):
         for group in user.groups:
             node = ET.SubElement(formnode, 'group', {'cn': group.cn})
 
+class Modules(LdapObject):
+
+    BASEDN = settings.MANGO_CFG['ldap_modules_basedn']
+    MULTI_ATTRS = set(('memberUid', 'objectClass'))
 

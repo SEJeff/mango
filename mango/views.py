@@ -156,6 +156,23 @@ def list_accounts(request):
 
     return get_xmlresponse(doc, "list_accounts.xsl")
 
+def add_account(request):
+    doc, root = get_xmldoc('Login Page', request)
+    form = ET.SubElement(root, 'newaccount')
+
+    filter = '(&(!(objectClass=localizationModule))(objectClass=gnomeModule))'
+    dev_modules = models.Modules.search(filter)
+
+    filter = '(objectClass=localizationModule)'
+    trans_modules = models.Modules.search(filter)
+
+    for module in dev_modules:
+        ET.SubElement(form, 'gnomemodule', {'cn': module.cn})
+    for module in trans_modules:
+        ET.SubElement(form, 'translation', {'cn': module.cn, 'desc': module.description})
+
+
+    return get_xmlresponse(doc, "new_account.xsl")
 
 def list_mirrors(request):
     doc, root = get_xmldoc('List Mirrors', request)
