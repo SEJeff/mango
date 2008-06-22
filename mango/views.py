@@ -1,7 +1,8 @@
 from django.http import HttpResponse, Http404, HttpResponseServerError
 from django.conf import settings
-from django.core.paginator import QuerySetPaginator
+from django.core.paginator import InvalidPage, QuerySetPaginator
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
 import datetime
 
 import ldap
@@ -180,10 +181,7 @@ def edit_mirror(request, pk):
     doc, root = get_xmldoc('Update mirror', request)
     el = ET.SubElement(root, 'updateftpmirror')
 
-    try:
-        mirror = models.Ftpmirrors.objects.get(pk=pk)
-    except mango.models.DoesNotExist:
-        raise Http404()
+    mirror = get_object_or_404(models.Ftpmirrors.objects, pk=pk)
 
     if request.method == 'POST':
         f = models.FtpmirrorsForm(request.POST, instance=mirror)
@@ -197,11 +195,12 @@ def list_foundationmembers(request):
     doc, root = get_xmldoc('List Foundation Members', request)
     el1 = ET.SubElement(root, 'listfoundationmembers')
 
-    page_num = request.GET.get('page', 1)
-
     members = models.Foundationmembers.objects.all()
     paginator = QuerySetPaginator(members, 25)
-    page = paginator.page(page_num)
+    try:
+        page = paginator.page(request.GET.get('page', 1))
+    except InvalidPage:
+        raise Http404('Invalid page')
     add_paginator_to_xml(el1, page)
     for member in page.object_list:
         membernode = ET.SubElement(el1, 'foundationmember')

@@ -1,5 +1,13 @@
 2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/views.py (edit_mirror, list_foundationmembers): Make use of
+	get_object_or_404. Also give 404 error message when invalid page was
+	given.
+	* www/list_foundationmembers.xsl: Make script variable '.'. This as
+	Django appears as directories.
+
+2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/views.py (add_paginator_to_xml, list_accounts,
 	  list_foundationmembers): Paginate results from a query. Add
 	  paginated entries to the XML by use of the add_paginator_to_xml
