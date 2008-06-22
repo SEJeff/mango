@@ -1,5 +1,10 @@
 2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/urls.py: Enable fake view_index (doesn't do anything).
+	* mango/views.py (view_index): Rename test_index to view_index
+
+2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/models.py (Foundationmembers.Meta): Order the foundation
 	members by lastname, then firstname. This like the PHP version.
 

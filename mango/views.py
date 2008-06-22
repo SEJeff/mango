@@ -129,7 +129,7 @@ def edit_user(request, user):
 
 
 
-def test_index(request):
+def view_index(request):
     doc, root = get_xmldoc('Login Page', request)
     root.append(ET.Element('homepage'))
 
