@@ -46,7 +46,7 @@ class Foundationmembers(models.Model):
     lastname = models.CharField(max_length=50, blank=True)
     email = models.EmailField(max_length=255, blank=True)
     comments = models.TextField(blank=True)
-    first_added = models.DateField()
+    first_added = models.DateField(auto_now_add=True)
     last_renewed_on = models.DateField(null=True, blank=True)
     last_update = models.DateTimeField()
     resigned_on = models.DateField(null=True, blank=True)
@@ -58,16 +58,25 @@ class FtpmirrorsForm(ModelForm):
     class Meta:
         model = Foundationmembers
 
+LOCATION_CHOICES = (
+    ('United States and Canada', 'United States and Canada'),
+    ('Australia', 'Australia'),
+    ('Europe', 'Europe'),
+    ('Asia', 'Asia'),
+    ('South America', 'South America'),
+    ('Other', 'Other'),
+)
+
 class Ftpmirrors(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=60, blank=True)
-    url = models.CharField(max_length=300, blank=True)
-    location = models.CharField(max_length=72, blank=True)
-    email = models.CharField(max_length=120, blank=True)
+    name = models.CharField(max_length=60)
+    url = models.URLField(verify_exists=False)
+    location = models.CharField(max_length=72, choices=LOCATION_CHOICES)
+    email = models.EmailField()
     comments = models.TextField(blank=True)
     description = models.TextField(blank=True)
     active = models.BooleanField()
-    last_update = models.DateTimeField(blank=True)
+    last_update = models.DateTimeField(auto_now=True)
     class Meta:
         db_table = u'ftpmirrors'
 

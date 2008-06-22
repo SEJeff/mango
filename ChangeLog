@@ -1,5 +1,11 @@
 2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/models.py (Foundationmembers, Ftpmirrors): Ensure first_added
+	will have the current date. Update the Ftpmirrors to use more specific
+	model fields (allowing Django to verify it).
+
+2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/models.py (Modules): Add Modules class, reflecting the modules
 	in LDAP.
 	* mango/urls.py: Make add_account view available as /requests/add/
