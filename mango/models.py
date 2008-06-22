@@ -59,7 +59,7 @@ class Ftpmirrors(models.Model):
     email = models.CharField(max_length=120, blank=True)
     comments = models.TextField(blank=True)
     description = models.TextField(blank=True)
-    active = models.IntegerField(null=True, blank=True)
+    active = models.BooleanField()
     last_update = models.DateTimeField(blank=True)
     class Meta:
         db_table = u'ftpmirrors'

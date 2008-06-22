@@ -1,5 +1,9 @@
 2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/models.py (Ftpmirrors): Active is a BooleanField.
+
+2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/models.py (AccountRequest, AccountRequest.ault,
 	  AccountRequest.ault, AccountRequest.ault, AccountGroups.ault,
 	  Ftpmirrors, Ftpmirrors.Meta, Ftpmirrors.add_to_xml, FtpmirrorsForm,
