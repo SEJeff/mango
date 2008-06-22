@@ -4,7 +4,7 @@ require_once("mysql.php");
 
 class FTPMirror {
 	// Main attributes
-    private
+    public
 	    $id,
 	    $name,
 	    $url,
