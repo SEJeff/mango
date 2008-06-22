@@ -1,5 +1,6 @@
 from django.http import HttpResponse, Http404, HttpResponseServerError
 from django.conf import settings
+from django.db.models import Q
 import datetime
 
 import ldap
@@ -71,7 +72,6 @@ def edit_user(request, user):
     doc, root = get_xmldoc('Update user %s' % user, request)
     el = ET.SubElement(root, 'updateuser')
 
-    
     l = models.LdapUtil().handle
     if not l:
         return HttpResponseServerError('Cannot connect to LDAP?')
@@ -125,5 +125,30 @@ def list_accounts(request):
             el3 = ET.SubElement(el2g, 'group', d)
 
     return get_xmlresponse(doc, "list_accounts.xsl")
+
+
+def list_mirrors(request):
+    doc, root = get_xmldoc('List Mirrors', request)
+    ftpnodes = ET.SubElement(root, 'listftpmirrors')
+
+    filter = request.GET.get('filter_keyword', None)
+    if filter:
+        mirrors = models.Ftpmirrors.objects.filter(Q(name__contains=filter) | Q(url__contains=filter))
+        filternode = ET.SubElement(ftpnodes, 'filter')
+        keynode = ET.SubElement(filternode, 'keyword')
+        keynode.text = filter
+    else:
+        mirrors = models.Ftpmirrors.objects.all()
+    for mirror in mirrors:
+        ftpnode = ET.SubElement(ftpnodes, 'ftpmirror')
+
+        fields = ('id', 'name', 'url', 'location', 'email', 'description', 'comments', 'last_update')
+        for field in fields:
+            node = ET.SubElement(ftpnode, field)
+            node.text = unicode(getattr(mirror, field))
+        if mirror.active:
+            node = ET.SubElement(ftpnode, 'active')
+
+    return get_xmlresponse(doc, "list_ftpmirrors.xsl")
 
 

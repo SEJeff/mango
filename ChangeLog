@@ -1,5 +1,11 @@
 2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/urls.py: Add list_mirrors view.
+	* mango/views.py (list_mirrors): Fetch ftp mirrors from database,
+	optionally filtering it by a keyword.
+
+2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
+
 	* lib/ftpmirror.php (FTPMirror): variables / attributes / whatever
 	should be public, not private.
 

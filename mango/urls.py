@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import *
 
-from mango.views import current_datetime, list_users, test_index, list_accounts, edit_user
+from mango.views import current_datetime, list_users, test_index, list_accounts, edit_user, list_mirrors
 import mango.settings
 
 urlpatterns = patterns('',
@@ -8,6 +8,7 @@ urlpatterns = patterns('',
     (r'^%susers/$' % mango.settings.SITE_ROOT, list_users),
     (r'^%stest/$' % mango.settings.SITE_ROOT, test_index),
     (r'^%saccounts/$' % mango.settings.SITE_ROOT, list_accounts),
+    (r'^%smirrors/$' % mango.settings.SITE_ROOT, list_mirrors),
     (r'^%susers/edit/(?P<user>\w+)/$' % mango.settings.SITE_ROOT, edit_user),
     # Example:
     # (r'^mango/', include('mango.foo.urls')),
