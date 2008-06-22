@@ -1,5 +1,10 @@
 2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/models.py (AccountGroups): Ensure Account uid only consists of
+	lowercase letters.
+
+2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/models.py (Foundationmembers, FtpmirrorsForm,
 	  FtpmirrorsForm.Meta, Users.groups, Users.add_to_xml): Correct the
 	  Foundationmembers model. Add a FoundationmembersForm. Lastly, add a
