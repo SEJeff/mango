@@ -61,7 +61,7 @@
         </xsl:choose>
        </xsl:attribute>
        <td>
-        <a href="update_ftpmirror.php?id={id}">
+        <a href="edit/{id}/">
          <xsl:apply-templates select="name"/>
         </a>
        </td>

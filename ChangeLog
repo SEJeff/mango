@@ -1,5 +1,22 @@
 2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/models.py (AccountRequest, AccountRequest.ault,
+	  AccountRequest.ault, AccountRequest.ault, AccountGroups.ault,
+	  Ftpmirrors, Ftpmirrors.Meta, Ftpmirrors.add_to_xml, FtpmirrorsForm,
+	  FtpmirrorsForm.Meta, Webmirrors): Prevent some fields in various
+	  models from being editable. Further, add an FtpmirrorsForm, based
+	  upon Ftpmirrors model. Lastly, add an add_to_xml helper function to
+	  the Ftpmirrors model.
+	* mango/urls.py: Add new edit ftpmirror view.
+	* mango/views.py (list_mirrors, edit_mirror): Create new view which
+	allows an ftpmirror to be updated. Make list_mirrors view use
+	add_to_xml helper function.
+	* www/list_ftpmirrors.xsl: Update the link used to edit an ftpmirror.
+	* www/update_ftpmirror.xsl: Add link back to list_mirrors view. Also
+	make sure the POST goes to the right place.
+
+2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/urls.py: Add list_mirrors view.
 	* mango/views.py (list_mirrors): Fetch ftp mirrors from database,
 	optionally filtering it by a keyword.

@@ -142,13 +142,26 @@ def list_mirrors(request):
     for mirror in mirrors:
         ftpnode = ET.SubElement(ftpnodes, 'ftpmirror')
 
-        fields = ('id', 'name', 'url', 'location', 'email', 'description', 'comments', 'last_update')
-        for field in fields:
-            node = ET.SubElement(ftpnode, field)
-            node.text = unicode(getattr(mirror, field))
-        if mirror.active:
-            node = ET.SubElement(ftpnode, 'active')
+        mirror.add_to_xml(ET, ftpnode)
 
     return get_xmlresponse(doc, "list_ftpmirrors.xsl")
+
+
+def edit_mirror(request, pk):
+    doc, root = get_xmldoc('Update mirror', request)
+    el = ET.SubElement(root, 'updateftpmirror')
+
+    try:
+        mirror = models.Ftpmirrors.objects.get(pk=pk)
+    except mango.models.DoesNotExist:
+        raise Http404()
+
+    if request.method == 'POST':
+        f = models.FtpmirrorsForm(request.POST, instance=mirror)
+        f.save()
+
+    mirror.add_to_xml(ET, el)
+
+    return get_xmlresponse(doc, "update_ftpmirror.xsl")
 
 

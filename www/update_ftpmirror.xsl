@@ -10,12 +10,13 @@
   <xsl:variable name="script" select="'update_ftpmirror.php'"/>
   
   <xsl:template match="updateftpmirror">
+   <a href="../..">Mirrors</a> → <xsl:value-of select="id"/>
    <xsl:apply-templates select="error"/>
    <xsl:if test="boolean(updated)">
     <p>FTP mirror updated.</p>
     <xsl:apply-templates select="updated/change"/>
    </xsl:if>
-   <form enctype="multipart/form-data" method="POST" action="{$script}" name="form">
+   <form enctype="multipart/form-data" method="POST" action="." name="form">
     <input type="hidden" name="mango_token" value="{/page/@token}"/>
     <input type="hidden" name="idcheck" value="{id}"/>
     <table class="form">

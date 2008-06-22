@@ -9,6 +9,7 @@
 
 from django.db import models
 from django.conf import settings
+from django.newforms import ModelForm
 import ldap
 
 class AccountRequest(models.Model):
@@ -17,12 +18,12 @@ class AccountRequest(models.Model):
     cn = models.CharField(max_length=255)
     mail = models.EmailField(max_length=255)
     comment = models.TextField()
-    timestamp = models.DateTimeField()
+    timestamp = models.DateTimeField(editable=False)
     authorizationkeys = models.TextField()
-    status = models.CharField(max_length=1, default='P')
-    is_new_account = models.CharField(max_length=1, default='Y')
-    is_mail_verified = models.CharField(max_length=1, default='N')
-    mail_token = models.CharField(max_length=40)
+    status = models.CharField(max_length=1, default='P', editable=False)
+    is_new_account = models.CharField(max_length=1, default='Y', editable=False)
+    is_mail_verified = models.CharField(max_length=1, default='N', editable=False)
+    mail_token = models.CharField(max_length=40, editable=False)
     class Meta:
         db_table = u'account_request'
 
@@ -31,7 +32,7 @@ class AccountGroups(models.Model):
     request = models.ForeignKey(AccountRequest)
     cn = models.CharField(max_length=15)
     voucher_group = models.CharField(max_length=50, blank=True, null=True)
-    verdict = models.CharField(max_length=1, default='P')
+    verdict = models.CharField(max_length=1, default='P', editable=False)
     voucher = models.CharField(max_length=15, blank=True, null=True)
     denial_message = models.CharField(max_length=255, blank=True, null=True)
     class Meta:
@@ -51,17 +52,31 @@ class Foundationmembers(models.Model):
         db_table = u'foundationmembers'
 
 class Ftpmirrors(models.Model):
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=60, blank=True)
     url = models.CharField(max_length=300, blank=True)
     location = models.CharField(max_length=72, blank=True)
     email = models.CharField(max_length=120, blank=True)
     comments = models.TextField(blank=True)
     description = models.TextField(blank=True)
-    id = models.IntegerField(primary_key=True)
     active = models.IntegerField(null=True, blank=True)
-    last_update = models.DateTimeField()
+    last_update = models.DateTimeField(blank=True)
     class Meta:
         db_table = u'ftpmirrors'
+
+    def add_to_xml(self, ET, node):
+        fields = ('id', 'name', 'url', 'location', 'email', 'description', 'comments', 'last_update')
+        for field in fields:
+            n = ET.SubElement(node, field)
+            val = getattr(self, field)
+            if val is None: val = ''
+            n.text = unicode(val)
+        if self.active:
+            n = ET.SubElement(node, 'active')
+
+class FtpmirrorsForm(ModelForm):
+    class Meta:
+        model = Ftpmirrors
 
 class Webmirrors(models.Model):
     name = models.CharField(max_length=60, blank=True)
