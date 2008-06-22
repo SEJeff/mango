@@ -14,7 +14,7 @@
      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
      <title>GNOME Mango: <xsl:value-of select="@title"/></title>
 
-     <link rel="stylesheet" type="text/css" href="{/page/@baseurl}/skin/default.css"/>
+     <link rel="stylesheet" type="text/css" href="{/page/@baseurl}/www/skin/default.css"/>
      <link rel="icon" type="image/png" href="http://www.gnome.org/img/logo/foot-16.png"/>
      <link rel="SHORTCUT ICON" type="image/png" href="http://www.gnome.org/img/logo/foot-16.png"></link>
 
@@ -60,15 +60,15 @@
 	    </li>
 	    <xsl:if test="boolean(group)">
 	      <xsl:if test="boolean(group[@cn='accounts']) or boolean(group[@cn='sysadmin'])">
-		<li><xsl:if test="$channel = 'users'"><xsl:attribute name="class">selected</xsl:attribute></xsl:if><a href="{/page/@baseurl}/list_users.php"><span>Users</span></a></li>
-		<li><xsl:if test="$channel = 'accounts'"><xsl:attribute name="class">selected</xsl:attribute></xsl:if><a href="{/page/@baseurl}/list_accounts.php"><span>Applications</span></a></li>
+		<li><xsl:if test="$channel = 'users'"><xsl:attribute name="class">selected</xsl:attribute></xsl:if><a href="{/page/@baseurl}/users/"><span>Users</span></a></li>
+		<li><xsl:if test="$channel = 'accounts'"><xsl:attribute name="class">selected</xsl:attribute></xsl:if><a href="{/page/@baseurl}/requests/"><span>Applications</span></a></li>
 	      </xsl:if>
 	      <xsl:if test="boolean(group[@cn='sysadmin'])">
-	        <li><xsl:if test="$channel = 'mirrors'"><xsl:attribute name="class">selected</xsl:attribute></xsl:if><a href="{/page/@baseurl}/list_ftpmirrors.php"><span>Mirrors</span></a></li>
-		<li><xsl:if test="$channel = 'modules'"><xsl:attribute name="class">selected</xsl:attribute></xsl:if><a href="{/page/@baseurl}/list_modules.php"><span>Modules</span></a></li>
+		<li><xsl:if test="$channel = 'mirrors'"><xsl:attribute name="class">selected</xsl:attribute></xsl:if><a href="{/page/@baseurl}/mirrors/"><span>Mirrors</span></a></li>
+		<li><xsl:if test="$channel = 'modules'"><xsl:attribute name="class">selected</xsl:attribute></xsl:if><a href="{/page/@baseurl}/modules/"><span>Modules</span></a></li>
              </xsl:if>
 	     <xsl:if test="boolean(group[@cn='membctte'])">
-	       <li><xsl:if test="$channel = 'foundation'"><xsl:attribute name="class">selected</xsl:attribute></xsl:if><a href="{/page/@baseurl}/list_foundationmembers.php"><span>Foundation Members</span></a></li>
+	       <li><xsl:if test="$channel = 'foundation'"><xsl:attribute name="class">selected</xsl:attribute></xsl:if><a href="{/page/@baseurl}/foundationmembers/"><span>Foundation Members</span></a></li>
 	     </xsl:if>
 	     <li><xsl:if test="$channel = 'login'"><xsl:attribute name="class">selected</xsl:attribute></xsl:if><a href="{/page/@baseurl}/login.php?logout=true"><span>Logout</span></a></li>
 	   </xsl:if>

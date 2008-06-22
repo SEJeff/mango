@@ -45,7 +45,7 @@ def get_xmlresponse(doc, template, response=None):
     if response is None:
         response = HttpResponse(mimetype='text/xml')
 
-    response.write(ET.tostring(ET.ProcessingInstruction('xml-stylesheet', 'href="%s/%s" type="text/xsl"' % (settings.MANGO_CFG['base_url'], template))))
+    response.write(ET.tostring(ET.ProcessingInstruction('xml-stylesheet', 'href="%s/www/%s" type="text/xsl"' % (settings.MANGO_CFG['base_url'], template))))
     doc.write(response, 'utf-8')
     return response
 

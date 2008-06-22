@@ -1,5 +1,12 @@
 2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/settings.py: Remove 'www' from hard coded URL.
+	* mango/views.py (get_xmlresponse): Add 'www' to template location.
+	* www/page.xsl: Add 'www' for the CSS. Update tab URLs to match Django
+	install.
+
+2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/views.py (get_xmldoc): Hard code the logged in user to me for
 	now.
 
