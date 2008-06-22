@@ -142,5 +142,5 @@ for f in cfg_files:
         
         break
 
-    MANGO_CFG['base_url'] = 'http://localhost/mango/django/www'
+MANGO_CFG['base_url'] = 'http://localhost/mango/django/www'
 

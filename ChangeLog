@@ -1,5 +1,13 @@
 2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/settings.py (ault): Hard code the base_url for now.
+	* mango/views.py (get_xmlresponse, list_users, edit_user, test_index,
+	  list_accounts): Make get_xmlresponse use base_url to provide a
+	  reference to the XSLT template. Change existing usage of this
+	  function to match changed functionality.
+
+2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/views.py (edit_user): Make use of Users ldap helper class.
 	Further, add group information to XML.
 

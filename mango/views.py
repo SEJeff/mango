@@ -32,7 +32,7 @@ def get_xmlresponse(doc, template, response=None):
     if response is None:
         response = HttpResponse(mimetype='text/xml')
 
-    response.write(ET.tostring(ET.ProcessingInstruction('xml-stylesheet', 'href="%s" type="text/xsl"' % template)))
+    response.write(ET.tostring(ET.ProcessingInstruction('xml-stylesheet', 'href="%s/%s" type="text/xsl"' % (settings.MANGO_CFG['base_url'], template))))
     doc.write(response, 'utf-8')
     return response
 
@@ -65,7 +65,7 @@ def list_users(request):
         node = ET.SubElement(usernode, 'email')
         node.text = user.mail
 
-    return get_xmlresponse(doc, "../www/list_users.xsl")
+    return get_xmlresponse(doc, "list_users.xsl")
 
 def edit_user(request, user):
     doc, root = get_xmldoc('Update user %s' % user, request)
@@ -98,7 +98,7 @@ def edit_user(request, user):
     for group in user.groups:
         node = ET.SubElement(el, 'group', {'cn': group.cn})
 
-    return get_xmlresponse(doc, "../../../www/update_user.xsl")
+    return get_xmlresponse(doc, "update_user.xsl")
 
 
 
@@ -106,7 +106,7 @@ def test_index(request):
     doc, root = get_xmldoc('Login Page', request)
     root.append(ET.Element('homepage'))
 
-    return get_xmlresponse(doc, "../www/index.xsl")
+    return get_xmlresponse(doc, "index.xsl")
 
 def list_accounts(request):
     doc, root = get_xmldoc('List Accounts', request)
@@ -124,6 +124,6 @@ def list_accounts(request):
 
             el3 = ET.SubElement(el2g, 'group', d)
 
-    return get_xmlresponse(doc, "../www/list_accounts.xsl")
+    return get_xmlresponse(doc, "list_accounts.xsl")
 
 
