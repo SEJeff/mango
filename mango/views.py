@@ -14,20 +14,32 @@ except ImportError:
 
 
 def get_xmldoc(title, request):
-    doc = ET.ElementTree(ET.Element('page', {
+    pagenode = ET.Element('page', {
         'title': title,
         'mode': settings.MANGO_CFG['mode'],
         'baseurl': settings.MANGO_CFG['base_url'],
         'thisurl': request.path,
         'token': "afd0e0d9eab69ab904c7a43f6bd3810156f0afc9", # TODO: generate token
         'support': settings.MANGO_CFG['support_email'],
-    }))
+    })
+    doc = ET.ElementTree(pagenode)
 
     # TODO: 
     #  - determine if user is logged in, if so:
     #    add user details to XML
+    filter = ldap.filter.filter_format('(&(objectClass=posixAccount)(uid=%s))', ('ovitters',))
+    users = models.Users.search(filter)
+    if len(users) == 1:
+        user = users[0]
 
-    return doc, doc.getroot()
+        usernode = ET.SubElement(pagenode, 'user')
+        node = ET.SubElement(usernode, 'cn')
+        node.text = user.cn
+
+        for group in user.groups:
+            node = ET.SubElement(pagenode, 'group', {'cn': group.cn})
+
+    return doc, pagenode
 
 def get_xmlresponse(doc, template, response=None):
     if response is None:

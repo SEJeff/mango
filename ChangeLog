@@ -1,5 +1,10 @@
 2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/views.py (get_xmldoc): Hard code the logged in user to me for
+	now.
+
+2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/models.py (Ftpmirrors): Active is a BooleanField.
 
 2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
