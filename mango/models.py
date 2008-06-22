@@ -52,6 +52,7 @@ class Foundationmembers(models.Model):
     resigned_on = models.DateField(null=True, blank=True)
     class Meta:
         db_table = u'foundationmembers'
+        ordering = ['lastname', 'firstname']
 
 class FtpmirrorsForm(ModelForm):
     class Meta:
