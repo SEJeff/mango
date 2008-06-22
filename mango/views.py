@@ -86,7 +86,7 @@ def edit_user(request, user):
 
     for item in ('uid', 'cn', 'mail', 'description'):
         node = ET.SubElement(el, item)
-        node.text = user.__dict__[item]
+        node.text = user.__dict__.get(item, '')
 
     for key in user.__dict__.get('authorizedKey', []):
         # TODO:
