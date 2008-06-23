@@ -165,7 +165,7 @@ def list_accounts(request):
     return get_xmlresponse(doc, "list_accounts.xsl")
 
 def add_account(request):
-    doc, root = get_xmldoc('Login Page', request)
+    doc, root = get_xmldoc('Request LDAP account', request)
     form = ET.SubElement(root, 'newaccount')
 
     dev_modules = models.DevModules.search()

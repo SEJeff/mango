@@ -1,5 +1,9 @@
 2008-06-23  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/views.py (add_account): Fix title used in document.
+
+2008-06-23  Olav Vitters  <olav@bkor.dhs.org>
+
 	Fix regressions due to instruction of new method to search LDAP (SVN
 	revision 237).
 
