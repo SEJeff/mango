@@ -1,5 +1,12 @@
 2008-06-23  Olav Vitters  <olav@bkor.dhs.org>
 
+	Even more fixes due to introduction of Q.
+
+	* mango/models.py (Modules, L10nModules):
+	* mango/views.py (list_users):
+
+2008-06-23  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/views.py (add_account): Fix title used in document.
 
 2008-06-23  Olav Vitters  <olav@bkor.dhs.org>

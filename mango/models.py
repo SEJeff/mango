@@ -246,6 +246,7 @@ class Modules(LdapObject):
     """Base class for Module information (maintainer into, etc)"""
     BASEDN = settings.MANGO_CFG['ldap_modules_basedn']
     MULTI_ATTRS = set(('memberUid', 'objectClass'))
+    FILTER = Q(objectClass='gnomeModule')
 
 class L10nModules(Modules):
     """Specific filter to only return localization modules

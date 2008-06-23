@@ -87,8 +87,7 @@ def list_users(request):
     if not l:
         return HttpResponseServerError('Cannot connect to LDAP?')
 
-    filter = '(objectClass=posixAccount)'
-    users = models.Users.search(filter)
+    users = models.Users.search()
     
     for user in users:
         usernode = ET.SubElement(el, 'user')
