@@ -154,7 +154,7 @@ class LdapObject(object):
         self.dn = dn
 
     @classmethod
-    def search(cls, filter=None):
+    def search(cls, filter=None, attrlist=None):
         l = LdapUtil.singleton().handle
 
         base = cls.BASEDN
@@ -170,8 +170,7 @@ class LdapObject(object):
             ldapfilter = cls._build_filter(q_object)
         else:
             ldapfilter = '(objectClass=*)'
-        print "ldapfilter: %s" % ldapfilter
-        results = l.search_s(base, ldap.SCOPE_SUBTREE, ldapfilter, None)
+        results = l.search_s(base, ldap.SCOPE_SUBTREE, ldapfilter, attrlist)
 
         items = []
 
@@ -223,7 +222,7 @@ class Users(LdapObject):
     @property
     def groups(self):
         if self._groups is None:
-            self._groups = UserGroups.search(Q(memberUid=self.__dict__['uid']))
+            self._groups = UserGroups.search(Q(memberUid=self.__dict__['uid']), ('cn',))
 
         return self._groups
 
