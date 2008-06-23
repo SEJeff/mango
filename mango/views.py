@@ -150,16 +150,19 @@ def view_index(request):
 
 def list_accounts(request):
     doc, root = get_xmldoc('List Accounts', request)
-    el1 = ET.SubElement(root, 'listaccounts')
+    pagenode = ET.SubElement(root, 'listaccounts')
 
-    accounts = models.AccountRequest.objects.all()
-    paginator = QuerySetPaginator(accounts, 25)
-    page_num = request.GET.get('page', 1)
-    accounts = paginator.page(page_num).object_list
-    for account in accounts:
-        el2 = ET.SubElement(el1, 'account', dict([a for a in account.__dict__.iteritems() if a[0] not in ('id', 'timestamp')]))
+    queryset = models.AccountRequest.objects.filter(status='S')
+    paginator = QuerySetPaginator(queryset, 25)
+    try:
+        page = paginator.page(request.GET.get('page', 1))
+    except InvalidPage:
+        raise Http404('Invalid page')
+    add_paginator_to_xml(pagenode, page)
+    for obj in page.object_list:
+        el2 = ET.SubElement(pagenode, 'account', dict([a for a in obj.__dict__.iteritems() if a[0] not in ('id', 'timestamp')]))
         el2g = ET.SubElement(el2, 'groups')
-        for group in account.accountgroups_set.filter(verdict__exact='A'):
+        for group in obj.accountgroups_set.filter(verdict__exact='A'):
             d = {'cn': group.cn}
             if group.voucher is not None:
                 d['approvedby'] = group.voucher
