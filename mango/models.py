@@ -226,26 +226,35 @@ class Users(LdapObject):
 
         return self._groups
 
-    def add_to_xml(ET, formnode):
+    def add_to_xml(self, ET, formnode):
         for item in ('uid', 'cn', 'mail', 'description'):
             node = ET.SubElement(formnode, item)
-            node.text = user.__dict__.get(item, '')
+            node.text = self.__dict__.get(item, '')
 
-        for key in user.__dict__.get('authorizedKey', []):
+        for key in self.__dict__.get('authorizedKey', []):
             # TODO:
             #  - add fingerprint of above keys
             if key:
                 node = ET.SubElement(formnode, 'authorizedKey')
                 node.text = key
 
-        for group in user.groups:
+        for group in self.groups:
             node = ET.SubElement(formnode, 'group', {'cn': group.cn})
 
 class Modules(LdapObject):
     """Base class for Module information (maintainer into, etc)"""
     BASEDN = settings.MANGO_CFG['ldap_modules_basedn']
-    MULTI_ATTRS = set(('memberUid', 'objectClass'))
+    MULTI_ATTRS = set(('maintainerUid', 'objectClass'))
     FILTER = Q(objectClass='gnomeModule')
+
+    @property
+    def maintainer(self):
+        return u', '.join(self.__dict__.get('maintainerUid', []))
+
+    def add_to_xml(self, ET, formnode):
+        for item in ('cn', 'description', 'maintainer'):
+            node = ET.SubElement(formnode, item)
+            node.text = getattr(self, item, '')
 
 class L10nModules(Modules):
     """Specific filter to only return localization modules

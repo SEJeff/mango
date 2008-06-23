@@ -1,5 +1,18 @@
 2008-06-23  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/models.py (Users.add_to_xml, Modules, Modules.maintainer,
+	  Modules.add_to_xml, L10nModules): Fix Users.add_to_xml to actually
+	  work. For Modules, maintainerUid is a MULTI_ATTR, not memberUid.
+	  Further, add a maintainer property (joins maintainerUid together).
+	  Finally, add an add_to_xml helper function.
+	* mango/urls.py: Add list_modules view to configuration. Also change
+	the way existing views are referenced.
+	* mango/views.py (list_modules): New view. Shows modules.
+	* www/list_modules.xsl: Update scriptname so that links point to the
+	right place.
+
+2008-06-23  Olav Vitters  <olav@bkor.dhs.org>
+
 	* INSTALL: Add some short incomplete notes about the Python (Django)
 	port.
 

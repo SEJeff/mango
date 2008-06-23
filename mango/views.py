@@ -265,4 +265,20 @@ def list_foundationmembers(request):
 
     return get_xmlresponse(doc, "list_foundationmembers.xsl")
 
+def list_modules(request):
+    doc, root = get_xmldoc('List Modules', request)
+    pagenode = ET.SubElement(root, 'listmodules')
 
+    queryset = models.Modules.search()
+
+    paginator = Paginator(queryset, 25)
+    try:
+        page = paginator.page(request.GET.get('page', 1))
+    except InvalidPage:
+        raise Http404('Invalid page')
+    add_paginator_to_xml(pagenode, page)
+    for obj in page.object_list:
+        modulenode = ET.SubElement(pagenode, 'module')
+        obj.add_to_xml(ET, modulenode)
+
+    return get_xmlresponse(doc, "list_modules.xsl")
