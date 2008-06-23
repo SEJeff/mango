@@ -3,8 +3,15 @@
 * Webserver (e.g. Apache 2)
 * LDAP server (e.g. OpenLDAP 2)
 * SQL server (e.g. MySQL 5)
-* PHP5 with LDAP and MySQL support
-* PEAR (see below for a list of packages required)
+
+  For the Django version:
+  * Django (see installation guide on www.djangoproject.com)
+  * python-paramiko
+  * python-crypto / pycrypto (Needed by paramiko and also by Mango)
+
+  For the PHP version:
+  * PHP5 with LDAP and MySQL support
+  * PEAR (see below for a list of packages required)
 
 On a recent Debian system, install the following packages:
 
@@ -13,10 +20,17 @@ On a recent Debian system, install the following packages:
 * ldap-utils
 * mysql-server
 * mysql-client
-* php5-cgi
-* php5-ldap
-* php5-mysql
-* php-pear
+
+  PHP:
+  * php5-cgi
+  * php5-ldap
+  * php5-mysql
+  * php-pear
+
+  Python:
+  * Django from SVN (they don't release often enough)
+  * python-paramiko (guessing)
+  * python-crypto (guessing)
 
 You might want to reconfigure web, LDAP and MySQL servers to only listen on
 localhost, if you plan to use your Mango installation for development purposes
@@ -66,7 +80,7 @@ schemas in docs/schemas by inserting into /etc/ldap/slapd.conf
 # Mango schemas
 include         /where/you/checked/out/mango/docs/schemas/cvs.schema
 include         /where/you/checked/out/mango/docs/schemas/module.schema
-inlcude         /where/you/checked/out/mango/docs/schemas/sshd.schema
+include         /where/you/checked/out/mango/docs/schemas/sshd.schema
 
 In the future there might be even more custom schemas. Check the directory
 docs/schemas and import all schemas you can find.

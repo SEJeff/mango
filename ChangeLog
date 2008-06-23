@@ -1,5 +1,10 @@
 2008-06-23  Olav Vitters  <olav@bkor.dhs.org>
 
+	* INSTALL: Add some short incomplete notes about the Python (Django)
+	port.
+
+2008-06-23  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/models.py (LdapObject.search, Users.groups): Remove leftover
 	debug message. Further, optimize use of LDAP queries by only
 	requesting the cn of groups within the Users class.
