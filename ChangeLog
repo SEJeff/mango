@@ -1,5 +1,16 @@
 2008-06-23  Olav Vitters  <olav@bkor.dhs.org>
 
+	Fix regressions due to instruction of new method to search LDAP (SVN
+	revision 237).
+
+	* mango/models.py (UserGroups, Users.groups): Add default filter to
+	UserGroups. Update groups function to ensure the filter uses a Q
+	object.
+	* mango/views.py (get_xmldoc, edit_user): Use Q when providing a
+	filter for LDAP.
+
+2008-06-23  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/models.py (AccountsForm: Add new Form, derived from the
 	AccountRequest model.
 

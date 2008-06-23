@@ -208,7 +208,7 @@ class UserGroups(LdapObject):
 
     BASEDN = settings.MANGO_CFG['ldap_groups_basedn']
     MULTI_ATTRS = set(('memberUid', 'objectClass'))
-
+    FILTER = Q(objectClass='posixGroup')
 
 class Users(LdapObject):
 
@@ -223,7 +223,7 @@ class Users(LdapObject):
     @property
     def groups(self):
         if self._groups is None:
-            self._groups = UserGroups.search('(memberUid=%s)' % self.__dict__['uid'])
+            self._groups = UserGroups.search(Q(memberUid=self.__dict__['uid']))
 
         return self._groups
 

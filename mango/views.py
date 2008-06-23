@@ -29,8 +29,7 @@ def get_xmldoc(title, request):
     # TODO: 
     #  - determine if user is logged in, if so:
     #    add user details to XML
-    filter = ldap.filter.filter_format('(&(objectClass=posixAccount)(uid=%s))', ('ovitters',))
-    users = models.Users.search(filter)
+    users = models.Users.search(Q(uid='ovitters'))
     if len(users) == 1:
         user = users[0]
 
@@ -113,8 +112,7 @@ def edit_user(request, user):
     if not l:
         return HttpResponseServerError('Cannot connect to LDAP?')
 
-    filter = ldap.filter.filter_format('(&(objectClass=posixAccount)(uid=%s))', (user,))
-    users = models.Users.search(filter)
+    users = models.Users.search(Q(uid=user))
 
     if len(users) != 1:
         raise Http404()
