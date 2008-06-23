@@ -1,5 +1,10 @@
 2008-06-23  Olav Vitters  <olav@bkor.dhs.org>
 
+	* HACKING: Update HACKING with current design thoughts and a TODO
+	list (incomplete).
+
+2008-06-23  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/models.py (LdapObject, LdapObject.search, LdapObject.method,
 	  LdapObject._build_filter, Users, Modules, L10nModules, DevModules):
 	  Add a _build_filter function to LdapObject. This converts a query

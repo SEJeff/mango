@@ -2,3 +2,63 @@ Ideas for extending this include:
  * Making it into a 'self-service' application, where authenticated GNOME hackers can update their own details (SSH keys, e-mail addresses etc). Strong encryption/authentication/security measures would be a requirement here though, I think.
  * Anonymous voting. The membership committee has officially requested a system to do this, and Mango provides a good basis. Work has already started on a basic interface for tracking members. Notes on where to go from there can be found here: <http://live.gnome.org/AnonymousVoting>.
  * test commit3
+
+= Django port =
+
+DONE:
+•   ftpmirrors?
+
+TODO (by priority):
+•   accounts
+•   users
+•   CSRF
+•   authentication
+
+= Design =
+
+Object types
+•   accounts
+•   foundationmembers (model)
+•   ftpmirrors (model)
+•   modules
+•   users
+
+Actions
+•   login
+•   logout
+
+Generic object actions
+•   list
+•   add
+•   edit
+
+Additional action for accounts
+•   verify_email
+
+Additional action for foundationmembers
+•   revoke
+•   renew
+
+ACL
+•   A user should be able to change some of his details
+•   Accounts people can only change selective groups, all other details can be edited. 
+•   Sysadmins can do anything (Note: perhaps still restrict, to avoid security issues due to Mango). Basically sysadmins can change the groups accounts people can change, but also ‘sysadmin’ and ‘accounts’
+
+The LdapObject does not have any intelligence itself. Security must be handled by the Form. The same applies for field types. For ACL stuff, different forms should be used. This ensures the logic is as simple as possible.
+
+class LdapObject / LdapModel:
+    def update_from_form(form):
+        if not form.is_valid():
+            raise ValidationError
+        for field in form.fields:
+            self.data[field.name] = self.data[field.value]
+
+    def save():
+        # Perhaps the pre_save notification normal models have?
+        currobj = self.__class__.get(self.dn)
+        newdata = currobj.copy()
+        for key, val in self.data.items():
+            newdata[key] = val
+        modlist(olddata.as_ldap(), newdata.as_ldap())
+        ldap.update(modlist)
+
