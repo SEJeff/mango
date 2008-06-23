@@ -1,5 +1,23 @@
 2008-06-23  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/models.py (LdapObject, LdapObject.search, LdapObject.method,
+	  LdapObject._build_filter, Users, Modules, L10nModules, DevModules):
+	  Add a _build_filter function to LdapObject. This converts a query
+	  filter made up by 'Q' to an ldap filter. It also handles quoting,
+	  AND, OR and NOT. Change the LdapObject search function to make use
+	  of _build_filter.
+	  Further, allow an LdapObject derived class to have a predefined
+	  filter. This filter will be AND'ed together with any filters
+	  provides to the LdapObject search function.
+	  Set default FILTER for Users class. Further, create two new classes
+	  derived from Module class; L10nModules and DevModules. Each of these
+	  classes has a filter which only returns a certain module.
+	* mango/views.py (add_account): Instead of providing a filter to the
+	  Modules class, use the newly created L10nModules and DevModules
+	  classes.
+
+2008-06-23  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/models.py (Ftpmirrors.ault): Make mirror active by default.
 	* mango/urls.py: Make add_mirror view available as
 	/foundationmembers/add/.

@@ -11,7 +11,10 @@ from django.db import models
 from django.conf import settings
 from django.core import validators
 from django.newforms import ModelForm
+from django.utils import tree
+from django.db.models import Q
 import ldap
+import ldap.filter
 
 class AccountRequest(models.Model):
     id = models.AutoField(primary_key=True)
@@ -136,6 +139,7 @@ class LdapObject(object):
     
     BASEDN = None
     MULTI_ATTRS = set(('objectClass'))
+    FILTER = None
 
     def __init__(self, dn, attrs):
         for k, i in attrs.items():
@@ -146,12 +150,24 @@ class LdapObject(object):
         self.dn = dn
 
     @classmethod
-    def search(cls, filter):
+    def search(cls, filter=None):
         l = LdapUtil.singleton().handle
-        
+
         base = cls.BASEDN
 
-        results = l.search_s(base, ldap.SCOPE_SUBTREE, filter, None)
+        q_object = None
+        for f in (cls.FILTER, filter):
+            if isinstance(f, tree.Node):
+                if q_object:
+                    q_object &= f
+                else:
+                    q_object = f
+        if q_object:
+            ldapfilter = cls._build_filter(q_object)
+        else:
+            ldapfilter = '(objectClass=*)'
+        print "ldapfilter: %s" % ldapfilter
+        results = l.search_s(base, ldap.SCOPE_SUBTREE, ldapfilter, None)
 
         items = []
 
@@ -159,6 +175,30 @@ class LdapObject(object):
             items.append(cls(result[0], result[1]))
 
         return items
+
+    @classmethod
+    def _build_filter(cls, q_object):
+        """Builds a LDAP filter using a Q object"""
+        vals = []
+        for child in q_object.children:
+            if isinstance(child, tree.Node):
+                val = cls._build_filter(child)
+            else:
+                val = ldap.filter.filter_format('(%s=%s)', (child[0], child[1]))
+            vals.append(val)
+
+        format = ''
+        if len(vals) == 1:
+            format = '%s'
+        elif q_object.connector == q_object.OR:
+            format = '(|%s)'
+        else:
+            format = '(&%s)'
+
+        if q_object.negated:
+            format = '(!%s)' % format
+
+        return format % ''.join(vals)
 
 class UserGroups(LdapObject):
 
@@ -170,6 +210,7 @@ class Users(LdapObject):
 
     BASEDN = settings.MANGO_CFG['ldap_users_basedn']
     MULTI_ATTRS = set(('authorizedKey','objectClass'))
+    FILTER = Q(objectClass='posixAccount')
 
     def __init__(self, *foo):
         self._groups = None
@@ -198,7 +239,22 @@ class Users(LdapObject):
             node = ET.SubElement(formnode, 'group', {'cn': group.cn})
 
 class Modules(LdapObject):
-
+    """Base class for Module information (maintainer into, etc)"""
     BASEDN = settings.MANGO_CFG['ldap_modules_basedn']
     MULTI_ATTRS = set(('memberUid', 'objectClass'))
+
+class L10nModules(Modules):
+    """Specific filter to only return localization modules
+
+    Note: within LDAP, it is very easy to morph an l10n module into
+    a development one. This class should do as minimal as possible."""
+    FILTER = Q(objectClass='localizationModule')
+
+class DevModules(Modules):
+    """Specific filter to only return development modules
+
+    Note: within LDAP, it is very easy to morph an l10n module into
+    a development one. This class should do as minimal as possible."""
+    FILTER = (~ Q(objectClass='localizationModule')) & Q(objectClass='gnomeModule')
+
 

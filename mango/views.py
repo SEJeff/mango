@@ -170,17 +170,19 @@ def add_account(request):
     doc, root = get_xmldoc('Login Page', request)
     form = ET.SubElement(root, 'newaccount')
 
-    filter = '(&(!(objectClass=localizationModule))(objectClass=gnomeModule))'
-    dev_modules = models.Modules.search(filter)
-
-    filter = '(objectClass=localizationModule)'
-    trans_modules = models.Modules.search(filter)
+    dev_modules = models.DevModules.search()
+    trans_modules = models.L10nModules.search()
 
     for module in dev_modules:
         ET.SubElement(form, 'gnomemodule', {'cn': module.cn})
     for module in trans_modules:
         ET.SubElement(form, 'translation', {'cn': module.cn, 'desc': module.description})
 
+    if request.method == 'POST':
+        f = models.AccountsForm(request.POST)
+        if add_form_errors_to_xml(el, f):
+#            mirror = f.save()
+            return HttpResponseRedirect(u'../view/%s' % unicode(mirror.id))
 
     return get_xmlresponse(doc, "new_account.xsl")
 
