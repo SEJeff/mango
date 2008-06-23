@@ -1,5 +1,13 @@
 2008-06-23  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/views.py (list_users): Add pagination to list_users. This is
+	way more inefficient than normal models as LdapObject actually creates
+	an instance for every user, no matter if it is needed by the paginator
+	or not.
+	* www/list_users.xsl: Correct link to list_users view.
+
+2008-06-23  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/views.py (list_mirrors): Show mirrors per page (25).
 	* www/list_ftpmirrors.xsl: Correct link to list_mirrors view.
 

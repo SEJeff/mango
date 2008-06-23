@@ -7,7 +7,7 @@
 
   <xsl:include href="common.xsl" />
 
-  <xsl:variable name="script" select="'list_users.php'"/>
+  <xsl:variable name="script" select="'.'"/>
 
   <xsl:template match="listusers">
    <xsl:apply-templates select="error"/>

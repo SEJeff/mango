@@ -1,6 +1,6 @@
 from django.http import HttpResponse, Http404, HttpResponseServerError, HttpResponseRedirect
 from django.conf import settings
-from django.core.paginator import InvalidPage, QuerySetPaginator
+from django.core.paginator import InvalidPage, QuerySetPaginator, Paginator
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 import datetime
@@ -81,25 +81,31 @@ def current_datetime(request):
 
 def list_users(request):
     doc, root = get_xmldoc('List Users', request)
-    el = ET.SubElement(root, 'listusers')
+    pagenode = ET.SubElement(root, 'listusers')
 
     l = models.LdapUtil().handle
     if not l:
         return HttpResponseServerError('Cannot connect to LDAP?')
 
-    users = models.Users.search()
+    queryset = models.Users.search()
     
-    for user in users:
-        usernode = ET.SubElement(el, 'user')
+    paginator = Paginator(queryset, 25)
+    try:
+        page = paginator.page(request.GET.get('page', 1))
+    except InvalidPage:
+        raise Http404('Invalid page')
+    add_paginator_to_xml(pagenode, page)
+    for obj in page.object_list:
+        usernode = ET.SubElement(pagenode, 'user')
         
         node = ET.SubElement(usernode, 'uid')
-        node.text = user.uid
+        node.text = obj.uid
 
         node = ET.SubElement(usernode, 'name')
-        node.text = user.cn
+        node.text = obj.cn
 
         node = ET.SubElement(usernode, 'email')
-        node.text = user.mail
+        node.text = obj.mail
 
     return get_xmlresponse(doc, "list_users.xsl")
 
