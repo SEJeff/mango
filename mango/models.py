@@ -31,6 +31,10 @@ class AccountRequest(models.Model):
     class Meta:
         db_table = u'account_request'
 
+class AccountsForm(ModelForm):
+    class Meta:
+        model = AccountRequest
+
 class AccountGroups(models.Model):
     id = models.AutoField(primary_key=True)
     request = models.ForeignKey(AccountRequest)

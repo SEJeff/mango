@@ -1,5 +1,10 @@
 2008-06-23  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/models.py (AccountsForm: Add new Form, derived from the
+	AccountRequest model.
+
+2008-06-23  Olav Vitters  <olav@bkor.dhs.org>
+
 	* HACKING: Update HACKING with current design thoughts and a TODO
 	list (incomplete).
 
