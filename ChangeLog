@@ -1,5 +1,10 @@
 2008-06-23  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/views.py (list_mirrors): Show mirrors per page (25).
+	* www/list_ftpmirrors.xsl: Correct link to list_mirrors view.
+
+2008-06-23  Olav Vitters  <olav@bkor.dhs.org>
+
 	Even more fixes due to introduction of Q.
 
 	* mango/models.py (Modules, L10nModules):

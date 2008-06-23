@@ -189,16 +189,24 @@ def list_mirrors(request):
 
     filter = request.GET.get('filter_keyword', None)
     if filter:
-        mirrors = models.Ftpmirrors.objects.filter(Q(name__contains=filter) | Q(url__contains=filter))
+        queryset = models.Ftpmirrors.objects.filter(Q(name__contains=filter) | Q(url__contains=filter))
+
         filternode = ET.SubElement(ftpnodes, 'filter')
         keynode = ET.SubElement(filternode, 'keyword')
         keynode.text = filter
     else:
-        mirrors = models.Ftpmirrors.objects.all()
-    for mirror in mirrors:
+        queryset = models.Ftpmirrors.objects.all()
+
+    paginator = QuerySetPaginator(queryset, 25)
+    try:
+        page = paginator.page(request.GET.get('page', 1))
+    except InvalidPage:
+        raise Http404('Invalid page')
+    add_paginator_to_xml(ftpnodes, page)
+    for obj in page.object_list:
         ftpnode = ET.SubElement(ftpnodes, 'ftpmirror')
 
-        mirror.add_to_xml(ET, ftpnode)
+        obj.add_to_xml(ET, ftpnode)
 
     return get_xmlresponse(doc, "list_ftpmirrors.xsl")
 
