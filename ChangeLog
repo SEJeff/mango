@@ -1,5 +1,10 @@
 2008-06-25  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/views.py (edit_foundationmember): Also update for the
+	get_xmldoc changes.
+
+2008-06-25  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/views.py:Remove even more dead code.
 
 2008-06-25  Olav Vitters  <olav@bkor.dhs.org>

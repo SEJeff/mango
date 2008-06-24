@@ -259,8 +259,7 @@ def list_foundationmembers(request):
     return get_xmlresponse(doc, "list_foundationmembers.xsl")
 
 def edit_foundationmember(request, pk):
-    doc, pagenode = get_xmldoc('Update Foundation Member', request)
-    pagenode = ET.SubElement(root, 'updatefoundationmember')
+    doc, pagenode = get_xmldoc('Update Foundation Member', request, 'updatefoundationmember')
 
     obj = get_object_or_404(models.Foundationmembers.objects, pk=pk)
 
