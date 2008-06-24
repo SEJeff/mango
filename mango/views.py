@@ -33,8 +33,7 @@ def get_xmldoc(title, request, subpage=None):
         user = users[0]
 
         usernode = ET.SubElement(pagenode, 'user')
-        node = ET.SubElement(usernode, 'cn')
-        node.text = user.cn
+        ET.SubElement(usernode, 'cn').text = user.cn
 
         for group in user.groups:
             node = ET.SubElement(pagenode, 'group', {'cn': group.cn})
@@ -68,12 +67,9 @@ def setup_xml_paginator(request, root, queryset):
         raise Http404('Invalid page')
 
     pagednode = ET.SubElement(root, 'pagedresults')
-    node = ET.SubElement(pagednode, 'total_results')
-    node.text = unicode(page.paginator.count)
-    node = ET.SubElement(pagednode, 'total_pages')
-    node.text = unicode(page.paginator.num_pages)
-    node = ET.SubElement(pagednode, 'page_num')
-    node.text = unicode(page.number)
+    ET.SubElement(pagednode, 'total_results').text = unicode(page.paginator.count)
+    ET.SubElement(pagednode, 'total_pages').text = unicode(page.paginator.num_pages)
+    ET.SubElement(pagednode, 'page_num').text = unicode(page.number)
 
     return page
 
@@ -101,10 +97,9 @@ def list_users(request):
     page = setup_xml_paginator(request, pagenode, queryset)
     for obj in page.object_list:
         usernode = ET.SubElement(pagenode, 'user')
-        
+
         for item in ('uid', 'cn', 'mail'):
-            node = ET.SubElement(usernode, item)
-            node.text = getattr(obj, item)
+            ET.SubElement(usernode, item).text = getattr(obj, item)
 
     return get_xmlresponse(doc, "list_users.xsl")
 
@@ -119,15 +114,13 @@ def edit_user(request, user):
     user = users[0]
 
     for item in ('uid', 'cn', 'mail', 'description'):
-        node = ET.SubElement(pagenode, item)
-        node.text = user.__dict__.get(item, '')
+        ET.SubElement(pagenode, item).text = user.__dict__.get(item, '')
 
     for key in user.__dict__.get('authorizedKey', []):
         # TODO:
         #  - add fingerprint of above keys
         if key:
-            node = ET.SubElement(pagenode, 'authorizedKey')
-            node.text = key
+            ET.SubElement(pagenode, 'authorizedKey').text = key
 
     for group in user.groups:
         node = ET.SubElement(pagenode, 'group', {'cn': group.cn})
@@ -187,8 +180,7 @@ def list_mirrors(request):
         queryset = models.Ftpmirrors.objects.filter(Q(name__contains=filter) | Q(url__contains=filter))
 
         filternode = ET.SubElement(pagenode, 'filter')
-        keynode = ET.SubElement(filternode, 'keyword')
-        keynode.text = filter
+        ET.SubElement(filternode, 'keyword').text = filter
     else:
         queryset = models.Ftpmirrors.objects.all()
 
@@ -235,11 +227,9 @@ def add_foundationmember_to_xml(root, member=None, form=None):
 
     ET.SubElement(root, 'id').text = unicode(instance.id)
     for field in ('firstname', 'lastname', 'comments', 'email'):
-        node = ET.SubElement(root, field)
-        node.text = form_or_member[field]
+        ET.SubElement(root, field).text = form_or_member[field]
     for field in ('first_added', 'last_renewed_on'):
-        node = ET.SubElement(root, field)
-        node.text = unicode(getattr(instance, field))
+        ET.SubElement(root, field).text = unicode(getattr(instance, field))
     if instance.is_member:
         ET.SubElement(root, 'member')
     if instance.need_to_renew:
@@ -252,8 +242,7 @@ def list_foundationmembers(request):
 
     page = setup_xml_paginator(request, pagenode, queryset)
     for member in page.object_list:
-        membernode = ET.SubElement(pagenode, 'foundationmember')
-        membernode.set('id', unicode(member.id))
+        membernode = ET.SubElement(pagenode, 'foundationmember', {'id': unicode(member.id))
         add_foundationmember_to_xml(membernode, member)
 
     return get_xmlresponse(doc, "list_foundationmembers.xsl")

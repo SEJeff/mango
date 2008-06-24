@@ -1,5 +1,12 @@
 2008-06-25  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/views.py (get_xmldoc, setup_xml_paginator, list_users,
+	  edit_user, list_mirrors, add_foundationmember_to_xml,
+	  list_foundationmembers): Don't create intermediate node variable
+	  when it isn't needed.
+
+2008-06-25  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/views.py (edit_foundationmember): Also update for the
 	get_xmldoc changes.
 
