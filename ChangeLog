@@ -1,5 +1,12 @@
 2008-06-24  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/models.py (Foundationmembers): Add is_member and need_to_renew
+	properties.
+	* mango/views.py (list_foundationmembers): Add missing information to
+	the XML.
+
+2008-06-24  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/views.py (list_accounts): Add paginator to account request
 	overview. Further, only show pending setup accounts. Currently not
 	possible to change that.

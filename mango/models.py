@@ -16,6 +16,8 @@ from django.db.models import Q
 import ldap
 import ldap.filter
 
+import datetime
+
 class AccountRequest(models.Model):
     id = models.AutoField(primary_key=True)
     uid = models.CharField(max_length=15)
@@ -57,6 +59,16 @@ class Foundationmembers(models.Model):
     last_renewed_on = models.DateField(null=True, blank=True)
     last_update = models.DateTimeField()
     resigned_on = models.DateField(null=True, blank=True)
+
+    @property
+    def is_member(self):
+        return (self.resigned_on is None)
+
+    @property
+    def need_to_renew(self):
+        diff = datetime.date.today() - self.last_renewed_on
+        return diff.days >= 700
+
     class Meta:
         db_table = u'foundationmembers'
         ordering = ['lastname', 'firstname']

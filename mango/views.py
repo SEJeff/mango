@@ -261,10 +261,18 @@ def list_foundationmembers(request):
     for member in page.object_list:
         membernode = ET.SubElement(el1, 'foundationmember')
         membernode.set('id', unicode(member.id))
+        ET.SubElement(membernode, 'id').text = unicode(member.id)
         for field in ('firstname', 'lastname', 'comments', 'email'):
             node = ET.SubElement(membernode, field)
             node.text = getattr(member, field)
-        ET.SubElement(membernode, 'id').text = unicode(member.id)
+        for field in ('first_added', 'last_renewed_on'):
+            node = ET.SubElement(membernode, field)
+            node.text = unicode(getattr(member, field))
+        if member.is_member:
+            ET.SubElement(membernode, 'member')
+        if member.need_to_renew:
+            ET.SubElement(membernode, 'need_to_renew')
+
 
     return get_xmlresponse(doc, "list_foundationmembers.xsl")
 
