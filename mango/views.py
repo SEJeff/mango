@@ -15,7 +15,7 @@ except ImportError:
     import cElementTree as ET
 
 
-def get_xmldoc(title, request):
+def get_xmldoc(title, request, subpage=None):
     pagenode = ET.Element('page', {
         'title': title,
         'mode': settings.MANGO_CFG['mode'],
@@ -40,6 +40,8 @@ def get_xmldoc(title, request):
         for group in user.groups:
             node = ET.SubElement(pagenode, 'group', {'cn': group.cn})
 
+    if subpage is not None:
+        pagenode = ET.SubElement(page, subpage)
     return doc, pagenode
 
 def get_xmlresponse(doc, template, response=None):
@@ -80,8 +82,7 @@ def current_datetime(request):
 
 
 def list_users(request):
-    doc, root = get_xmldoc('List Users', request)
-    pagenode = ET.SubElement(root, 'listusers')
+    doc, pagenode = get_xmldoc('List Users', request, 'listusers')
 
     l = models.LdapUtil().handle
     if not l:
@@ -110,8 +111,7 @@ def list_users(request):
     return get_xmlresponse(doc, "list_users.xsl")
 
 def edit_user(request, user):
-    doc, root = get_xmldoc('Update user %s' % user, request)
-    pagenode = ET.SubElement(root, 'updateuser')
+    doc, pagenode = get_xmldoc('Update user %s' % user, request, 'updateuser')
 
     l = models.LdapUtil().handle
     if not l:
@@ -143,14 +143,12 @@ def edit_user(request, user):
 
 
 def view_index(request):
-    doc, root = get_xmldoc('Login Page', request)
-    root.append(ET.Element('homepage'))
+    doc, pagenode = get_xmldoc('Login Page', request, 'homepage')
 
     return get_xmlresponse(doc, "index.xsl")
 
 def list_accounts(request):
-    doc, root = get_xmldoc('List Accounts', request)
-    pagenode = ET.SubElement(root, 'listaccounts')
+    doc, pagenode = get_xmldoc('List Accounts', request, 'listaccounts')
 
     queryset = models.AccountRequest.objects.filter(status='S')
     paginator = QuerySetPaginator(queryset, 25)
@@ -173,8 +171,7 @@ def list_accounts(request):
     return get_xmlresponse(doc, "list_accounts.xsl")
 
 def add_account(request):
-    doc, root = get_xmldoc('Request LDAP account', request)
-    pagenode = ET.SubElement(root, 'newaccount')
+    doc, pagenode = get_xmldoc('Request LDAP account', request, 'newaccount')
 
     dev_modules = models.DevModules.search()
     trans_modules = models.L10nModules.search()
@@ -193,8 +190,7 @@ def add_account(request):
     return get_xmlresponse(doc, "new_account.xsl")
 
 def list_mirrors(request):
-    doc, root = get_xmldoc('List Mirrors', request)
-    pagenode = ET.SubElement(root, 'listftpmirrors')
+    doc, pagenode = get_xmldoc('List Mirrors', request, 'listftpmirrors')
 
     filter = request.GET.get('filter_keyword', None)
     if filter:
@@ -221,8 +217,7 @@ def list_mirrors(request):
 
 
 def edit_mirror(request, pk):
-    doc, root = get_xmldoc('Update mirror', request)
-    pagenode = ET.SubElement(root, 'updateftpmirror')
+    doc, pagenode = get_xmldoc('Update mirror', request, 'updateftpmirror')
 
     mirror = get_object_or_404(models.Ftpmirrors.objects, pk=pk)
 
@@ -236,8 +231,7 @@ def edit_mirror(request, pk):
     return get_xmlresponse(doc, "update_ftpmirror.xsl")
 
 def add_mirror(request):
-    doc, root = get_xmldoc('New mirror', request)
-    pagenode = ET.SubElement(root, 'newftpmirror')
+    doc, pagenode = get_xmldoc('New mirror', request, 'newftpmirror')
 
     if request.method == 'POST':
         f = models.FtpmirrorsForm(request.POST)
@@ -267,8 +261,7 @@ def add_foundationmember_to_xml(root, member=None, form=None):
         ET.SubElement(root, 'need_to_renew')
 
 def list_foundationmembers(request):
-    doc, root = get_xmldoc('List Foundation Members', request)
-    pagenode = ET.SubElement(root, 'listfoundationmembers')
+    doc, pagenode = get_xmldoc('List Foundation Members', request, 'listfoundationmembers')
 
     members = models.Foundationmembers.objects.all()
     paginator = QuerySetPaginator(members, 25)
@@ -285,7 +278,7 @@ def list_foundationmembers(request):
     return get_xmlresponse(doc, "list_foundationmembers.xsl")
 
 def edit_foundationmember(request, pk):
-    doc, root = get_xmldoc('Update Foundation Member', request)
+    doc, pagenode = get_xmldoc('Update Foundation Member', request)
     pagenode = ET.SubElement(root, 'updatefoundationmember')
 
     obj = get_object_or_404(models.Foundationmembers.objects, pk=pk)
@@ -300,8 +293,7 @@ def edit_foundationmember(request, pk):
     return get_xmlresponse(doc, "update_foundationmember.xsl")
 
 def list_modules(request):
-    doc, root = get_xmldoc('List Modules', request)
-    pagenode = ET.SubElement(root, 'listmodules')
+    doc, pagenode = get_xmldoc('List Modules', request, 'listmodules')
 
     queryset = models.Modules.search()
 

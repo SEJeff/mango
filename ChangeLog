@@ -1,5 +1,12 @@
 2008-06-24  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/views.py (get_xmldoc, list_users, edit_user, view_index,
+	  list_accounts, add_account, list_mirrors, edit_mirror, add_mirror,
+	  list_foundationmembers, edit_foundationmember, list_modules): Adding
+	  a subpagenode is so common, add the functionality to get_xmldoc.
+
+2008-06-24  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/views.py (edit_user, add_account, list_mirrors, edit_mirror,
 	  add_mirror): Name the variables more consistently.
 
