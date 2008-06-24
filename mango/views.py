@@ -88,7 +88,7 @@ def list_users(request):
     if not l:
         return HttpResponseServerError('Cannot connect to LDAP?')
 
-    queryset = models.Users.search()
+    queryset = models.Users.search(attrlist=('uid', 'cn', 'mail'))
     
     paginator = Paginator(queryset, 25)
     try:
@@ -99,14 +99,9 @@ def list_users(request):
     for obj in page.object_list:
         usernode = ET.SubElement(pagenode, 'user')
         
-        node = ET.SubElement(usernode, 'uid')
-        node.text = obj.uid
-
-        node = ET.SubElement(usernode, 'name')
-        node.text = obj.cn
-
-        node = ET.SubElement(usernode, 'email')
-        node.text = obj.mail
+        for item in ('uid', 'cn', 'mail'):
+            node = ET.SubElement(usernode, item)
+            node.text = getattr(obj, item)
 
     return get_xmlresponse(doc, "list_users.xsl")
 

@@ -52,14 +52,14 @@
       <tr class="row-{position() mod 2}">
        <td>
         <a href="edit/{uid}/">
-         <xsl:apply-templates select="uid"/>
+         <xsl:value-of select="uid"/>
         </a>
        </td>
        <td>
-        <xsl:apply-templates select="name"/>
+        <xsl:value-of select="cn"/>
        </td>
        <td>
-        <xsl:apply-templates select="email"/>
+        <xsl:value-of select="mail"/>
        </td>
        <td>
        </td>
