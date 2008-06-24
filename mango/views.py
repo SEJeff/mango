@@ -242,7 +242,7 @@ def list_foundationmembers(request):
 
     page = setup_xml_paginator(request, pagenode, queryset)
     for member in page.object_list:
-        membernode = ET.SubElement(pagenode, 'foundationmember', {'id': unicode(member.id))
+        membernode = ET.SubElement(pagenode, 'foundationmember', {'id': unicode(member.id)})
         add_foundationmember_to_xml(membernode, member)
 
     return get_xmlresponse(doc, "list_foundationmembers.xsl")
