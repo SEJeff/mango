@@ -111,7 +111,7 @@ def list_users(request):
 
 def edit_user(request, user):
     doc, root = get_xmldoc('Update user %s' % user, request)
-    el = ET.SubElement(root, 'updateuser')
+    pagenode = ET.SubElement(root, 'updateuser')
 
     l = models.LdapUtil().handle
     if not l:
@@ -125,18 +125,18 @@ def edit_user(request, user):
     user = users[0]
 
     for item in ('uid', 'cn', 'mail', 'description'):
-        node = ET.SubElement(el, item)
+        node = ET.SubElement(pagenode, item)
         node.text = user.__dict__.get(item, '')
 
     for key in user.__dict__.get('authorizedKey', []):
         # TODO:
         #  - add fingerprint of above keys
         if key:
-            node = ET.SubElement(el, 'authorizedKey')
+            node = ET.SubElement(pagenode, 'authorizedKey')
             node.text = key
 
     for group in user.groups:
-        node = ET.SubElement(el, 'group', {'cn': group.cn})
+        node = ET.SubElement(pagenode, 'group', {'cn': group.cn})
 
     return get_xmlresponse(doc, "update_user.xsl")
 
@@ -174,19 +174,19 @@ def list_accounts(request):
 
 def add_account(request):
     doc, root = get_xmldoc('Request LDAP account', request)
-    form = ET.SubElement(root, 'newaccount')
+    pagenode = ET.SubElement(root, 'newaccount')
 
     dev_modules = models.DevModules.search()
     trans_modules = models.L10nModules.search()
 
     for module in dev_modules:
-        ET.SubElement(form, 'gnomemodule', {'cn': module.cn})
+        ET.SubElement(pagenode, 'gnomemodule', {'cn': module.cn})
     for module in trans_modules:
-        ET.SubElement(form, 'translation', {'cn': module.cn, 'desc': module.description})
+        ET.SubElement(pagenode, 'translation', {'cn': module.cn, 'desc': module.description})
 
     if request.method == 'POST':
         f = models.AccountsForm(request.POST)
-        if add_form_errors_to_xml(el, f):
+        if add_form_errors_to_xml(pagenode, f):
 #            mirror = f.save()
             return HttpResponseRedirect(u'../view/%s' % unicode(mirror.id))
 
@@ -194,13 +194,13 @@ def add_account(request):
 
 def list_mirrors(request):
     doc, root = get_xmldoc('List Mirrors', request)
-    ftpnodes = ET.SubElement(root, 'listftpmirrors')
+    pagenode = ET.SubElement(root, 'listftpmirrors')
 
     filter = request.GET.get('filter_keyword', None)
     if filter:
         queryset = models.Ftpmirrors.objects.filter(Q(name__contains=filter) | Q(url__contains=filter))
 
-        filternode = ET.SubElement(ftpnodes, 'filter')
+        filternode = ET.SubElement(pagenode, 'filter')
         keynode = ET.SubElement(filternode, 'keyword')
         keynode.text = filter
     else:
@@ -211,9 +211,9 @@ def list_mirrors(request):
         page = paginator.page(request.GET.get('page', 1))
     except InvalidPage:
         raise Http404('Invalid page')
-    add_paginator_to_xml(ftpnodes, page)
+    add_paginator_to_xml(pagenode, page)
     for obj in page.object_list:
-        ftpnode = ET.SubElement(ftpnodes, 'ftpmirror')
+        ftpnode = ET.SubElement(pagenode, 'ftpmirror')
 
         obj.add_to_xml(ET, ftpnode)
 
@@ -222,13 +222,13 @@ def list_mirrors(request):
 
 def edit_mirror(request, pk):
     doc, root = get_xmldoc('Update mirror', request)
-    el = ET.SubElement(root, 'updateftpmirror')
+    pagenode = ET.SubElement(root, 'updateftpmirror')
 
     mirror = get_object_or_404(models.Ftpmirrors.objects, pk=pk)
 
     if request.method == 'POST':
         f = models.FtpmirrorsForm(request.POST, instance=mirror)
-        if add_form_errors_to_xml(el, f):
+        if add_form_errors_to_xml(pagenode, f):
             f.save()
 
     mirror.add_to_xml(ET, el)
@@ -237,11 +237,11 @@ def edit_mirror(request, pk):
 
 def add_mirror(request):
     doc, root = get_xmldoc('New mirror', request)
-    el = ET.SubElement(root, 'newftpmirror')
+    pagenode = ET.SubElement(root, 'newftpmirror')
 
     if request.method == 'POST':
         f = models.FtpmirrorsForm(request.POST)
-        if add_form_errors_to_xml(el, f):
+        if add_form_errors_to_xml(pagenode, f):
             mirror = f.save()
             return HttpResponseRedirect(u'../edit/%s' % unicode(mirror.id))
 

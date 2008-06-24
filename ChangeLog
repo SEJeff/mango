@@ -1,5 +1,10 @@
 2008-06-24  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/views.py (edit_user, add_account, list_mirrors, edit_mirror,
+	  add_mirror): Name the variables more consistently.
+
+2008-06-24  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/models.py (Foundationmembers, FoundationmembersForm,): Require
 	certain Foundationmembers model fields to be filled in. Correct the
 	name of the FoundationmembersForm.
