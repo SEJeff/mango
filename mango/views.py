@@ -2,6 +2,7 @@ from django.http import HttpResponse, Http404, HttpResponseServerError, HttpResp
 from django.conf import settings
 from django.core.paginator import InvalidPage, QuerySetPaginator, Paginator
 from django.db.models import Q
+from django.db.models.query import QuerySet
 from django.shortcuts import get_object_or_404
 import datetime
 
@@ -52,11 +53,22 @@ def get_xmlresponse(doc, template, response=None):
     doc.write(response, 'utf-8')
     return response
 
-def add_paginator_to_xml(root, page):
+def setup_xml_paginator(request, root, queryset):
     """Add paginator information to the XML node specified by root
 
     Note:
      - In the PHP version, the XML also had the elements result_num and page_size"""
+
+    if isinstance(queryset, QuerySet):
+        paginator = QuerySetPaginator(queryset, 25)
+    else:
+        paginator = Paginator(queryset, 25)
+
+    try:
+        page = paginator.page(request.GET.get('page', 1))
+    except InvalidPage:
+        raise Http404('Invalid page')
+
     pagednode = ET.SubElement(root, 'pagedresults')
     node = ET.SubElement(pagednode, 'total_results')
     node.text = unicode(page.paginator.count)
@@ -64,6 +76,8 @@ def add_paginator_to_xml(root, page):
     node.text = unicode(page.paginator.num_pages)
     node = ET.SubElement(pagednode, 'page_num')
     node.text = unicode(page.number)
+
+    return page
 
 def add_form_errors_to_xml(root, form):
     """Adds form errors to the XML node specified by root"""
@@ -90,12 +104,7 @@ def list_users(request):
 
     queryset = models.Users.search(attrlist=('uid', 'cn', 'mail'))
     
-    paginator = Paginator(queryset, 25)
-    try:
-        page = paginator.page(request.GET.get('page', 1))
-    except InvalidPage:
-        raise Http404('Invalid page')
-    add_paginator_to_xml(pagenode, page)
+    page = setup_xml_paginator(request, pagenode, queryset)
     for obj in page.object_list:
         usernode = ET.SubElement(pagenode, 'user')
         
@@ -146,12 +155,8 @@ def list_accounts(request):
     doc, pagenode = get_xmldoc('List Accounts', request, 'listaccounts')
 
     queryset = models.AccountRequest.objects.filter(status='S')
-    paginator = QuerySetPaginator(queryset, 25)
-    try:
-        page = paginator.page(request.GET.get('page', 1))
-    except InvalidPage:
-        raise Http404('Invalid page')
-    add_paginator_to_xml(pagenode, page)
+
+    page = setup_xml_paginator(request, pagenode, queryset)
     for obj in page.object_list:
         el2 = ET.SubElement(pagenode, 'account', dict([a for a in obj.__dict__.iteritems() if a[0] not in ('id', 'timestamp')]))
         el2g = ET.SubElement(el2, 'groups')
@@ -197,12 +202,7 @@ def list_mirrors(request):
     else:
         queryset = models.Ftpmirrors.objects.all()
 
-    paginator = QuerySetPaginator(queryset, 25)
-    try:
-        page = paginator.page(request.GET.get('page', 1))
-    except InvalidPage:
-        raise Http404('Invalid page')
-    add_paginator_to_xml(pagenode, page)
+    page = setup_xml_paginator(request, pagenode, queryset)
     for obj in page.object_list:
         ftpnode = ET.SubElement(pagenode, 'ftpmirror')
 
@@ -258,13 +258,9 @@ def add_foundationmember_to_xml(root, member=None, form=None):
 def list_foundationmembers(request):
     doc, pagenode = get_xmldoc('List Foundation Members', request, 'listfoundationmembers')
 
-    members = models.Foundationmembers.objects.all()
-    paginator = QuerySetPaginator(members, 25)
-    try:
-        page = paginator.page(request.GET.get('page', 1))
-    except InvalidPage:
-        raise Http404('Invalid page')
-    add_paginator_to_xml(pagenode, page)
+    queryset = models.Foundationmembers.objects.all()
+
+    page = setup_xml_paginator(request, pagenode, queryset)
     for member in page.object_list:
         membernode = ET.SubElement(pagenode, 'foundationmember')
         membernode.set('id', unicode(member.id))
@@ -292,12 +288,7 @@ def list_modules(request):
 
     queryset = models.Modules.search()
 
-    paginator = Paginator(queryset, 25)
-    try:
-        page = paginator.page(request.GET.get('page', 1))
-    except InvalidPage:
-        raise Http404('Invalid page')
-    add_paginator_to_xml(pagenode, page)
+    page = setup_xml_paginator(request, pagenode, queryset)
     for obj in page.object_list:
         modulenode = ET.SubElement(pagenode, 'module')
         obj.add_to_xml(ET, modulenode)

@@ -1,5 +1,14 @@
 2008-06-24  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/views.py (setup_xml_paginator, list_users, list_accounts,
+	  list_mirrors, list_foundationmembers, list_modules): Expand
+	  add_paginator_to_xml functionality and rename the function to
+	  setup_xml_paginator. It now also creates the paginator and gets the
+	  selected objects. Change existing usage of this function to match
+	  new functionality (meaning: remove duplicate lines).
+
+2008-06-24  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/views.py (list_users): Limit the number of attributes that are
 	requested. Additionally, change the XML we pass on to the template.
 	The new XML uses the same node name as the name of the LDAP attribute.
