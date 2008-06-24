@@ -68,7 +68,7 @@
          <xsl:value-of select="concat('row-', position() mod 2)"/>
        </xsl:attribute>
        <td>
-        <a href="update_foundationmember.php?id={id}">
+	 <a href="edit/{id}/">
          <xsl:apply-templates select="lastname"/>
         </a>
        </td>
@@ -86,7 +86,7 @@
        <td>
         <xsl:choose>
           <xsl:when test="boolean(member)">
-           <a class="button" href="update_foundationmember.php?id={id}">Update</a>
+          <a class="button" href="edit/{id}/">Update</a>
         	<xsl:if test="boolean(need_to_renew)">
 		  <form method="POST" action="{$script}" name="filterform" style="display: inline">
 		    <input type="hidden" name="mango_token" value="{/page/@token}"/>

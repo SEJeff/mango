@@ -7,7 +7,7 @@
  
   <xsl:include href="common.xsl" />
 
-  <xsl:variable name="script" select="'update_foundationmember.php'"/>
+  <xsl:variable name="script" select="'.'"/>
 
   <xsl:template match="updatefoundationmember">
    <xsl:apply-templates select="error"/>

@@ -247,9 +247,28 @@ def add_mirror(request):
 
     return get_xmlresponse(doc, "new_ftpmirror.xsl")
 
+def add_foundationmember_to_xml(root, member=None, form=None):
+    if member is None and form is None:
+        return
+
+    instance = form and form.instance or member
+    form_or_member = form and form.data or member.__dict__
+
+    ET.SubElement(root, 'id').text = unicode(instance.id)
+    for field in ('firstname', 'lastname', 'comments', 'email'):
+        node = ET.SubElement(root, field)
+        node.text = form_or_member[field]
+    for field in ('first_added', 'last_renewed_on'):
+        node = ET.SubElement(root, field)
+        node.text = unicode(getattr(instance, field))
+    if instance.is_member:
+        ET.SubElement(root, 'member')
+    if instance.need_to_renew:
+        ET.SubElement(root, 'need_to_renew')
+
 def list_foundationmembers(request):
     doc, root = get_xmldoc('List Foundation Members', request)
-    el1 = ET.SubElement(root, 'listfoundationmembers')
+    pagenode = ET.SubElement(root, 'listfoundationmembers')
 
     members = models.Foundationmembers.objects.all()
     paginator = QuerySetPaginator(members, 25)
@@ -257,24 +276,28 @@ def list_foundationmembers(request):
         page = paginator.page(request.GET.get('page', 1))
     except InvalidPage:
         raise Http404('Invalid page')
-    add_paginator_to_xml(el1, page)
+    add_paginator_to_xml(pagenode, page)
     for member in page.object_list:
-        membernode = ET.SubElement(el1, 'foundationmember')
+        membernode = ET.SubElement(pagenode, 'foundationmember')
         membernode.set('id', unicode(member.id))
-        ET.SubElement(membernode, 'id').text = unicode(member.id)
-        for field in ('firstname', 'lastname', 'comments', 'email'):
-            node = ET.SubElement(membernode, field)
-            node.text = getattr(member, field)
-        for field in ('first_added', 'last_renewed_on'):
-            node = ET.SubElement(membernode, field)
-            node.text = unicode(getattr(member, field))
-        if member.is_member:
-            ET.SubElement(membernode, 'member')
-        if member.need_to_renew:
-            ET.SubElement(membernode, 'need_to_renew')
-
+        add_foundationmember_to_xml(membernode, member)
 
     return get_xmlresponse(doc, "list_foundationmembers.xsl")
+
+def edit_foundationmember(request, pk):
+    doc, root = get_xmldoc('Update Foundation Member', request)
+    pagenode = ET.SubElement(root, 'updatefoundationmember')
+
+    obj = get_object_or_404(models.Foundationmembers.objects, pk=pk)
+
+    f = models.FoundationmembersForm(request.POST, instance=obj)
+    if request.method == 'POST':
+        if add_form_errors_to_xml(pagenode, f):
+            f.save()
+
+    add_foundationmember_to_xml(pagenode, obj, f)
+
+    return get_xmlresponse(doc, "update_foundationmember.xsl")
 
 def list_modules(request):
     doc, root = get_xmldoc('List Modules', request)

@@ -1,5 +1,22 @@
 2008-06-24  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/models.py (Foundationmembers, FoundationmembersForm,): Require
+	certain Foundationmembers model fields to be filled in. Correct the
+	name of the FoundationmembersForm.
+	* mango/urls.py: Add URL for the edit_foundationmember view.
+	* mango/views.py (add_foundationmember_to_xml, list_foundationmembers,
+	  edit_foundationmember, list_modules): Create new function
+	  add_foundationmember_to_xml. This either uses the form information
+	  or the form instance to add the member to the XML. Create a new view
+	  called edit_foundationmember, allowing a foundationmember record to
+	  be updated.
+	* www/list_foundationmembers.xsl: Correct links to the
+	edit_foundationmember view.
+	* www/update_foundationmember.xsl: Correct link to
+	edit_foundationmember view.
+
+2008-06-24  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/models.py (Foundationmembers): Add is_member and need_to_renew
 	properties.
 	* mango/views.py (list_foundationmembers): Add missing information to

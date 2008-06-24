@@ -51,13 +51,14 @@ class AccountGroups(models.Model):
 
 class Foundationmembers(models.Model):
     id = models.AutoField(primary_key=True)
-    firstname = models.CharField(max_length=50, blank=True)
-    lastname = models.CharField(max_length=50, blank=True)
-    email = models.EmailField(max_length=255, blank=True)
+    firstname = models.CharField(max_length=50)
+    lastname = models.CharField(max_length=50)
+    email = models.EmailField(max_length=255)
     comments = models.TextField(blank=True)
+    userid = models.CharField(max_length=15, null=True, blank=True)
     first_added = models.DateField(auto_now_add=True)
-    last_renewed_on = models.DateField(null=True, blank=True)
-    last_update = models.DateTimeField()
+    last_renewed_on = models.DateField(null=True, blank=True, editable=False)
+    last_update = models.DateTimeField(auto_now=True)
     resigned_on = models.DateField(null=True, blank=True)
 
     @property
@@ -73,7 +74,7 @@ class Foundationmembers(models.Model):
         db_table = u'foundationmembers'
         ordering = ['lastname', 'firstname']
 
-class FtpmirrorsForm(ModelForm):
+class FoundationmembersForm(ModelForm):
     class Meta:
         model = Foundationmembers
 

@@ -15,6 +15,7 @@ urlpatterns = patterns('',
     (r'^%smirrors/edit/(?P<pk>\d+)/$' % mango.settings.SITE_ROOT, view.edit_mirror),
     (r'^%smodules/$' % mango.settings.SITE_ROOT, view.list_modules),
     (r'^%sfoundationmembers/$' % mango.settings.SITE_ROOT, view.list_foundationmembers),
+    (r'^%sfoundationmembers/edit/(?P<pk>\d+)/$' % mango.settings.SITE_ROOT, view.edit_foundationmember),
     # Example:
     # (r'^mango/', include('mango.foo.urls')),
 
