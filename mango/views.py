@@ -41,7 +41,7 @@ def get_xmldoc(title, request, subpage=None):
             node = ET.SubElement(pagenode, 'group', {'cn': group.cn})
 
     if subpage is not None:
-        pagenode = ET.SubElement(page, subpage)
+        pagenode = ET.SubElement(pagenode, subpage)
     return doc, pagenode
 
 def get_xmlresponse(doc, template, response=None):
