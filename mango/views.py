@@ -98,10 +98,6 @@ def current_datetime(request):
 def list_users(request):
     doc, pagenode = get_xmldoc('List Users', request, 'listusers')
 
-    l = models.LdapUtil().handle
-    if not l:
-        return HttpResponseServerError('Cannot connect to LDAP?')
-
     queryset = models.Users.search(attrlist=('uid', 'cn', 'mail'))
     
     page = setup_xml_paginator(request, pagenode, queryset)

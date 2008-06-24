@@ -1,3 +1,7 @@
+2008-06-25  Olav Vitters  <olav@bkor.dhs.org>
+
+	* mango/views.py: Remove some dead code.
+
 2008-06-24  Olav Vitters  <olav@bkor.dhs.org>
 
 	* mango/views.py (setup_xml_paginator, list_users, list_accounts,
