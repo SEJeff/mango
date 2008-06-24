@@ -1,5 +1,9 @@
 2008-06-25  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/views.py:Remove even more dead code.
+
+2008-06-25  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/views.py: Remove some dead code.
 
 2008-06-24  Olav Vitters  <olav@bkor.dhs.org>

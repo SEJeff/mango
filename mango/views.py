@@ -6,8 +6,6 @@ from django.db.models.query import QuerySet
 from django.shortcuts import get_object_or_404
 import datetime
 
-import ldap
-import ldap.filter
 import models
 
 try:
@@ -112,10 +110,6 @@ def list_users(request):
 
 def edit_user(request, user):
     doc, pagenode = get_xmldoc('Update user %s' % user, request, 'updateuser')
-
-    l = models.LdapUtil().handle
-    if not l:
-        return HttpResponseServerError('Cannot connect to LDAP?')
 
     users = models.Users.search(Q(uid=user))
 
