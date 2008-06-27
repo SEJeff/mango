@@ -46,7 +46,7 @@
         <p>To access the services on this website, please log in to
           identify yourself. If you want to request a new account see
 	  the <a href="http://live.gnome.org/NewAccounts">instructions on the wiki</a>.</p>
-        <form method="post" action="login.php" name="f">
+	<form method="post" action="login/" name="f">
           <input type="hidden" name="action" value="login"/>
           <input type="hidden" name="mango_token" value="{/page/@token}"/>
           <table class="login">

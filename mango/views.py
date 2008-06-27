@@ -28,15 +28,17 @@ def get_xmldoc(title, request, subpage=None):
     # TODO: 
     #  - determine if user is logged in, if so:
     #    add user details to XML
-    users = models.Users.search(Q(uid='ovitters'))
-    if len(users) == 1:
-        user = users[0]
+    if 'user' in request.session:
+        users = models.Users.search(Q(uid=request.session['user']))
+        if len(users) == 1:
+            user = users[0]
+            request.user = user
 
-        usernode = ET.SubElement(pagenode, 'user')
-        ET.SubElement(usernode, 'cn').text = user.cn
+            usernode = ET.SubElement(pagenode, 'user')
+            ET.SubElement(usernode, 'cn').text = user.cn
 
-        for group in user.groups:
-            node = ET.SubElement(pagenode, 'group', {'cn': group.cn})
+            for group in user.groups:
+                node = ET.SubElement(pagenode, 'group', {'cn': group.cn})
 
     if subpage is not None:
         pagenode = ET.SubElement(pagenode, subpage)
@@ -272,3 +274,28 @@ def list_modules(request):
         obj.add_to_xml(ET, modulenode)
 
     return get_xmlresponse(doc, "list_modules.xsl")
+
+def handle_login(request):
+    doc, pagenode = get_xmldoc('List Modules', request, 'loginform')
+
+    
+    if request.method == 'POST' and 'login' in request.POST and request.POST['login']:
+        users = models.Users.search(Q(uid=request.POST['login']))
+        if len(users) == 1:
+            user = users[0]
+
+            request.session['user'] = user.uid
+            return HttpResponseRedirect(u'../')
+
+
+    return get_xmlresponse(doc, "login.xsl")
+
+def handle_logout(request):
+    try:
+        del request.session['user']
+    except KeyError:
+        pass
+
+    doc, pagenode = get_xmldoc('Logged out', request, 'loggedoutpage')
+    return get_xmlresponse(doc, 'login.xsl')
+

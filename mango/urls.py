@@ -6,6 +6,8 @@ import mango.settings
 urlpatterns = patterns('',
     (r'^%s$' % mango.settings.SITE_ROOT, view.view_index),
     (r'^%stime/$' % mango.settings.SITE_ROOT, view.current_datetime),
+    (r'^%slogin/$' % mango.settings.SITE_ROOT, view.handle_login),
+    (r'^%slogout/$' % mango.settings.SITE_ROOT, view.handle_logout),
     (r'^%susers/$' % mango.settings.SITE_ROOT, view.list_users),
     (r'^%susers/edit/(?P<user>\w+)/$' % mango.settings.SITE_ROOT, view.edit_user),
     (r'^%srequests/$' % mango.settings.SITE_ROOT, view.list_accounts),

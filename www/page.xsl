@@ -70,7 +70,7 @@
 	     <xsl:if test="boolean(group[@cn='membctte'])">
 	       <li><xsl:if test="$channel = 'foundation'"><xsl:attribute name="class">selected</xsl:attribute></xsl:if><a href="{/page/@baseurl}/foundationmembers/"><span>Foundation Members</span></a></li>
 	     </xsl:if>
-	     <li><xsl:if test="$channel = 'login'"><xsl:attribute name="class">selected</xsl:attribute></xsl:if><a href="{/page/@baseurl}/login.php?logout=true"><span>Logout</span></a></li>
+	     <li><xsl:if test="$channel = 'login'"><xsl:attribute name="class">selected</xsl:attribute></xsl:if><a href="{/page/@baseurl}/logout/"><span>Logout</span></a></li>
 	   </xsl:if>
 	   <xsl:if test="not(boolean(user))">
 	    <li><xsl:if test="$channel = 'login'"><xsl:attribute name="class">selected</xsl:attribute></xsl:if><a href="{/page/@baseurl}/login.php"><span>Login</span></a></li>

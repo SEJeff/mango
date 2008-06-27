@@ -1,3 +1,18 @@
+2008-06-27  Olav Vitters  <olav@bkor.dhs.org>
+
+	-- WARNING THIS IS INSECURE --
+
+	Add 'logging in' to Mango. Notice: Doesn't check password or anything.
+	Only ensures the userid is known.
+
+	* mango/urls.py: Add handle_login and handle_logout views.
+	* mango/views.py (get_xmldoc, handle_login, handle_logout): In
+	get_xmldoc, add for the current logged in user to the HTML instead of
+	hardcoding me. In handle_login, don't pretend to be secure and just
+	log in the user.
+	* www/index.xsl: Ensure URLs to the views are correct.
+	* www/page.xsl: Correct URLs to login/logout pages.
+
 2008-06-25  Olav Vitters  <olav@bkor.dhs.org>
 
 	* mango/views.py (get_xmldoc, setup_xml_paginator, list_users,
