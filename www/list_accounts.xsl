@@ -7,7 +7,7 @@
 
   <xsl:include href="common.xsl" />
 
-  <xsl:variable name="script" select="'list_accounts.php'"/>
+  <xsl:variable name="script" select="'.'"/>
  
   <xsl:template match="listaccounts">
    <xsl:apply-templates select="error"/>
@@ -23,11 +23,16 @@
         <input type="submit" value="&gt; &gt;"/>
        </noscript>
        <select name="filter_status">
-	 <option value="S">Awaiting setup</option>
-	 <option value="V">Awaiting vouchers</option>
-	 <option value="M">Awaiting mail verification</option>
-	 <option value="A">Created</option>
-	 <option value="R">Rejected</option>
+	 <option value="S"><xsl:if test="filter/status = 'S'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+	   Awaiting setup</option>
+	 <option value="V"><xsl:if test="filter/status = 'V'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+	   Awaiting vouchers</option>
+	 <option value="M"><xsl:if test="filter/status = 'M'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+	   Awaiting mail verification</option>
+	 <option value="A"><xsl:if test="filter/status = 'A'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+	   Created</option>
+	 <option value="R"><xsl:if test="filter/status = 'R'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+	   Rejected</option>
        </select>
       </td>
       <td align="right">

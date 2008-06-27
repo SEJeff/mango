@@ -172,7 +172,15 @@ def view_index(request):
 def list_accounts(request):
     doc, pagenode = get_xmldoc('List Accounts', request, 'listaccounts')
 
-    queryset = models.AccountRequest.objects.filter(status='S')
+    filter = setup_filter(pagenode, request.GET, {
+        'keyword': lambda keyword: Q(uid__contains=keyword) | Q(cn__contains=keyword) | Q(mail__contains=keyword),
+        'status': lambda keyword: Q(status=keyword)
+    })
+    if filter:
+        queryset = models.AccountRequest.objects.filter(filter)
+    else:
+        queryset = models.AccountRequest.objects.filter(status='S')
+
 
     page = setup_xml_paginator(request, pagenode, queryset)
     for obj in page.object_list:
