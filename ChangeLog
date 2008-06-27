@@ -1,5 +1,10 @@
 2008-06-27  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/views.py (list_modules): Allow modules result page to be
+	filtered.
+
+2008-06-27  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/views.py (add_mirror): Ensure active column is set to 1 when a
 	new mirror is added.
 

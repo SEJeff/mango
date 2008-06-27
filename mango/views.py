@@ -268,7 +268,14 @@ def edit_foundationmember(request, pk):
 def list_modules(request):
     doc, pagenode = get_xmldoc('List Modules', request, 'listmodules')
 
-    queryset = models.Modules.search()
+    filter = request.GET.get('filter_keyword', None)
+    if filter:
+        filternode = ET.SubElement(pagenode, 'filter')
+        ET.SubElement(filternode, 'keyword').text = filter
+
+        filter = Q(cn=filter) | Q(maintainerUid=filter)
+
+    queryset = models.Modules.search(filter)
 
     page = setup_xml_paginator(request, pagenode, queryset)
     for obj in page.object_list:
