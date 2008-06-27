@@ -1,5 +1,9 @@
 2008-06-27  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/models.py (Users.modules): Add modules property to User model.
+
+2008-06-27  Olav Vitters  <olav@bkor.dhs.org>
+
 	-- WARNING THIS IS INSECURE --
 
 	Add 'logging in' to Mango. Notice: Doesn't check password or anything.

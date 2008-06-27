@@ -239,6 +239,13 @@ class Users(LdapObject):
 
         return self._groups
 
+    @property
+    def modules(self):
+        if self._modules is None:
+            self._modules = Modules.search(Q(memberUid=self.__dict__['uid']), ('cn', 'objectClass'))
+
+        return self._modules
+
     def add_to_xml(self, ET, formnode):
         for item in ('uid', 'cn', 'mail', 'description'):
             node = ET.SubElement(formnode, item)
