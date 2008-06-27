@@ -317,6 +317,21 @@ def edit_foundationmember(request, pk):
 
     return get_xmlresponse(doc, "update_foundationmember.xsl")
 
+def add_foundationmember(request):
+    doc, pagenode = get_xmldoc('Add Foundation Member', request, 'newfoundationmember')
+
+    f = None
+
+    if request.method == 'POST':
+        f = models.FoundationmembersForm(request.POST)
+        if add_form_errors_to_xml(pagenode, f):
+            member = f.save()
+            return HttpResponseRedirect(u'../edit/%s' % unicode(member.id))
+
+    add_foundationmember_to_xml(pagenode, form=f)
+
+    return get_xmlresponse(doc, "new_foundationmember.xsl")
+
 def list_modules(request):
     doc, pagenode = get_xmldoc('List Modules', request, 'listmodules')
 

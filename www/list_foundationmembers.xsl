@@ -41,7 +41,7 @@
       </form>
       </td>
       <td align="center">
-       <a class="button" href="new_foundationmember.php?reload=true">New Member</a>
+      <a class="button" href="add/">New Member</a>
       </td>
       <td align="right">
        <xsl:if test="boolean(foundationmember)">

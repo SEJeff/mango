@@ -67,6 +67,9 @@ class Foundationmembers(models.Model):
 
     @property
     def need_to_renew(self):
+        if self.last_renewed_on is None:
+            return False # New addition
+
         diff = datetime.date.today() - self.last_renewed_on
         return diff.days >= 700
 
