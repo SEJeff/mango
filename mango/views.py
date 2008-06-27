@@ -123,8 +123,12 @@ def current_datetime(request):
 def list_users(request):
     doc, pagenode = get_xmldoc('List Users', request, 'listusers')
 
-    queryset = models.Users.search(attrlist=('uid', 'cn', 'mail'))
-    
+    filter = setup_filter(pagenode, request.GET, {
+        'keyword': lambda keyword: Q(uid__contains=keyword) | Q(cn__contains=keyword) | Q(mail__contains=keyword)
+    })
+
+    queryset = models.Users.search(filter, attrlist=('uid', 'cn', 'mail'))
+
     page = setup_xml_paginator(request, pagenode, queryset)
     for obj in page.object_list:
         usernode = ET.SubElement(pagenode, 'user')

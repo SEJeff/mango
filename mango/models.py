@@ -200,7 +200,10 @@ class LdapObject(object):
             if isinstance(child, tree.Node):
                 val = cls._build_filter(child)
             else:
-                val = ldap.filter.filter_format('(%s=%s)', (child[0], child[1]))
+                if child[0].endswith('__contains'):
+                    val = ldap.filter.filter_format('(%s=*%s*)', (child[0].rsplit('__contains',1)[0], child[1]))
+                else:
+                    val = ldap.filter.filter_format('(%s=%s)', (child[0], child[1]))
             vals.append(val)
 
         format = ''

@@ -1,5 +1,11 @@
 2008-06-27  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/models.py (LdapObject._build_filter): Add hackish way to
+	specify a __contains LDAP query.
+	* mango/views.py (list_users): Allow filtering on uid, cn, mail.
+
+2008-06-27  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/views.py (setup_filter, list_mirrors, list_foundationmembers,
 	  list_modules): Introduce a setup_filter function and use it
 	  whenever possible.
