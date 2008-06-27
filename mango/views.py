@@ -205,7 +205,7 @@ def edit_mirror(request, pk):
         if add_form_errors_to_xml(pagenode, f):
             f.save()
 
-    mirror.add_to_xml(ET, el)
+    mirror.add_to_xml(ET, pagenode)
 
     return get_xmlresponse(doc, "update_ftpmirror.xsl")
 
