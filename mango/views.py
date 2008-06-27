@@ -213,7 +213,9 @@ def add_mirror(request):
     doc, pagenode = get_xmldoc('New mirror', request, 'newftpmirror')
 
     if request.method == 'POST':
-        f = models.FtpmirrorsForm(request.POST)
+        p = request.POST.copy()
+        p['active'] = '1'
+        f = models.FtpmirrorsForm(p)
         if add_form_errors_to_xml(pagenode, f):
             mirror = f.save()
             return HttpResponseRedirect(u'../edit/%s' % unicode(mirror.id))
