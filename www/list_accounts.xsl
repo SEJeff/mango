@@ -22,7 +22,7 @@
        <noscript>
         <input type="submit" value="&gt; &gt;"/>
        </noscript>
-       <select name="filter_status">
+       <select name="filter_status" onchange="this.form.submit()">
 	 <option value="S"><xsl:if test="filter/status = 'S'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
 	   Awaiting setup</option>
 	 <option value="V"><xsl:if test="filter/status = 'V'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
@@ -55,8 +55,9 @@
        <thead>
 	 <th>UID</th>
 	 <th>Name</th>
+	 <th>Status</th>
 	 <th>Approved For</th>
-	 <th>Created On</th>
+	 <th>Requested On</th>
 	 <th>Action</th>
       </thead>
       <tbody>
@@ -70,6 +71,15 @@
        </td>
        <td valign="top">
         <xsl:apply-templates select="@cn"/>
+       </td>
+       <td valign="top">
+	 <xsl:choose>
+	   <xsl:when test="@status = 'S'">Setup</xsl:when>
+	   <xsl:when test="@status = 'V'">Vouchers</xsl:when>
+	   <xsl:when test="@status = 'M'">Mail verification</xsl:when>
+	   <xsl:when test="@status = 'A'">Created</xsl:when>
+	   <xsl:when test="@status = 'R'">Rejected</xsl:when>
+	 </xsl:choose>
        </td>
        <td valign="top">
 	 <xsl:for-each select="groups/group">

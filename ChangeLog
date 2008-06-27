@@ -1,5 +1,10 @@
 2008-06-27  Olav Vitters  <olav@bkor.dhs.org>
 
+	* www/list_accounts.xsl: Add status column. Also, submit the search
+	form whenever there status dropdown changes.
+
+2008-06-27  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/views.py (list_accounts): Allow filtering of accounts on
 	status and on cn/name/uid.
 	* www/list_accounts.xsl: Make sure the chosen status is selected
