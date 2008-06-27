@@ -23,11 +23,17 @@
      <tr>
       <td>
       <form method="GET" action="{$script}" name="filterform">
-       Search: <input type="text" name="filter_name" value="{filter_name}" onchange="this.form.submit()"/>
-       <select name="filter_old" onchange="this.form.submit()">
-        <option value="all">All members</option>
-        <option value="current">Current members</option>
-        <option value="needrenewal">Old members needing renewal</option>
+       Search: <input type="text" name="filter_keyword" value="{filter/keyword}" onchange="this.form.submit()"/>
+       <select name="filter_status" onchange="this.form.submit()">
+        <option value=""><xsl:if test="filter/status = ''"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+          All members
+        </option>
+        <option value="current"><xsl:if test="filter/status = 'current'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+          Current members
+        </option>
+        <option value="needrenewal"><xsl:if test="filter/status = 'needrenewal'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+          Old members needing renewal
+        </option>
        </select>
        <noscript>
         <input type="submit" value="&gt; &gt;"/>
@@ -90,8 +96,8 @@
         	<xsl:if test="boolean(need_to_renew)">
 		  <form method="POST" action="{$script}" name="filterform" style="display: inline">
 		    <input type="hidden" name="mango_token" value="{/page/@token}"/>
-		    <input type="hidden" name="filter_name" value="{filter_name}"/>
-		    <input type="hidden" name="filter_old" value="{filter_old}"/>
+		    <input type="hidden" name="filter_name" value="{filter/keyword}"/>
+		    <input type="hidden" name="filter_status" value="{filter/status}"/>
 		    <input type="hidden" name="page" value="{page}"/>
 		    <input type="hidden" name="renew" value="{id}"/>
 		    <input type="submit" value="Renew"/>

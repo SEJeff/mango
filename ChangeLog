@@ -1,5 +1,11 @@
 2008-06-27  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/views.py (list_foundationmembers): Allow filtering on
+	foundation members (firstname, lastname, email and status).
+	* www/list_foundationmembers.xsl: Adjust per above.
+
+2008-06-27  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/views.py (list_modules): Allow modules result page to be
 	filtered.
 

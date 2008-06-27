@@ -4,6 +4,7 @@ from django.core.paginator import InvalidPage, QuerySetPaginator, Paginator
 from django.db.models import Q
 from django.db.models.query import QuerySet
 from django.shortcuts import get_object_or_404
+
 import datetime
 
 import models
@@ -242,7 +243,35 @@ def add_foundationmember_to_xml(root, member=None, form=None):
 def list_foundationmembers(request):
     doc, pagenode = get_xmldoc('List Foundation Members', request, 'listfoundationmembers')
 
-    queryset = models.Foundationmembers.objects.all()
+    filter, filternode = None, None
+
+    filter_keyword = request.GET.get('filter_keyword', '')
+    if filter_keyword:
+        filter = Q(lastname__icontains=filter_keyword) | Q(firstname__icontains=filter_keyword) | Q(email__icontains=filter_keyword)
+
+        filternode = ET.SubElement(pagenode, 'filter')
+        ET.SubElement(filternode, 'keyword').text = filter_keyword
+
+    filter_status = request.GET.get('filter_status', '')
+    if filter_status:
+        if filter_status == 'current':
+            q = Q(last_renewed_on__gte=datetime.date.today() - datetime.timedelta(days=700))
+        else:
+            q = Q(last_renewed_on__lte=datetime.date.today() - datetime.timedelta(days=700))
+
+        if filter:
+            filter = filter & q
+        else:
+            filter = q
+
+        if not filternode:
+            filternode = ET.SubElement(pagenode, 'filter')
+        ET.SubElement(filternode, 'status').text = filter_status
+
+    if filter:
+        queryset = models.Foundationmembers.objects.filter(filter)
+    else:
+        queryset = models.Foundationmembers.objects.all()
 
     page = setup_xml_paginator(request, pagenode, queryset)
     for member in page.object_list:
