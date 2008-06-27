@@ -76,6 +76,34 @@ def setup_xml_paginator(request, root, queryset):
 
     return page
 
+def setup_filter(pagenode, values, filters):
+    filter = None
+    filternode = None
+
+    for key, val in filters.items():
+        filter_value = values.get('filter_%s' % key, '')
+        if not filter_value:
+            continue
+
+        if not callable(val):
+            if filter_value not in val:
+                continue
+
+            val = val[filter_value]
+
+        q = val(filter_value)
+
+        if filter:
+            filter = filter & q
+        else:
+            filter = q
+
+        if not filternode:
+            filternode = ET.SubElement(pagenode, 'filter')
+        ET.SubElement(filternode, key).text = filter_value
+
+    return filter
+
 def add_form_errors_to_xml(root, form):
     """Adds form errors to the XML node specified by root"""
 
@@ -178,12 +206,12 @@ def add_account(request):
 def list_mirrors(request):
     doc, pagenode = get_xmldoc('List Mirrors', request, 'listftpmirrors')
 
-    filter = request.GET.get('filter_keyword', None)
-    if filter:
-        queryset = models.Ftpmirrors.objects.filter(Q(name__contains=filter) | Q(url__contains=filter))
+    filter = setup_filter(pagenode, request.GET, {
+        'keyword': lambda keyword: Q(name__contains=keyword) | Q(url__contains=keyword)
+    })
 
-        filternode = ET.SubElement(pagenode, 'filter')
-        ET.SubElement(filternode, 'keyword').text = filter
+    if filter:
+        queryset = models.Ftpmirrors.objects.filter(filter)
     else:
         queryset = models.Ftpmirrors.objects.all()
 
@@ -243,30 +271,13 @@ def add_foundationmember_to_xml(root, member=None, form=None):
 def list_foundationmembers(request):
     doc, pagenode = get_xmldoc('List Foundation Members', request, 'listfoundationmembers')
 
-    filter, filternode = None, None
-
-    filter_keyword = request.GET.get('filter_keyword', '')
-    if filter_keyword:
-        filter = Q(lastname__icontains=filter_keyword) | Q(firstname__icontains=filter_keyword) | Q(email__icontains=filter_keyword)
-
-        filternode = ET.SubElement(pagenode, 'filter')
-        ET.SubElement(filternode, 'keyword').text = filter_keyword
-
-    filter_status = request.GET.get('filter_status', '')
-    if filter_status:
-        if filter_status == 'current':
-            q = Q(last_renewed_on__gte=datetime.date.today() - datetime.timedelta(days=700))
-        else:
-            q = Q(last_renewed_on__lte=datetime.date.today() - datetime.timedelta(days=700))
-
-        if filter:
-            filter = filter & q
-        else:
-            filter = q
-
-        if not filternode:
-            filternode = ET.SubElement(pagenode, 'filter')
-        ET.SubElement(filternode, 'status').text = filter_status
+    filter = setup_filter(pagenode, request.GET, {
+        'keyword': lambda keyword: Q(lastname__icontains=keyword) | Q(firstname__icontains=keyword) | Q(email__icontains=keyword),
+        'status': {
+            'current': lambda keyword: Q(last_renewed_on__gte=datetime.date.today() - datetime.timedelta(days=700))  ,
+            'needrenewal': lambda keyword: Q(last_renewed_on__lte=datetime.date.today() - datetime.timedelta(days=700))
+        }
+    })
 
     if filter:
         queryset = models.Foundationmembers.objects.filter(filter)
@@ -297,12 +308,9 @@ def edit_foundationmember(request, pk):
 def list_modules(request):
     doc, pagenode = get_xmldoc('List Modules', request, 'listmodules')
 
-    filter = request.GET.get('filter_keyword', None)
-    if filter:
-        filternode = ET.SubElement(pagenode, 'filter')
-        ET.SubElement(filternode, 'keyword').text = filter
-
-        filter = Q(cn=filter) | Q(maintainerUid=filter)
+    filter = setup_filter(pagenode, request.GET, {
+        'keyword': lambda keyword: Q(cn=keyword) | Q(maintainerUid=keyword)
+    })
 
     queryset = models.Modules.search(filter)
 

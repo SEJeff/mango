@@ -1,5 +1,12 @@
 2008-06-27  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/views.py (setup_filter, list_mirrors, list_foundationmembers,
+	  list_modules): Introduce a setup_filter function and use it
+	  whenever possible.
+	* www/list_foundationmembers.xsl:
+
+2008-06-27  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/views.py (list_foundationmembers): Allow filtering on
 	foundation members (firstname, lastname, email and status).
 	* www/list_foundationmembers.xsl: Adjust per above.

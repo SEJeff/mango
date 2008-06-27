@@ -25,13 +25,13 @@
       <form method="GET" action="{$script}" name="filterform">
        Search: <input type="text" name="filter_keyword" value="{filter/keyword}" onchange="this.form.submit()"/>
        <select name="filter_status" onchange="this.form.submit()">
-        <option value=""><xsl:if test="filter/status = ''"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+        <option value=""><xsl:if test="filter/status = ''"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
           All members
         </option>
-        <option value="current"><xsl:if test="filter/status = 'current'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+        <option value="current"><xsl:if test="filter/status = 'current'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
           Current members
         </option>
-        <option value="needrenewal"><xsl:if test="filter/status = 'needrenewal'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+        <option value="needrenewal"><xsl:if test="filter/status = 'needrenewal'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
           Old members needing renewal
         </option>
        </select>
