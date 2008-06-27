@@ -1,3 +1,9 @@
+2008-06-28  Olav Vitters  <olav@bkor.dhs.org>
+
+	* mango/models.py (Foundationmembers, FoundationmembersForm,
+	  FoundationmembersForm.clean): Allow foundation membership to be
+	  renewed.
+
 2008-06-27  Olav Vitters  <olav@bkor.dhs.org>
 
 	* www/list_accounts.xsl: Add status column. Also, submit the search

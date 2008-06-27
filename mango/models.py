@@ -10,7 +10,7 @@
 from django.db import models
 from django.conf import settings
 from django.core import validators
-from django.newforms import ModelForm
+from django.newforms import ModelForm, BaseModelForm, BooleanField
 from django.utils import tree
 from django.db.models import Q
 import ldap
@@ -57,7 +57,7 @@ class Foundationmembers(models.Model):
     comments = models.TextField(blank=True)
     userid = models.CharField(max_length=15, null=True, blank=True)
     first_added = models.DateField(auto_now_add=True)
-    last_renewed_on = models.DateField(null=True, blank=True, editable=False)
+    last_renewed_on = models.DateField(null=True, blank=True)
     last_update = models.DateTimeField(auto_now=True)
     resigned_on = models.DateField(null=True, blank=True)
 
@@ -75,6 +75,23 @@ class Foundationmembers(models.Model):
         ordering = ['lastname', 'firstname']
 
 class FoundationmembersForm(ModelForm):
+    renew = BooleanField(required=False)
+
+    def clean(self):
+        data = self.cleaned_data
+
+        if self.is_bound:
+            if data.get('renew', None) and self.instance.is_member:
+                data['last_renewed_on'] = datetime.date.today()
+            else:
+                data['last_renewed_on'] = self.instance.last_renewed_on
+        else:
+            if 'last_renewed_on' in data: data['last_renewed_on'] = datetime.date.today()
+            if 'resigned_on' in data: data['resigned_on'] = None
+
+
+        return data
+
     class Meta:
         model = Foundationmembers
 
