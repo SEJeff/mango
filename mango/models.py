@@ -57,7 +57,7 @@ class Foundationmembers(models.Model):
     comments = models.TextField(blank=True)
     userid = models.CharField(max_length=15, null=True, blank=True)
     first_added = models.DateField(auto_now_add=True)
-    last_renewed_on = models.DateField(null=True, blank=True)
+    last_renewed_on = models.DateField(auto_now_add=True, blank=True)
     last_update = models.DateTimeField(auto_now=True)
     resigned_on = models.DateField(null=True, blank=True)
 

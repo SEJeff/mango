@@ -1,5 +1,10 @@
 2008-06-28  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/models.py (Foundationmembers): Set initial last_renewed_on to
+	current date.
+
+2008-06-28  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/models.py (Foundationmembers, FoundationmembersForm,
 	  FoundationmembersForm.clean): Allow foundation membership to be
 	  renewed.
