@@ -1,3 +1,7 @@
+2008-06-28  Olav Vitters  <olav@bkor.dhs.org>
+
+	* lib/mysql.php: Request results as UTF8.
+
 2008-06-22  Olav Vitters  <olav@bkor.dhs.org>
 
 	* lib/ftpmirror.php (FTPMirror): variables / attributes / whatever
