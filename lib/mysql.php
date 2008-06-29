@@ -32,7 +32,9 @@ class MySQLUtil {
         }
 
         $this->handle = $dbh;
-        
+
+        $this->query("SET NAMES 'utf8'");
+
         return $this;
     }
 

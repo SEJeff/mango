@@ -1,5 +1,9 @@
 2008-06-28  Olav Vitters  <olav@bkor.dhs.org>
 
+	* lib/mysql.php: Request results as UTF8.
+
+2008-06-28  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/models.py (Foundationmembers.need_to_renew): Don't fail when
 	last_renewed_on is false (new foundation members).
 	* mango/urls.py: Add URL for new add_foundationmember view.
