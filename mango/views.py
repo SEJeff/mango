@@ -76,12 +76,17 @@ def setup_xml_paginator(request, root, queryset):
 
     return page
 
-def setup_filter(pagenode, values, filters):
+def setup_filter(pagenode, request, filters):
     filter = None
     filternode = None
 
     for key, val in filters.items():
-        filter_value = values.get('filter_%s' % key, '')
+        key_get = 'filter_%s' % key
+        key_session = 'filter_%s_%s' % (pagenode.tag, key)
+        if key_get in request.GET:
+            filter_value = request.GET.get(key_get, '')
+        else:
+            filter_value = request.session.get(key_session, '')
         if not filter_value:
             continue
 
@@ -101,6 +106,7 @@ def setup_filter(pagenode, values, filters):
         if not filternode:
             filternode = ET.SubElement(pagenode, 'filter')
         ET.SubElement(filternode, key).text = filter_value
+        request.session[key_session] = filter_value
 
     return filter
 
@@ -123,7 +129,7 @@ def current_datetime(request):
 def list_users(request):
     doc, pagenode = get_xmldoc('List Users', request, 'listusers')
 
-    filter = setup_filter(pagenode, request.GET, {
+    filter = setup_filter(pagenode, request, {
         'keyword': lambda keyword: Q(uid__contains=keyword) | Q(cn__contains=keyword) | Q(mail__contains=keyword)
     })
 
@@ -172,7 +178,7 @@ def view_index(request):
 def list_accounts(request):
     doc, pagenode = get_xmldoc('List Accounts', request, 'listaccounts')
 
-    filter = setup_filter(pagenode, request.GET, {
+    filter = setup_filter(pagenode, request, {
         'keyword': lambda keyword: Q(uid__contains=keyword) | Q(cn__contains=keyword) | Q(mail__contains=keyword),
         'status': lambda keyword: Q(status=keyword)
     })
@@ -218,7 +224,7 @@ def add_account(request):
 def list_mirrors(request):
     doc, pagenode = get_xmldoc('List Mirrors', request, 'listftpmirrors')
 
-    filter = setup_filter(pagenode, request.GET, {
+    filter = setup_filter(pagenode, request, {
         'keyword': lambda keyword: Q(name__contains=keyword) | Q(url__contains=keyword)
     })
 
@@ -283,7 +289,7 @@ def add_foundationmember_to_xml(root, member=None, form=None):
 def list_foundationmembers(request):
     doc, pagenode = get_xmldoc('List Foundation Members', request, 'listfoundationmembers')
 
-    filter = setup_filter(pagenode, request.GET, {
+    filter = setup_filter(pagenode, request, {
         'keyword': lambda keyword: Q(lastname__icontains=keyword) | Q(firstname__icontains=keyword) | Q(email__icontains=keyword),
         'status': {
             'current': lambda keyword: Q(last_renewed_on__gte=datetime.date.today() - datetime.timedelta(days=700))  ,
@@ -335,7 +341,7 @@ def add_foundationmember(request):
 def list_modules(request):
     doc, pagenode = get_xmldoc('List Modules', request, 'listmodules')
 
-    filter = setup_filter(pagenode, request.GET, {
+    filter = setup_filter(pagenode, request, {
         'keyword': lambda keyword: Q(cn=keyword) | Q(maintainerUid=keyword)
     })
 

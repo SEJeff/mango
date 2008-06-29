@@ -1,5 +1,11 @@
 2008-06-28  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/views.py (setup_filter, list_users, list_accounts,
+	  list_mirrors, list_foundationmembers, list_modules): Remember the
+	  used filters within the session data.
+
+2008-06-28  Olav Vitters  <olav@bkor.dhs.org>
+
 	* www/login.xsl: Correct various links.
 	* www/page.xsl:
 
