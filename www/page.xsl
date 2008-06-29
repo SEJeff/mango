@@ -73,7 +73,7 @@
 	     <li><xsl:if test="$channel = 'login'"><xsl:attribute name="class">selected</xsl:attribute></xsl:if><a href="{/page/@baseurl}/logout/"><span>Logout</span></a></li>
 	   </xsl:if>
 	   <xsl:if test="not(boolean(user))">
-	    <li><xsl:if test="$channel = 'login'"><xsl:attribute name="class">selected</xsl:attribute></xsl:if><a href="{/page/@baseurl}/login.php"><span>Login</span></a></li>
+	    <li><xsl:if test="$channel = 'login'"><xsl:attribute name="class">selected</xsl:attribute></xsl:if><a href="{/page/@baseurl}/login/"><span>Login</span></a></li>
 	   </xsl:if>
 	  </ul>
 	</div> <!-- end of #tabs -->
@@ -100,7 +100,7 @@
   </xsl:template>
 
   <xsl:template match="/page/notloggedin">
-   <p class="error">You must be <a href="{/page/@baseurl}/login.php?redirect={/page/@thisurl}">logged in</a> to use this page.</p>
+   <p class="error">You must be <a href="{/page/@baseurl}/login/?redirect={/page/@thisurl}">logged in</a> to use this page.</p>
   </xsl:template>
 
   <xsl:template match="/page/notauthorised">

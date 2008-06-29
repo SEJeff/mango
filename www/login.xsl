@@ -13,7 +13,7 @@
 
   <xsl:include href="common.xsl" />
 
-   <xsl:variable name="script" value="'login.php'"/>
+   <xsl:variable name="script" value="'.'"/>
 
    <xsl:template match="loginform">
    <xsl:choose>
@@ -30,7 +30,7 @@
     </xsl:otherwise>
    </xsl:choose>
 
-   <form method="post" action="login.php" name="f">
+   <form method="post" action="{script}" name="f">
     <input type="hidden" name="action" value="login"/>
     <input type="hidden" name="mango_token" value="{/page/@token}"/>
     <xsl:if test="boolean(@redirect)">
@@ -138,7 +138,7 @@
   <xsl:template match="loggedoutpage">
    <h1>Logged out</h1>
    <p>Thanks for dropping by. Catch you again next time.</p>
-   <p>Please <a href="{/page/@baseurl}/index.php">click here</a> to continue.</p>
+   <p>Please <a href="{/page/@baseurl}/">click here</a> to continue.</p>
   </xsl:template>
 
 <!--

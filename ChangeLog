@@ -1,5 +1,10 @@
 2008-06-28  Olav Vitters  <olav@bkor.dhs.org>
 
+	* www/login.xsl: Correct various links.
+	* www/page.xsl:
+
+2008-06-28  Olav Vitters  <olav@bkor.dhs.org>
+
 	* lib/mysql.php: Request results as UTF8.
 
 2008-06-28  Olav Vitters  <olav@bkor.dhs.org>
