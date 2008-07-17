@@ -1,3 +1,12 @@
+2008-07-12  Olav Vitters  <olav@bkor.dhs.org>
+
+	* mango/models.py (qobject_inlist): New function to create an 'inlist'
+	Q object.
+	* mango/urls.py: Add edit_module view to URL.
+	* mango.views,py (edit_module): New view. Allows an existing module to
+	be edited. Currently doesn't allow any update to be done.
+	* www/list_modules.xsl: Correct link to the edit_module view.
+
 2008-06-28  Olav Vitters  <olav@bkor.dhs.org>
 
 	* mango/views.py (setup_filter, list_users, list_accounts,

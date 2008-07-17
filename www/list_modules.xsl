@@ -51,7 +51,7 @@
       <xsl:sort select="cn"/>
       <tr class="row-{position() mod 2}">
        <td>
-        <a href="update_module.php?cn={cn}">
+        <a href="edit/{cn}/">
          <xsl:apply-templates select="cn"/>
         </a>
        </td>

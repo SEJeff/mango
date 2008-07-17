@@ -172,6 +172,18 @@ class LdapUtil(object):
         self.__class__.handle = l
 
 
+def qobject_inlist(**args):
+    q = None
+
+    for key, val in args.iteritems():
+        for l in val:
+            if q is None:
+                q = Q(**{key: l})
+            else:
+                q = q | Q(**{key: l})
+
+    return q
+
 class LdapObject(object):
     
     BASEDN = None

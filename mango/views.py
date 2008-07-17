@@ -354,6 +354,33 @@ def list_modules(request):
 
     return get_xmlresponse(doc, "list_modules.xsl")
 
+def edit_module(request, module):
+    doc, pagenode = get_xmldoc('Edit module', request, 'updatemodule')
+
+    modules = models.Modules.search(Q(cn=module))
+
+    if len(modules) != 1:
+        raise Http404()
+
+    module = modules[0]
+
+    for item in ('cn', 'description'):
+        ET.SubElement(pagenode, item).text = module.__dict__.get(item, '')
+
+    maintainers = module.__dict__.get('maintainerUid', [])
+    if len(maintainers):
+        filter = models.qobject_inlist(uid=maintainers)
+        maints = dict([(maint.uid, maint.cn) for maint in models.Users.search(filter)])
+
+        for m in maintainers:
+            mnode = ET.SubElement(pagenode, 'maintainerUid')
+            ET.SubElement(mnode, 'key').text = m
+            ET.SubElement(mnode, 'value').text = maints.get(m, 'Unknown Name')
+
+        # XXX - add l10n module info to XML
+
+    return get_xmlresponse(doc, "update_module.xsl")
+
 def handle_login(request):
     doc, pagenode = get_xmldoc('List Modules', request, 'loginform')
 
