@@ -378,6 +378,11 @@ def edit_module(request, module):
             ET.SubElement(mnode, 'value').text = maints.get(m, 'Unknown Name')
 
         # XXX - add l10n module info to XML
+    if 'localizationModule' in module.objectClass:
+        ET.SubElement(pagenode, 'localizationModule')
+        ET.SubElement(pagenode, 'localizationTeam').text = module.__dict__.get('localizationTeam', '')
+        ET.SubElement(pagenode, 'mailingList').text = module.__dict__.get('mailingList', '')
+
 
     return get_xmlresponse(doc, "update_module.xsl")
 

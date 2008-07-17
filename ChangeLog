@@ -1,3 +1,7 @@
+2008-07-13  Olav Vitters  <olav@bkor.dhs.org>
+
+	* mango/views.py (edit_module): Add l10n details to XML.
+
 2008-07-12  Olav Vitters  <olav@bkor.dhs.org>
 
 	* www/update_module.xsl: Correct links to various views.
