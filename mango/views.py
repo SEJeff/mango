@@ -84,10 +84,10 @@ def setup_filter(pagenode, request, filters):
         key_get = 'filter_%s' % key
         key_session = 'filter_%s_%s' % (pagenode.tag, key)
         if key_get in request.GET:
-            filter_value = request.GET.get(key_get, '')
+            filter_value = request.GET.get(key_get)
         else:
-            filter_value = request.session.get(key_session, '')
-        if not filter_value:
+            filter_value = request.session.get(key_session, None)
+        if filter_value is None:
             continue
 
         if not callable(val):

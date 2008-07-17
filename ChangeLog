@@ -1,5 +1,11 @@
 2008-07-13  Olav Vitters  <olav@bkor.dhs.org>
 
+	* mango/views.py (setup_filter): Allow filter to be emptied whenever
+	it was specified within the GET request. Not entirely sure this works
+	as is needed.
+
+2008-07-13  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/views.py (edit_module): Add l10n details to XML.
 
 2008-07-12  Olav Vitters  <olav@bkor.dhs.org>
