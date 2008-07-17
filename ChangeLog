@@ -1,3 +1,7 @@
+2008-07-17  Olav Vitters  <olav@bkor.dhs.org>
+
+	* mango/urls.py: Allow more characters in a module name.
+
 2008-07-13  Olav Vitters  <olav@bkor.dhs.org>
 
 	* mango/views.py (setup_filter): Allow filter to be emptied whenever
