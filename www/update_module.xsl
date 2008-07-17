@@ -7,10 +7,10 @@
 
   <xsl:include href="common.xsl" />
 
-  <xsl:variable name="script" select="'update_module.php'"/>
+  <xsl:variable name="script" select="'.'"/>
 
 <xsl:template match="updatemodule">  
-  <a href="list_modules.php">Modules</a> → <xsl:value-of select="cn" />
+  <a href="../..">Modules</a> → <xsl:value-of select="cn" />
 	<xsl:apply-templates select="error"/>
    <xsl:if test="boolean(changed)">
     <p>GNOME Module '<xsl:value-of select="updated/cn"/>' updated.</p>

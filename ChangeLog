@@ -1,5 +1,9 @@
 2008-07-12  Olav Vitters  <olav@bkor.dhs.org>
 
+	* www/update_module.xsl: Correct links to various views.
+
+2008-07-12  Olav Vitters  <olav@bkor.dhs.org>
+
 	* mango/models.py (qobject_inlist): New function to create an 'inlist'
 	Q object.
 	* mango/urls.py: Add edit_module view to URL.
