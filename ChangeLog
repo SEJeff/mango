@@ -1,3 +1,8 @@
+2008-10-05  Olav Vitters  <olav@bkor.dhs.org>
+
+	* templates/user_instructions.xsl: Update URL from developer.gnome.org
+	to the wiki.
+
 2008-06-28  Olav Vitters  <olav@bkor.dhs.org>
 
 	* lib/mysql.php: Request results as UTF8.
