@@ -16,7 +16,7 @@
 	test="boolean(change[@id='joined-group' and @cn='gnomecvs']) or
 	(boolean(change[@id='newuser']) and
 	boolean(user/group[@cn='gnomecvs']))"><xsl:call-template
-	  name="svnintro"/></xsl:if><xsl:if
+	  name="vcsintro"/></xsl:if><xsl:if
 	test="boolean(change[@id='joined-group' and @cn='ftpadmin']) or
 	(boolean(change[@id='newuser']) and
 	boolean(user/group[@cn='ftpadmin']))"><xsl:call-template
@@ -33,30 +33,28 @@ For any other issues, please contact 'support@gnome.org'.
 --
 The GNOME Accounts Team
 &lt;accounts@gnome.org&gt;</xsl:if>
-</xsl:template><xsl:template name="svnintro">
-Your GNOME SVN account will be ready for use in about 1 hour.
+</xsl:template><xsl:template name="vcsintro">
+Your GNOME Git account will be ready for use in about 1 hour.
 
 Please make sure you have read for information and guidelines about how
 to use your SSH key.
 
 http://sysadmin.gnome.org/users/security.html 
 
-For information on using GNOME SVN, please see:
+For information on using GNOME Git, please see:
 
-http://developer.gnome.org/tools/svn.html
-http://live.gnome.org/SubversionFAQ
-http://live.gnome.org/Subversion
+http://live.gnome.org/Git
 
-When working on modules in SVN, please be sure you have read and
-understood the README.svn or HACKING files if they exist. If they do not
+When working on modules in Git, please be sure you have read and
+understood the README.git or HACKING files if they exist. If they do not
 exist, send submit patches in Bugzilla first and contact the module
 maintainer(s) with the relevant ticket numbers to get approval before
 committing.
 
-An '<xsl:value-of select="user/uid"/>@svn.gnome.org' e-mail alias has been set up to forward e-mail
+An '<xsl:value-of select="user/uid"/>@src.gnome.org' e-mail alias has been set up to forward e-mail
 to your '<xsl:value-of select="user/mail"/>' address. Similar aliases exist for everyone with
-SVN access. We recommend that you use these aliases in ChangeLog entries
-and/or SVN commit log messages.
+Git access. We recommend that you use these aliases in ChangeLog entries
+and/or Git commit log messages.
 </xsl:template><xsl:template name="plug-foundation">
 You might also want to become a member of the GNOME Foundation. For more
 information on the GNOME Foundation, see:

@@ -188,7 +188,7 @@
        Vouchers
       </th>
       <td>
-       For GNOME SVN and the ability to install new modules, 
+       For GNOME Git and the ability to install new modules, 
        please select who can vouch for you:
        <div><label for="vouch_dev">GNOME module: </label>
        	 	<select name="vouch_dev" id="vouch_dev">

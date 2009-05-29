@@ -19,7 +19,7 @@ Conventional modules to hold maintainers:
 
 LDAP Name		Maintainership
 ----------------------------------------------
-any_module		SVN Maintainer of gnome module
+any_module		Git Maintainer of gnome module
 translation_language	Language coordinator of an GTP language
 mango_ftp_access	Maintainer for ftp management
 mango_web_access	Maintainer for web management
