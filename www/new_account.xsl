@@ -126,7 +126,7 @@
           <xsl:attribute name="checked"/>
          </xsl:if>
         </input>
-        <label for="gnomecvs">Access to Subversion</label>
+        <label for="gnomecvs">Access to Git</label>
        </div>
        <div>
        <input onclick="on_ability_click()" type="checkbox" name="ftpadmin" id="ftpadmin">
