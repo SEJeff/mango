@@ -183,6 +183,14 @@
         </input>
         <label for="group-artweb">Artweb admin</label>
        </div>
+       <div>
+        <input type="checkbox" name="group-gitadmin" id="group-gitadmin">
+         <xsl:if test="boolean(group[@cn='gitadmin'])">
+          <xsl:attribute name="checked"/>
+         </xsl:if>
+        </input>
+        <label for="group-gitadmin">Git admin</label>
+       </div>
        <br/>Mango related:<br/>
        <div>
         <input type="checkbox" name="group-accounts" id="group-accounts">

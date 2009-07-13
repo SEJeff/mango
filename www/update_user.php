@@ -24,6 +24,7 @@ $AFFECTEDGROUPS = array(
     "buildslave",
     "foundation",
     "membctte",
+    "gitadmin",
 );
 
 class UpdateUser {
