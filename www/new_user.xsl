@@ -90,7 +90,7 @@
           <xsl:attribute name="checked"/>
          </xsl:if>
         </input>
-        <label for="group-gnomecvs">SVN account</label>
+        <label for="group-gnomecvs">Git account</label>
        </div>
        <div>
         <input type="checkbox" name="group-ftpadmin" id="group-ftpadmin">

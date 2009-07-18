@@ -38,7 +38,7 @@ IMPORTANT NOTE:
 1. When rejecting accounts, please email an explanation to the person
 requesting the account.
 2. Approving above account request means you are responsible for whatever
-this person does on GNOME SVN. This sounds worse than it is in practice,
+this person does on GNOME Git. This sounds worse than it is in practice,
 but do try to follow the initial commits and guide the person in the
 beginning.
 3. Although Mango verified that this request came from the email address
@@ -48,7 +48,7 @@ account in the name of someone else.
 
 ABOUT THE PROCESS:
 A request could need the approval of multiple persons. For example, if
-an account is requested for the SVN module gtk+ and for Bugzilla shell
+an account is requested for the Git module gtk+ and for Bugzilla shell
 access, it will require two approvals. After all required approvals have
 been given, the request will be forwarded to the GNOME Accounts team.
 
