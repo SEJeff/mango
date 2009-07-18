@@ -82,7 +82,7 @@ run the "install-module" script. If you run it without arguments, you
 get a nice help message that explains how this tool should be used.</xsl:template><xsl:template name="mailintro">
 OK, your <xsl:value-of select="user/uid"/>@gnome.org email alias should be working in about an 
 hour from now. Remember to follow the rules outlined on
-http://developer.gnome.org/doc/policies/accounts/mail.html when using
+http://live.gnome.org/MailAliasPolicy when using
 your mail alias.
 </xsl:template><xsl:template name="keysadded">
 One or more SSH keys have been added to your GNOME account. It will take
