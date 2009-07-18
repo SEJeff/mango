@@ -24,7 +24,7 @@ DATABASE_PORT = ''             # Set to empty string for default. Not used with 
 TIME_ZONE = 'UTC'
 
 
-SITE_ROOT = r'mango/django/'
+SITE_ROOT = r'mango/'
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
@@ -142,5 +142,5 @@ for f in cfg_files:
         
         break
 
-MANGO_CFG['base_url'] = 'http://localhost/mango/django'
+MANGO_CFG['base_url'] = 'http://localhost/mango'
 

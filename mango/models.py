@@ -9,8 +9,7 @@
 
 from django.db import models
 from django.conf import settings
-from django.core import validators
-from django.newforms import ModelForm, BaseModelForm, BooleanField
+from django.forms import ModelForm, BaseModelForm, BooleanField
 from django.utils import tree
 from django.db.models import Q
 import ldap
@@ -40,8 +39,7 @@ class AccountsForm(ModelForm):
 class AccountGroups(models.Model):
     id = models.AutoField(primary_key=True)
     request = models.ForeignKey(AccountRequest)
-    cn = models.CharField(max_length=15,validator_list=[validators.isOnlyLetters,
-                                                        validators.isLowerCase])
+    cn = models.CharField(max_length=15)
     voucher_group = models.CharField(max_length=50, blank=True, null=True)
     verdict = models.CharField(max_length=1, default='P', editable=False)
     voucher = models.CharField(max_length=15, blank=True, null=True)
