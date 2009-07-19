@@ -202,22 +202,50 @@ def list_accounts(request):
 
     return get_xmlresponse(doc, "list_accounts.xsl")
 
+def add_account_to_xml(root, member=None, form=None, dev_modules=None, trans_modules=None):
+    if member is None and form is None:
+        return
+
+    instance = form and form.instance or member
+    form_or_member = form and form.data or member.__dict__
+
+    vouch_dev = form_or_member.get('vouch_dev', None)
+    vouch_i18n = form_or_member.get('vouch_i18n', None)
+
+    for module in dev_modules:
+        if module.cn == vouch_dev:
+            ET.SubElement(root, 'gnomemodule', {'cn': module.cn, 'selected': '1'})
+        else:
+            ET.SubElement(root, 'gnomemodule', {'cn': module.cn})
+    for module in trans_modules:
+        if module.cn == vouch_i18n:
+            ET.SubElement(root, 'translation', {'cn': module.cn, 'desc': module.description, 'selected': '1'})
+        else:
+            ET.SubElement(root, 'translation', {'cn': module.cn, 'desc': module.description})
+
+    for field in ('uid', 'cn', 'mail', 'comment'):
+        ET.SubElement(root, field).text = form_or_member[field]
+    if form:
+        for cn in form.data.getlist('group'):
+            ET.SubElement(root, 'group', {'cn': cn})
+
 def add_account(request):
     doc, pagenode = get_xmldoc('Request LDAP account', request, 'newaccount')
 
     dev_modules = models.DevModules.search()
     trans_modules = models.L10nModules.search()
 
-    for module in dev_modules:
-        ET.SubElement(pagenode, 'gnomemodule', {'cn': module.cn})
-    for module in trans_modules:
-        ET.SubElement(pagenode, 'translation', {'cn': module.cn, 'desc': module.description})
+    f = None
 
     if request.method == 'POST':
-        f = models.AccountsForm(request.POST)
+        f = models.AccountsFormAdd(request.POST)
+        f.fields['vouch_dev'].choices = [(module.cn, module.cn) for module in dev_modules]
+        f.fields['vouch_i18n'].choices = [(module.cn, module.description) for module in trans_modules]
         if add_form_errors_to_xml(pagenode, f):
 #            mirror = f.save()
             return HttpResponseRedirect(u'../view/%s' % unicode(mirror.id))
+
+    add_account_to_xml(pagenode, form=f, dev_modules=dev_modules, trans_modules=trans_modules)
 
     return get_xmlresponse(doc, "new_account.xsl")
 

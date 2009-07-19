@@ -9,7 +9,7 @@
 
 from django.db import models
 from django.conf import settings
-from django.forms import ModelForm, BaseModelForm, BooleanField
+from django.forms import ModelForm, BaseModelForm, BooleanField, MultipleChoiceField, ChoiceField
 from django.utils import tree
 from django.db.models import Q
 import ldap
@@ -33,6 +33,14 @@ class AccountRequest(models.Model):
         db_table = u'account_request'
 
 class AccountsForm(ModelForm):
+    class Meta:
+        model = AccountRequest
+
+class AccountsFormAdd(ModelForm):
+    group = MultipleChoiceField()
+    vouch_dev = ChoiceField()
+    vouch_i18n = ChoiceField()
+
     class Meta:
         model = AccountRequest
 

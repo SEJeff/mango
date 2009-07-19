@@ -7,7 +7,7 @@
 
   <xsl:include href="common.xsl" />
 
-  <xsl:variable name="script" select="'new_account.php'"/>
+  <xsl:variable name="script" select="'.'"/>
 
   <xsl:template match="newaccount">
     
@@ -121,7 +121,7 @@
       </th>
       <td>
        <div>
-        <input onclick="on_ability_click()" type="checkbox" name="gnomecvs" id="gnomecvs">
+        <input onclick="on_ability_click()" type="checkbox" name="group" value="gnomecvs" id="gnomecvs">
          <xsl:if test="boolean(group[@cn='gnomecvs'])">
           <xsl:attribute name="checked"/>
          </xsl:if>
@@ -129,7 +129,7 @@
         <label for="gnomecvs">Access to Git</label>
        </div>
        <div>
-       <input onclick="on_ability_click()" type="checkbox" name="ftpadmin" id="ftpadmin">
+       <input onclick="on_ability_click()" type="checkbox" name="group" value="ftpadmin" id="ftpadmin">
          <xsl:if test="boolean(group[@cn='ftpadmin'])">
           <xsl:attribute name="checked"/>
          </xsl:if>
@@ -137,7 +137,7 @@
         <label for="ftpadmin">Install new modules on ftp.gnome.org</label> 
        </div>
        <div>
-        <input type="checkbox" name="mailusers" id="mailusers">
+        <input type="checkbox" name="group" value="mailusers" id="mailusers">
          <xsl:if test="boolean(group[@cn='mailusers'])">
           <xsl:attribute name="checked"/>
          </xsl:if>
@@ -146,7 +146,7 @@
        </div>
        <p>Special abilities:
        <div>
-        <input type="checkbox" name="gnomeweb" id="gnomeweb">
+        <input type="checkbox" name="group" value="gnomeweb" id="gnomeweb">
          <xsl:if test="boolean(group[@cn='gnomeweb'])">
           <xsl:attribute name="checked"/>
          </xsl:if>
@@ -154,7 +154,7 @@
         <label for="gnomeweb">Shell access for GNOME websites</label>
        </div>
        <div>
-        <input type="checkbox" name="bugzilla" id="bugzilla">
+        <input type="checkbox" name="group" value="bugzilla" id="bugzilla">
          <xsl:if test="boolean(group[@cn='bugzilla'])">
           <xsl:attribute name="checked"/>
          </xsl:if>
@@ -162,7 +162,7 @@
         <label for="bugzilla">Shell access for GNOME Bugzilla</label>
        </div>
        <div>
-        <input type="checkbox" name="artweb" id="artweb">
+        <input type="checkbox" name="group" value="artweb" id="artweb">
          <xsl:if test="boolean(group[@cn='artweb'])">
           <xsl:attribute name="checked"/>
          </xsl:if>
@@ -170,7 +170,7 @@
         <label for="artweb">Shell access for GNOME art website</label>
        </div>
        <div>
-        <input type="checkbox" name="membctte" id="membctte">
+        <input type="checkbox" name="group" value="membctte" id="membctte">
          <xsl:if test="boolean(group[@cn='membctte'])">
           <xsl:attribute name="checked"/>
          </xsl:if>
