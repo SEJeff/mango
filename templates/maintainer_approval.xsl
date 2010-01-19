@@ -22,7 +22,7 @@ check the pending requests. If you do not see any pending request, this
 is likely due to one of the other maintainers being faster than you.
 
 To retrieve your password (this will only work once):
-  ssh -l $USERID svn.gnome.org mango
+  ssh -l $USERID mango.gnome.org mango
 It is not possible to change this password, nor to reset it (resetting is
 difficult and takes a long time, ask gnome-sysadmin)!
 
