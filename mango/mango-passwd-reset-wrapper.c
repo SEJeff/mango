@@ -2,7 +2,7 @@
 /* Written by Tobias Mueller <muelli@cryptobitch.de>
  * for use by Mango
  *
- * compile using: gcc mango-passwd-reset.c -o mango-passwd-reset
+ * compile using: gcc mango-passwd-reset-wrapper.c -o mango-passwd-reset-wrapper
  */
 
 #define _GNU_SOURCE
@@ -31,7 +31,7 @@ main (int argc, char* argv[]) {
 		exit (EXIT_FAILURE);
 	}
 
-	execle (program, buf, NULL, environment);
+	execle (program, buf, buf, NULL, environment);
 	/* Not reached */
 	return errno;
 }
