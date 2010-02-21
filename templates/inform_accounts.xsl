@@ -13,7 +13,7 @@
   <xsl:template match="informaccounts">Dear Accounts Team,
     
 A new account has been approved by all required maintainers. Please
-log into Mango and to the required stuff.
+log into Mango and do the required stuff.
 
 The person requesting the GNOME account provided the following information:
 Name: <xsl:value-of select="account/cn"/>
