@@ -16,6 +16,11 @@ suggest ideas and voice your opinions on issues pertaining to the GNOME
 Foundation. To subscribe or read the archives, go to:
     http://mail.gnome.org/mailman/listinfo/foundation-list
 
+It's not mandatory but usually a nice thing to do if you could send an
+introduction to the foundation-list mailing list to introduce yourself
+and your work to the other Foundation members and GNOME contributors. 
+They will be more than happy to know yet another GNOME lover.
+
 For more information about the GNOME Foundation, visit the GNOME
 Foundation's web page at:
     http://foundation.gnome.org
