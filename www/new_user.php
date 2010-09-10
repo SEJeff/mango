@@ -163,7 +163,7 @@ class NewUser {
         if($_FILES['keyfile']['tmp_name']) {
             $keyfile = file_get_contents($_FILES['keyfile']['tmp_name']);
         }
-        $newkeylist = $keyfile . "\n" . $_POST['newkeys'];
+        $newkeylist = str_replace("\r", "", $keyfile . "\n" . $_POST['newkeys']);
         $newkeys = split("\n", $newkeylist);
         foreach($newkeys as $key) {
             if(empty($key) || substr($key, 0, 3) != "ssh") continue;

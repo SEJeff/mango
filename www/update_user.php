@@ -204,7 +204,7 @@ class UpdateUser {
             $newkeys .= file_get_contents($_FILES['keyfile']['tmp_name']);
         }
         $newkeys .= "\n".$_POST['newkeys'];
-        $newkeys = split("\n", $newkeys);
+        $newkeys = split("\n", str_replace("\r", "", $newkeys));
         foreach($newkeys as $key) {
             if(empty($key) || substr($key, 0, 3) != "ssh") continue;
             $this->user->authorizedKeys[] = $key;
