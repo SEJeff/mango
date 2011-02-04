@@ -144,3 +144,12 @@ for f in cfg_files:
 
 MANGO_CFG['base_url'] = 'http://localhost/mango'
 
+# local_settings.py can be used to override environment-specific settings
+# like database and email that differ between development and production.
+PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
+local_settings = os.path.join(PROJECT_ROOT, 'local_settings.py')
+if os.path.isfile(local_settings):
+    try:
+        execfile(local_settings)
+    except:
+        pass
