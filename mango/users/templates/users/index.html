@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "users/user-base.html" %}
 {% block css %}
 <!--
 <link rel="stylesheet" href="{{ MEDIA_URL }}css/datatable.css" type="text/css" media="screen">
@@ -34,7 +34,6 @@ $(document).ready(function() {
 </script>
 {% endblock %}
 {% block content %}
-{{ MEDIA_URL }}
 <hr>
 <div style="width: 80%; margin: auto;">
 <table id="usertable" style="width: 100%;">
