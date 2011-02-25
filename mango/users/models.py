@@ -1,6 +1,7 @@
+import os
 from django.db import models
 from django.conf import settings
-from django.forms import ValidationError
+from django.forms import ValidationError, Textarea
 
 # LDAP orm with a django-like interface
 import ldapdb.models
@@ -26,9 +27,9 @@ class LdapUser(ldapdb.models.Model):
 
     # inetOrgPerson ldap objectClass
     full_name = CharField(db_column='cn')
-    first_name = CharField(db_column='givenName')
-    last_name = CharField(db_column='sn')
-    email = CharField(db_column='mail', blank=True)
+    first_name = CharField(db_column='givenName', blank=True)
+    last_name = CharField(db_column='sn', blank=True)
+    email = CharField(db_column='mail')
 
     # posixAccount ldap objectClass
     uid = IntegerField(db_column='uidNumber', unique=True)
@@ -36,10 +37,15 @@ class LdapUser(ldapdb.models.Model):
 
     username       = CharField(db_column='uid', unique=True, primary_key=True, editable=True)
     login_shell    = CharField(db_column='loginShell', choices=LOGIN_SHELLS, default="/bin/bash")
-    description    = CharField(db_column='description')
-    home_directory = CharField(db_column='homeDirectory')
+    description    = CharField(db_column='description', blank=True)
+    home_directory = CharField(db_column='homeDirectory', blank=True)
     password       = CharField(db_column='userPassword', max_length=100)
     keys = ListField(db_column="authorizedKey")
+
+    def save(self, commit=True, *args, **kwargs):
+        if not self.home_directory:
+            self.home_directory = os.path.join(settings.MANGO_USER_HOMEDIR_BASE, self.username)
+        super(LdapUser, self).save(*args, **kwargs)
 
     def add_ssh_key(self, key):
         """
