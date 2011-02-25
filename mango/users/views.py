@@ -3,7 +3,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth.decorators import login_required
 
 from models import LdapUser, LdapGroup
-from forms import NewUserForm
+from forms import UpdateUserForm
 
 def index(request, template="users/index.html"):
     users = LdapUser.objects.all()
