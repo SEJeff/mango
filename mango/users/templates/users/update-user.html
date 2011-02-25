@@ -5,8 +5,11 @@
 <link rel="stylesheet" href="{{ MEDIA_URL }}css/jquery-ui.css" type="text/css" media="screen">
 {% endblock %}
 {% block content %}
-This is the page for {{ user }} who is a member of {{ groups }}
+This is the page for {{ user }} who is a member of: {{ groups|join:", " }}
 <hr>
+<form name="update_user_form" action="/users/jschroeder" method="post">
 {{ form.as_p }}
+<input type="submit">
+</form>
 <hr>
 {% endblock %}
