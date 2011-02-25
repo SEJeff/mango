@@ -89,6 +89,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'users',
 )
+MANGO_USER_HOMEDIR_BASE = '/home/users'
 
 # local_settings.py can be used to override environment-specific settings
 # like database and email that differ between development and production.

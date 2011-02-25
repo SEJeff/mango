@@ -1,7 +1,8 @@
 import os
 from django.conf.urls.defaults import *
-#from django.contrib import admin
-#admin.autodiscover()
+
+from django.contrib import admin
+admin.autodiscover()
 
 #from mango import views as view
 from django.conf import settings
@@ -24,7 +25,7 @@ urlpatterns = patterns('',
     #(r'^%sfoundationmembers/add/$' % mango.settings.SITE_ROOT, view.add_foundationmember),
     #(r'^%sfoundationmembers/edit/(?P<pk>\d+)/$' % mango.settings.SITE_ROOT, view.edit_foundationmember),
 
-    #(r'^admin/', include('django.contrib.admin.urls')),
+    (r'^admin/', include(admin.site.urls)),
     (r'^users/', include('mango.users.urls')),
 )
 
