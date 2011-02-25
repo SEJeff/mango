@@ -25,6 +25,8 @@ urlpatterns = patterns('',
     #(r'^%sfoundationmembers/add/$' % mango.settings.SITE_ROOT, view.add_foundationmember),
     #(r'^%sfoundationmembers/edit/(?P<pk>\d+)/$' % mango.settings.SITE_ROOT, view.edit_foundationmember),
 
+    url(r'^$',   'mango.views.index', name="index"),
+
     (r'^admin/', include(admin.site.urls)),
     (r'^users/', include('mango.users.urls')),
 )

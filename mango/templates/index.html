@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block css %}<link rel="stylesheet" href="/static/css/screen.css" type="text/css" media="screen">
+<style>
+h2 {
+border-bottom: 1px solid;
+text-align: center;
+}
+</style>
+{% endblock %}
+{% block breadcrumb %}{% endblock %}
+{% block content_title %}<h2>{{ title }}</h2>{% endblock %}
+{% block content %}
+<table class="center">
+<tbody>
+<tr style="text-align: left;"><td><a href="{% url users-index %}">Users</a></td><td>User account requests</td></tr>
+</tbody>
+</table>
+{% endblock %}
