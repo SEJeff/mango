@@ -12,10 +12,6 @@ class LdapModelForm(forms.ModelForm):
         super(LdapModelForm, self).__init__(*args, **kwargs)
 
 class UpdateUserForm(forms.ModelForm):
-    """
-    Can't be a ModelForm as it saves a user object
-    and adds the user to all of the associated groups
-    """
     #####full_name = forms.CharField(max_length=50, label=_('Full Name'))
     #####email = forms.EmailField(label=_('E-mail'))
     #####description = forms.CharField(label=_('Description'), widget=forms.Textarea(attrs={'rows': 5, 'cols': 40}))
@@ -61,4 +57,8 @@ class UpdateUserForm(forms.ModelForm):
 class UserForm(forms.ModelForm):
     class Meta:
         model = LdapUser
-        exclude = ('keys',)
+        exclude = ('keys', 'password', 'home_directory', 'first_name', 'last_name', 'uid', 'gid', 'dn', 'login_shell', 'username')
+        # TODO: Write a custom widget for ListField entries like keys and use it
+        widgets = {
+            'description': forms.Textarea(attrs={'rows': 5, 'cols': 50}),
+        }

@@ -3,7 +3,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth.decorators import login_required
 
 from models import LdapUser, LdapGroup
-from forms import UpdateUserForm
+from forms import UserForm, UpdateUserForm
 
 def index(request, template="users/index.html"):
     users = LdapUser.objects.all()
@@ -44,10 +44,10 @@ def update(request, username, template="users/update-user.html"):
     #        continue
     #    form_data[field] = True
 
-    form = UpdateUserForm(instance=user)
+    form = UserForm(instance=user)
 
     return render_to_response(template, {
         "form": form,
         "user": user,
-        "groups": [],
+        "groups": groups,
     }, context_instance=RequestContext(request))
