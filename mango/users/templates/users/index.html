@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block css %}
+<!--
+<link rel="stylesheet" href="{{ MEDIA_URL }}css/datatable.css" type="text/css" media="screen">
+-->
+<link rel="stylesheet" href="{{ MEDIA_URL }}css/demo_page.css" type="text/css" media="screen">
+<link rel="stylesheet" href="{{ MEDIA_URL }}css/demo_table_jui.css" type="text/css" media="screen">
+<link rel="stylesheet" href="{{ MEDIA_URL }}css/jquery-ui.css" type="text/css" media="screen">
+<style>
+.dataTables_filter {
+ width: 50%;
+ float: left;
+ text-align: left;
+}
+</style>
+{% endblock %}
+{% block javascript %}
+{{ block.super }}
+<script type="text/javascript" language="javascript" src="{{ MEDIA_URL }}js/jquery.dataTables.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  $('#usertable').dataTable({
+    "iDisplayLength": 25,
+    "bJQueryUI": true,
+    "sPaginationType": "full_numbers",
+    "sDom": '<"H"flr>t<"F"ip>',
+    "oLanguage": {
+      "sSearch": "Search users",
+    },
+  });
+  $("input:first").focus();
+});
+</script>
+{% endblock %}
+{% block content %}
+{{ MEDIA_URL }}
+<hr>
+<div style="width: 100%; margin: auto;">
+<table id="usertable">
+ <thead>
+ <th>Username</th>
+ <th>Full Name</th>
+ <th>Email</th>
+ </thead>
+ <tbody>
+  {% for user in users %}
+  <tr {% if user.username in foundation_members %}style="font-weight: bold;" title="{{ user }} is a GNOME foundation member"{% endif %}>
+   <td><a href="{% url user-update user.username %}">{{ user.username }}</a></td>
+   <td>{{ user.full_name }}</td>
+   <td>{{ user.email }}</td>
+  </tr>
+  {% endfor %}
+ </tbody>
+</table>
+</div>
+{% endblock %}

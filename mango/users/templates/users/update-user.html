@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block css %}
+<link rel="stylesheet" href="{{ MEDIA_URL }}css/demo_page.css" type="text/css" media="screen">
+<link rel="stylesheet" href="{{ MEDIA_URL }}css/demo_table_jui.css" type="text/css" media="screen">
+<link rel="stylesheet" href="{{ MEDIA_URL }}css/jquery-ui.css" type="text/css" media="screen">
+{% endblock %}
+{% block content %}
+This is the page for {{ user }} who is a member of {{ groups }}
+<hr>
+{{ form.as_p }}
+<hr>
+{% endblock %}
