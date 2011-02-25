@@ -3,7 +3,6 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <title>{% block title %}{% endblock %}</title>
-  {# TODO: Add default site css #}
   {% block css %}
     <link rel="stylesheet" href="{{ MEDIA_URL }}css/site.css" type="text/css" media="screen">
   {% endblock %}
@@ -12,6 +11,7 @@
   {% endblock %}
 </head>
 <body id="{% block body_id %}{% endblock %}" class="{% block body_class %}{% endblock %}">
+	{% block breadcrumb %}<a href="{% url index %}">Home</a>{% endblock %}
   <div id="body">
     {% block body %}
       <div class="content_title">

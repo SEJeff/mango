@@ -46,7 +46,7 @@ $(document).ready(function() {
  <tbody>
   {% for user in users %}
   <tr {% if user.username in foundation_members %}style="font-weight: bold;" title="{{ user }} is a GNOME foundation member"{% endif %}>
-   <td><a href="{% url user-update user.username %}">{{ user.username }}</a></td>
+   <td><a href="{% url users-update user.username %}">{{ user.username }}</a></td>
    <td>{{ user.full_name }}</td>
    <td>{{ user.email }}</td>
   </tr>

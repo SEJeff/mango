@@ -62,9 +62,9 @@ class UserForm(forms.ModelForm):
 
     class Meta:
         model = LdapUser
-        #exclude = ('keys', 'password', 'home_directory', 'first_name', 'last_name', 'uid', 'gid', 'dn', 'login_shell', 'username')
-        #exclude = ('keys', 'password', 'home_directory', 'first_name', 'last_name', 'uid', 'gid', 'login_shell', 'username')
+        #exclude = ('keys', 'password', 'home_directory', 'first_name', 'last_name',
+        #           'uid', 'gid', 'dn', 'login_shell', 'username')
         # TODO: Write a custom widget for ListField entries like keys and use it
-        #widgets = {
-        #    'description': forms.Textarea(attrs={'rows': 5, 'cols': 50}),
-        #}
+        widgets = {
+            'description': forms.Textarea(attrs={'rows': 5, 'cols': 50}),
+        }
