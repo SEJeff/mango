@@ -1,0 +1,49 @@
+{% extends "users/user-base.html" %}
+{% block css %}
+<link rel="stylesheet" href="{{ MEDIA_URL }}css/demo_page.css" type="text/css" media="screen">
+<link rel="stylesheet" href="{{ MEDIA_URL }}css/demo_table_jui.css" type="text/css" media="screen">
+<link rel="stylesheet" href="{{ MEDIA_URL }}css/jquery-ui.css" type="text/css" media="screen">
+<style>
+.dataTables_filter {
+ width: 50%;
+ float: left;
+ text-align: left;
+}
+</style>
+{% endblock %}
+{% block javascript %}
+{{ block.super }}
+<script type="text/javascript" language="javascript" src="{{ MEDIA_URL }}js/jquery.dataTables.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  $('#usertable').dataTable({
+    "iDisplayLength": 25,
+    "bJQueryUI": true,
+    "sPaginationType": "full_numbers",
+    "sDom": '<"H"flr>t<"F"ip>',
+    "oLanguage": {
+      "sSearch": "Search users",
+    },
+  });
+  $("input:first").focus();
+});
+</script>
+{% endblock %}
+{% block content %}
+<hr>
+<div style="width: 80%; margin: auto;">
+<table id="usertable" style="width: 100%;">
+ <thead>
+ <th>Username</th>
+ <th>Full Name</th>
+ <th>Email</th>
+ </thead>
+ <tbody>
+	{% block tbody %}
+	{# Put a <tr> here #}
+	{% endblock %}
+ </tbody>
+</table>
+</div>
+{% endblock %}
