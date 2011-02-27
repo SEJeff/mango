@@ -1,10 +1,16 @@
 {% extends "table-base.html" %}
+{% block breadcrumb %}{{ block.super }} &raquo; <a href="{% url users-index %}">Users</a>{% endblock %}
+{% block thead %}
+ <th>Username</th>
+ <th>Full Name</th>
+ <th>Email</th>
+{% endblock %}
 {% block tbody %}
   {% for user in users %}
   <tr>
    <td><a href="{% url users-update user.username %}">{{ user.username }}</a></td>
    <td>{{ user.full_name }}</td>
-   <td>{{ user.email }}</td>
+   <td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
   </tr>
   {% endfor %}
 {% endblock %}

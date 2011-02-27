@@ -27,8 +27,9 @@ urlpatterns = patterns('',
 
     url(r'^$',   'mango.views.index', name="index"),
 
-    (r'^admin/', include(admin.site.urls)),
-    (r'^users/', include('mango.users.urls')),
+    (r'^admin/',   include(admin.site.urls)),
+    (r'^users/',   include('mango.users.urls')),
+    (r'^mirrors/', include('mango.mirrors.urls')),
 )
 
 # For convenience, let django serve media for developers
