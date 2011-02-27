@@ -21,6 +21,8 @@ class Ftpmirrors(models.Model):
     last_update = models.DateTimeField(auto_now=True)
     class Meta:
         db_table = u'ftpmirrors'
+    def __unicode__(self):
+        return "%s Ftpmirror (%s)" % (self.name.title(), self.url)
 
 class Webmirrors(models.Model):
     name = models.CharField(max_length=60, blank=True)
@@ -32,3 +34,5 @@ class Webmirrors(models.Model):
     active = models.IntegerField(null=True, blank=True)
     class Meta:
         db_table = u'webmirrors'
+    def __unicode__(self):
+        return "%s Webmirror (%s)" % (self.name.title(), self.url)
