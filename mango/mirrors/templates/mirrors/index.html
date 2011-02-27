@@ -1,0 +1,16 @@
+{% extends "table-base.html" %}
+{% block breadcrumb %}{{ block.super }} &raquo; <a href="{% url mirrors-index %}">Mirrors</a>{% endblock %}
+{% block thead %}
+ <th>Name</th>
+ <th>Url</th>
+ <th>Location</th>
+{% endblock %}
+{% block tbody %}
+  {% for mirror in mirrors %}
+  <tr>
+   <td>{{ mirror.name }}</td>
+   <td><a href="{{ mirror.url }}">{{ mirror.url }}</a></td>
+   <td>{{ mirror.location }}</td>
+  </tr>
+  {% endfor %}
+{% endblock %}

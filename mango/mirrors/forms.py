@@ -1,6 +1,6 @@
-from models import Ftpmirrors
+from models import Ftpmirror
 from django.forms import ModelForm
 
-class FtpmirrorsForm(ModelForm):
+class FtpmirrorForm(ModelForm):
     class Meta:
-        model = Ftpmirrors
+        model = Ftpmirror

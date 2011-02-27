@@ -1,3 +1,4 @@
+import itertools
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -6,11 +7,10 @@ from models import Ftpmirror, Webmirror
 #from forms import UserForm, UpdateUserForm
 
 def index(request, template="mirrors/index.html"):
-    ftp_mirrors = Ftpmirrors.objects.all()
+    mirrors = itertools.chain(Ftpmirror.objects.all(), Webmirror.objects.all())
     # TODO: Error handling if the database flips out
-    foundation_members = LdapGroup.objects.get(name="foundation").members
     return render_to_response(template, {
-        "users": users,
+        "mirrors": mirrors,
     }, context_instance=RequestContext(request))
 
 #def update(request, username, template="users/update-user.html"):

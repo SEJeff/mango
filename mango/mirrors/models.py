@@ -10,7 +10,7 @@ LOCATION_CHOICES = (
     ('Other', 'Other'),
 )
 
-class Ftpmirrors(models.Model):
+class Ftpmirror(models.Model):
     name = models.CharField(max_length=60)
     url = models.URLField(verify_exists=False)
     location = models.CharField(max_length=72, choices=LOCATION_CHOICES)
@@ -24,7 +24,7 @@ class Ftpmirrors(models.Model):
     def __unicode__(self):
         return "%s Ftpmirror (%s)" % (self.name.title(), self.url)
 
-class Webmirrors(models.Model):
+class Webmirror(models.Model):
     name = models.CharField(max_length=60, blank=True)
     url = models.CharField(max_length=300, blank=True)
     location = models.CharField(max_length=72, blank=True)
