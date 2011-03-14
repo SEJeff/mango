@@ -1,9 +1,9 @@
 from django.template import RequestContext
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response, get_object_or_404, HttpResponse
 from django.contrib.auth.decorators import login_required
 
 from models import LdapUser, LdapGroup
-from forms import UserForm, UpdateUserForm
+from forms import UserForm, UpdateUserForm, ModelUserForm
 
 def index(request, template="users/index.html"):
     users = LdapUser.objects.all()
@@ -18,8 +18,15 @@ def update(request, username, template="users/update-user.html"):
     user = get_object_or_404(LdapUser, username=username)
     # FIXME: REMOVE THIS DEBUG CRAP
     if request.method == "POST":
-        form = UserForm(data=request.POST)
-        import pdb; pdb.set_trace()
+        form = UserForm(request.POST, instance=user)
+        if form.is_valid():
+            print "DEBUG: About to save form"
+            form.save()
+            print "DEBUG: form saved yay!"
+            return HttpResponse("Saved settings for user: %s" % user.full_name)
+        else:
+            import pdb; pdb.set_trace()
+            return HttpResponse("ERROR: ", form.errors)
 
     # TODO: Error handling if the database flips out
     groups = LdapGroup.objects.filter(members__contains=username).values_list('name', flat=True)

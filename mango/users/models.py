@@ -41,11 +41,16 @@ class LdapUser(ldapdb.models.Model):
     home_directory = CharField(db_column='homeDirectory', blank=True)
     password       = CharField(db_column='userPassword', max_length=100)
     keys = ListField(db_column="authorizedKey")
+    class Meta:
+        ordering = ('full_name',)
+        verbose_name = 'user'
+        verbose_name_plural = 'users'
 
-    def save(self, commit=True, *args, **kwargs):
+    def save(self):
+        # Add the home directory if one doesn't exist already
         if not self.home_directory:
             self.home_directory = os.path.join(settings.MANGO_USER_HOMEDIR_BASE, self.username)
-        super(LdapUser, self).save(*args, **kwargs)
+        super(LdapUser, self).save()
 
     def add_ssh_key(self, key):
         """
@@ -94,3 +99,8 @@ class LdapGroup(ldapdb.models.Model):
 
     def __unicode__(self):
         return self.name
+
+    class Meta:
+        ordering = ('name',)
+        verbose_name = 'ldap group'
+        verbose_name_plural = 'ldap groups'

@@ -60,11 +60,18 @@ class ModelUserForm(forms.ModelForm):
 
 class UserForm(forms.ModelForm):
 
+    def save(self, commit=True):
+        user = super(UserForm, self).save(False)
+        print "DEBUG: THIS IS RIGHT BEFORE SAVING THE USERFORM"
+        import pdb; pdb.set_trace()
+        user.save()
+
     class Meta:
         model = LdapUser
-        #exclude = ('keys', 'password', 'home_directory', 'first_name', 'last_name',
-        #           'uid', 'gid', 'dn', 'login_shell', 'username')
+        exclude = ('password', 'home_directory', 'first_name', 'last_name',
+                   'uid', 'gid', 'dn', 'username')
         # TODO: Write a custom widget for ListField entries like keys and use it
+        #include = ('full_name', 'email', 'description')
         widgets = {
             'description': forms.Textarea(attrs={'rows': 5, 'cols': 50}),
         }
