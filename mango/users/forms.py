@@ -25,7 +25,7 @@ class UpdateUserForm(forms.ModelForm):
 
     # Foundation Options
     foundation = forms.BooleanField(label=_('Foundation Member'), required=False)
-    mailusers = forms.BooleanField(label=_("has a cool '%s' email alias") % "gnome.org", required=False)
+    mailusers = forms.BooleanField(label=_("Has a cool '%s' email alias") % "gnome.org", required=False)
 
     # Shell access
     bugzilla = forms.BooleanField(label=_('Bugzilla dude/dudess'), required=False)
