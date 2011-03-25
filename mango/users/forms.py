@@ -60,11 +60,54 @@ class ModelUserForm(forms.ModelForm):
 
 class UserForm(forms.ModelForm):
 
+    # Developer Options
+    gnomecvs = forms.BooleanField(label=_('Git account'), required=False)
+    ftpadmin = forms.BooleanField(label=_('FTP upload'), required=False)
+
+    # Foundation Options
+    foundation = forms.BooleanField(label=_('Foundation Member'), required=False)
+    mailusers = forms.BooleanField(label=_("has a cool '%s' email alias") % "gnome.org", required=False)
+
+    # Shell access
+    bugzilla = forms.BooleanField(label=_('Bugzilla dude/dudess'), required=False)
+    gnomeweb = forms.BooleanField(label=_('Web admin'), required=False)
+    buildmaster = forms.BooleanField(label=_('Build master account'), required=False)
+    buildslave = forms.BooleanField(label=_('Build slave account'), required=False)
+    artweb = forms.BooleanField(label=_('Artweb Admin'), required=False)
+    gitadmin = forms.BooleanField(label=_('Git admin'), required=False)
+
+    # Mango related
+    accounts = forms.BooleanField(label=_('Accounts team dude/dudess'), required=False)
+    membcte = forms.BooleanField(label=_('Membership Committee dude/dudess'), required=False)
+    sysadmin = forms.BooleanField(label=_('Sysadmin team dude/dudess'), required=False)
+
+    def mango_groups(self):
+        """
+        For this form, all ldap group attributes are BooleanField fields.
+        """
+        g = []
+        for name,type_ in self.fields.items():
+            if isinstance(type_, forms.fields.BooleanField):
+                g.append(name)
+        return g
+
+    def __init__(self, *args, **kwargs):
+        super(UserForm, self).__init__(*args, **kwargs)
+        if kwargs.has_key('instance'):
+            allowed_mango_groups = self.mango_groups()
+            instance = kwargs['instance']
+
+            # Populate the user's groups
+            for group in instance.groups:
+                if group.name in allowed_mango_groups:
+                    self.initial[group.name.encode('ascii')] = True
+
     def save(self, commit=True):
         user = super(UserForm, self).save(False)
         print "DEBUG: THIS IS RIGHT BEFORE SAVING THE USERFORM"
         import pdb; pdb.set_trace()
-        user.save()
+        if commit:
+            user.save()
 
     class Meta:
         model = LdapUser
