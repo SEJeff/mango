@@ -21,9 +21,14 @@ class LdapUser(ldapdb.models.Model):
     """
     Class for representing an LDAP user entry.
     """
+    def _groups(self):
+        return LdapGroup.objects.filter(members__contains=self.username)
+
     # LDAP meta-data
     base_dn = settings.LDAPDB_USER_DN
     object_classes = ['posixAccount', 'inetOrgPerson', 'pubkeyAuthenticationUser']
+    # Convenience property for working with user management
+    groups = property(_groups)
 
     # inetOrgPerson ldap objectClass
     full_name = CharField(db_column='cn')
