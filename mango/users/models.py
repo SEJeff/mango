@@ -14,7 +14,7 @@ from ldapdb.models.fields import *
 # Import the right module for sha depending on the python version
 try:
     import hashlib
-    sha_constructor = hashlib.sha
+    sha_constructor = hashlib.sha1
 except ImportError:
     import sha
     sha_constructor = sha.new
