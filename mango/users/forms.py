@@ -37,6 +37,7 @@ class UserForm(forms.ModelForm):
         return g
 
     def __init__(self, *args, **kwargs):
+        # See: http://www.hindsightlabs.com/blog/2010/02/11/adding-extra-fields-to-a-model-form-in-djangos-admin/
         super(UserForm, self).__init__(*args, **kwargs)
         if kwargs.has_key('instance'):
             allowed_mango_groups = self.mango_groups()
@@ -49,8 +50,25 @@ class UserForm(forms.ModelForm):
 
     def save(self, commit=True):
         user = super(UserForm, self).save(False)
-        print "DEBUG: THIS IS RIGHT BEFORE SAVING THE USERFORM"
-        import pdb; pdb.set_trace()
+        username = user.username
+        if self.has_changed():
+            mango_groups = self.mango_groups()
+            for field in self.changed_data:
+                status = self.cleaned_data.get(field)
+                if field in mango_groups:
+                    try:
+                        group = user.groups.get(name=field)
+                    except LdapGroup.DoesNotExist:
+                        # When you're adding a user to a new group
+                        # TODO: When the group isn't found add error handling
+                        group = LdapGroup.objects.get(name=field)
+                    if username not in group.members:
+                        group.members.append(username)
+                    else:
+                        index = group.members.index(username)
+                        gone = group.members.pop(index)
+                    # TODO: Add error handling around this
+                    group.save()
         if commit:
             user.save()
 
