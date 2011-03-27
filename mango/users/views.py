@@ -2,8 +2,8 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404, HttpResponse
 from django.contrib.auth.decorators import login_required
 
+from forms import UserForm
 from models import LdapUser, LdapGroup
-from forms import UserForm, UpdateUserForm, ModelUserForm
 
 def index(request, template="users/index.html"):
     users = LdapUser.objects.all()
@@ -16,45 +16,17 @@ def index(request, template="users/index.html"):
 
 def update(request, username, template="users/update-user.html"):
     user = get_object_or_404(LdapUser, username=username)
-    # FIXME: REMOVE THIS DEBUG CRAP
     if request.method == "POST":
         form = UserForm(request.POST, instance=user)
         if form.is_valid():
-            print "DEBUG: About to save form"
-            form.save()
-            print "DEBUG: form saved yay!"
+            if form.has_changed():
+                form.save()
             return HttpResponse("Saved settings for user: %s" % user.full_name)
         else:
-            import pdb; pdb.set_trace()
             return HttpResponse("ERROR: ", form.errors)
 
     # TODO: Error handling if the database flips out
     groups = LdapGroup.objects.filter(members__contains=username).values_list('name', flat=True)
-
-    ## Group name to ldap model attribute mapping
-    #lookup = {
-    #    'sysadmin':    'sysadmin_team',
-    #    'membcte':     'membership_committee',
-    #    'accounts':    'accounts_team',
-    #    'gitadmin':    'gitadmin',
-    #    'artweb':      'artweb',
-    #    'buildslave':  'buildslave',
-    #    'buildmaster': 'buildmaster',
-    #    'gnomeweb':    'web_admin',
-    #    'bugzilla':    'bugzilla_admin',
-    #    'mailusers':   'gnome_email',
-    #    'ftpadmin':    'ftp_upload',
-    #    'gnomecvs':    'git_account',
-    #    'foundation':  'foundation_member',
-    #}
-    #form_data = {'full_name': user.full_name, 'email': user.email, 'description': user.description}
-    #for group in groups:
-    #    try:
-    #        field = lookup[group]
-    #    except KeyError:
-    #        continue
-    #    form_data[field] = True
-
     form = UserForm(instance=user)
 
     return render_to_response(template, {
