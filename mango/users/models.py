@@ -1,4 +1,6 @@
 import os
+import base64
+from random import randrange
 from django.db import models
 from django.conf import settings
 from django.forms import ValidationError, Textarea
@@ -8,6 +10,14 @@ import ldapdb.models
 
 # ldap versions of: IntegerField, CharField, etc
 from ldapdb.models.fields import *
+
+# Import the right module for sha depending on the python version
+try:
+    import hashlib
+    sha_constructor = hashlib.sha
+except ImportError:
+    import sha
+    sha_constructor = sha.new
 
 LOGIN_SHELLS = (
     ('/bin/bash',     '/bin/bash'),
@@ -45,7 +55,7 @@ class LdapUser(ldapdb.models.Model):
     description    = CharField(db_column='description', blank=True)
     home_directory = CharField(db_column='homeDirectory', blank=True)
     password       = CharField(db_column='userPassword', max_length=100)
-    keys = ListField(db_column="authorizedKey")
+    keys           = ListField(db_column="authorizedKey")
     class Meta:
         ordering = ('full_name',)
         verbose_name = 'user'
@@ -65,21 +75,19 @@ class LdapUser(ldapdb.models.Model):
         #    self.keys.append(key.rstrip())
         pass
 
-    # TODO: Convert this to SHA256 if our ldap server supports it
-    def set_password(self, password, rand=False):
+    def set_password(self, password):
         """Change a user's password"""
-        # Shamelessly stolen from somewhere inside django's core
-        try:
-            import hashlib
-            md5_constructor = hashlib.md5
-        except ImportError:
-            import md5
-            md5_constructor = md5.new
-
-        m = md5_constructor()
-        m.update(password)
-        hashed = "{MD5}" + base64.b64encode(m.digest())
+        hashed = self.hash_password(password)
         self.password = hashed
+
+    def hash_ssha(password):
+        """
+        Copied from: http://git.gnome.org/browse/sysadmin-bin/tree/handle-ldap-modules#n95
+        """
+        salt = ''.join([chr(randrange(0,255)) for i in range(4)])
+        ctx = sha_constructor(password  + salt)
+        hash = "{SSHA}" + base64.b64encode(ctx.digest() + salt)
+        return hash
 
     def __unicode__(self):
         return self.full_name
