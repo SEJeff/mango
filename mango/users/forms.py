@@ -4,6 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 
 class UserForm(forms.ModelForm):
+    # TODO: The magic to do the ssh keys is almost certainly using a MultiValueWidget
 
     # Developer Options
     gnomecvs = forms.BooleanField(label=_('Git account'), required=False)
@@ -23,7 +24,7 @@ class UserForm(forms.ModelForm):
 
     # Mango related
     accounts = forms.BooleanField(label=_('Accounts team dude/dudess'), required=False)
-    membcte = forms.BooleanField(label=_('Membership Committee dude/dudess'), required=False)
+    membctte = forms.BooleanField(label=_('Membership Committee dude/dudess'), required=False)
     sysadmin = forms.BooleanField(label=_('Sysadmin team dude/dudess'), required=False)
 
     def mango_groups(self):
@@ -75,7 +76,7 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = LdapUser
         exclude = ('password', 'home_directory', 'first_name', 'last_name',
-                   'uid', 'gid', 'dn', 'username')
+                   'uid', 'gid', 'dn', 'username', 'keys')
         # TODO: Write a custom widget for ListField entries like keys and use it
         #include = ('full_name', 'email', 'description')
         widgets = {
