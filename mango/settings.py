@@ -3,6 +3,8 @@ import os
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
+
 ADMINS = (
     # ('Your Name', 'your_email@domain.com'),
 )
@@ -62,15 +64,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.middleware.doc.XViewMiddleware',
 )
 
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.core.context_processors.auth',
-    #'django.core.context_processors.debug',
-    'django.core.context_processors.media',
-    'django.core.context_processors.request',
-)
+TEMPLATE_CONTEXT_PROCESSORS = TEMPLATE_CONTEXT_PROCESSORS + ('django.core.context_processors.request',)
 
 ROOT_URLCONF = 'mango.urls'
 
@@ -91,7 +87,7 @@ INSTALLED_APPS = (
     'mirrors',
 )
 MANGO_USER_HOMEDIR_BASE = '/home/users'
-PROJECT_TITLE = "GNOME Mango Accounts System"
+PROJECT_TITLE = 'GNOME Mango Accounts System'
 
 # local_settings.py can be used to override environment-specific settings
 # like database and email that differ between development and production.

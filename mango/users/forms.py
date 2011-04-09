@@ -1,7 +1,41 @@
 from django import forms
+from django.contrib import admin
 from models import LdapUser, LdapGroup
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
+
+class SshKeyWidget(forms.MultiWidget):
+    def __init__(self, attrs=None):
+        # TODO: Write a custom widget for displaying the fingerprint and comment
+        widgets = (
+            forms.Textarea(attrs={'id': 'sshkey_input'}),
+            forms.FileInput(attrs={'id': 'sshkey_file'}),
+        )
+        super(SshKeyWidget, self).__init__(widgets, attrs)
+
+    def decompress(self, value):
+        if value:
+            return value
+        return [None, None]
+
+#class SshKeyField(forms.MultiValueField):
+#    #def __init__(self, keytext, keyfile, attrs=None):
+#    def __init__(self, *args, **kwargs)
+#        self.widget = SshKeyWidget(keytext, keyfile)
+#        fields = (
+#            forms.Textarea(attrs={'name':  'sshkey_input'}),
+#            forms.FileField(attrs={'name': 'sshkey_file'}),
+#        )
+#        super(SshKeyField, self).__init__(fields, required=False)
+#
+#    def clean(self, value, initial=None):
+#        value = super(SshKeyField, self).clean(value)
+#        return value
+#
+#    def compress(self, value_list):
+#        if value_list:
+#            return value_list
+#        return [[], []]
 
 class UserForm(forms.ModelForm):
     # TODO: The magic to do the ssh keys is almost certainly using a MultiValueWidget
@@ -40,6 +74,8 @@ class UserForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         # See: http://www.hindsightlabs.com/blog/2010/02/11/adding-extra-fields-to-a-model-form-in-djangos-admin/
         super(UserForm, self).__init__(*args, **kwargs)
+
+        # Populate the group management checkboxes
         if kwargs.has_key('instance'):
             allowed_mango_groups = self.mango_groups()
             instance = kwargs['instance']
@@ -48,6 +84,8 @@ class UserForm(forms.ModelForm):
             for group in instance.groups:
                 if group.name in allowed_mango_groups:
                     self.initial[group.name.encode('ascii')] = True
+        # Override the default keys widget
+        #self.fields['keys'].widget = admin.widgets.AdminTextareaWidget
 
     def save(self, commit=True):
         user = super(UserForm, self).save(False)
@@ -76,9 +114,12 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = LdapUser
         exclude = ('password', 'home_directory', 'first_name', 'last_name',
-                   'uid', 'gid', 'dn', 'username', 'keys')
+                   'uid', 'gid', 'dn', 'username')
+                   #'uid', 'gid', 'dn', 'username', 'keys')
         # TODO: Write a custom widget for ListField entries like keys and use it
         #include = ('full_name', 'email', 'description')
         widgets = {
             'description': forms.Textarea(attrs={'rows': 5, 'cols': 50}),
+            #'keys': forms.Textarea(attrs={'rows': 5, 'cols': 50}),
+            'keys': SshKeyWidget(),
         }

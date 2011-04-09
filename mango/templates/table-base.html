@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block css %}
+{{ block.super }}
 <link rel="stylesheet" href="{{ MEDIA_URL }}css/demo_page.css" type="text/css" media="screen">
 <link rel="stylesheet" href="{{ MEDIA_URL }}css/demo_table_jui.css" type="text/css" media="screen">
 <link rel="stylesheet" href="{{ MEDIA_URL }}css/jquery-ui.css" type="text/css" media="screen">
@@ -31,7 +32,7 @@ $(document).ready(function() {
 </script>
 {% endblock %}
 {% block content %}
-<hr>
+{{ block.super }}
 <div style="width: 80%; margin: auto;">
 <table id="usertable" style="width: 100%;">
  <thead>

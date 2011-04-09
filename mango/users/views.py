@@ -1,3 +1,4 @@
+from pprint import pprint
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404, HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -9,8 +10,10 @@ def index(request, template="users/index.html"):
     users = LdapUser.objects.all()
     # TODO: Error handling if the database flips out
     foundation_members = LdapGroup.objects.get(name="foundation").members
+    #pprint(request.META)
     return render_to_response(template, {
         "users": users,
+        "current": "users",
         "foundation_members": foundation_members,
     }, context_instance=RequestContext(request))
 

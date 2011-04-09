@@ -1,11 +1,15 @@
 {% extends "users/user-base.html" %}
 {% block css %}
+{{ block.super }}
+<!--
 <link rel="stylesheet" href="{{ MEDIA_URL }}css/demo_page.css" type="text/css" media="screen">
 <link rel="stylesheet" href="{{ MEDIA_URL }}css/demo_table_jui.css" type="text/css" media="screen">
 <link rel="stylesheet" href="{{ MEDIA_URL }}css/jquery-ui.css" type="text/css" media="screen">
+-->
 {% endblock %}
 {% block breadcrumb %}{{ block.super }} &raquo; {{ user }}{% endblock %}
 {% block content %}
+{{ block.super }}
 This is the page for {{ user }} who is a member of: {{ groups|join:", " }}
 <hr>
 <form name="update_user_form" action="/users/jschroeder" method="post">

@@ -34,10 +34,21 @@ urlpatterns = patterns('',
 
 # For convenience, let django serve media for developers
 if settings.DEBUG or getfqdn().startswith("local"):
-    #urlpatterns += patterns('', url(r'^static_media/(?P<path>.*)$', 'django.views.static.serve',
-    urlpatterns += patterns('', url(r'^static_media/(?P<path>.*)', 'django.views.static.serve',
-                {
-                  'document_root': os.path.join(os.path.dirname(__file__), "static_media"),
-                  'show_indexes': True,
-                }),
+    urlpatterns += patterns('',
+        url(r'^static_media/(?P<path>.*)', 'django.views.static.serve', {
+          'document_root': os.path.join(os.path.dirname(__file__), "static_media"),
+          'show_indexes': True,
+        }),
+        url(r'^css/(?P<path>.*)', 'django.views.static.serve', {
+          'document_root': os.path.join(os.path.dirname(__file__), "static_media", "css"),
+          'show_indexes': True,
+        }),
+        url(r'^js/(?P<path>.*)', 'django.views.static.serve', {
+          'document_root': os.path.join(os.path.dirname(__file__), "static_media", "js"),
+          'show_indexes': True,
+        }),
+        url(r'^img/(?P<path>.*)', 'django.views.static.serve', {
+          'document_root': os.path.join(os.path.dirname(__file__), "static_media", "img"),
+          'show_indexes': True,
+        }),
     )

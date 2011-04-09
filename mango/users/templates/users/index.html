@@ -6,6 +6,11 @@
  <th>Email</th>
 {% endblock %}
 {% block tbody %}
+	<hr>
+	user="{{ user }}"
+	debug="{{ debug }}"
+	request.META="{{ request.META.USER }}"
+	<hr>
   {% for user in users %}
   <tr>
    <td><a href="{% url users-update user.username %}">{{ user.username }}</a></td>

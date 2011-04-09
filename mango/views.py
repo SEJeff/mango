@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib.auth import logout
+from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
@@ -8,8 +9,7 @@ def index(request):
     title = settings.PROJECT_TITLE
     return render_to_response("index.html", {
         'title': title,
-        #'links': links,
-    })
+    }, context_instance=RequestContext(request))
 
 def logout_view(request):
     """Quietly logout and redirect to /"""
