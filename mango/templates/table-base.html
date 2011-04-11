@@ -19,12 +19,16 @@
 <script type="text/javascript">
 $(document).ready(function() {
   $('#usertable').dataTable({
-    "iDisplayLength": 25,
+    "iDisplayLength": {{ display_rows|default:25 }},
     "bJQueryUI": true,
+		{% if disable_sorting %}
+		//"bSort": false,
+		"aaSorting": [],
+		{% endif %}
     "sPaginationType": "full_numbers",
     "sDom": '<"H"flr>t<"F"ip>',
     "oLanguage": {
-      "sSearch": "Search users",
+      "sSearch": "{{ search_label }}",
     },
   });
   $("input:first").focus();

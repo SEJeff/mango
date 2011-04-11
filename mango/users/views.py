@@ -14,6 +14,7 @@ def index(request, template="users/index.html"):
         "users": users,
         "current": "users",
         "foundation_members": foundation_members,
+        "search_label": "Search Users",
     }, context_instance=RequestContext(request))
 
 def update(request, username, template="users/update-user.html"):
