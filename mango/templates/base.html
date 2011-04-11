@@ -1,8 +1,9 @@
+{% load i18n %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title>{% block title %}{% endblock %}</title>
+  <title>{% block title %}{{ title }}{% endblock %}</title>
   {% block css %}
 <link rel="stylesheet" type="text/css" media="all" href="http://www.gnome.org/wp-content/themes/gnome-grass/style.css" />
 <link rel="stylesheet" type="text/css" media="all" href="http://www.gnome.org/wp-content/themes/gnome-grass/css/home.css" />
@@ -17,7 +18,7 @@
 </head>
 <body id="{% block body_id %}{% endblock %}" class="{% block body_class %}{% endblock %}">
 	<!-- TODO: Put this in a stylesheet somewhere -->
-	<div id="breadcrumb" style="float: left; left: 10px; margin-top: 10px;">{% block breadcrumb %}<a href="{% url index %}">Home</a>{% endblock %}</div>
+	<div id="breadcrumb" style="float: left; left: 10px; margin-top: 10px;">{% block breadcrumb %}<a href="{% url index %}">{% trans "Home" %}</a>{% endblock %}</div>
   <div id="body">
     {% block body %}
       <div class="content_title">

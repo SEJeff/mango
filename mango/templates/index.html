@@ -2,5 +2,7 @@
 {% block content %}
 {{ block.super }}
 user.is_authenticated={{ user.is_authenticated }}<br>
-You are logged in as user="{{ user.get_full_name }}";
+user.full_name = "{{ user.full_name }}";<br>
+user.get_absolute_url() = "{{ user.get_absolute_url }}";<br>
+user.get_absolute_url() = "{{ user.get_absolute_url }}";<br>
 {% endblock %}

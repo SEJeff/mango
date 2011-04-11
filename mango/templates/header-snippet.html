@@ -1,14 +1,15 @@
+{% load i18n %}
 <!-- global gnome.org domain bar -->
 <div id="global_domain_bar">
   <div>
-    <a href="/"><strong>MANGO ACCOUNTS SYSTEM</strong></a>
+    <a href="/" title="{% trans "Go to the mango homepage" %}"><strong>{% trans "MANGO ACCOUNTS SYSTEM" %}</strong></a>
   </div>
 </div>
 <!-- end global gnome.org domain bar -->
 <div id="header" class="container_12">
 
 <div id="logo" class="grid_3">
- <h1><a title="Go to home page" href="http://www.gnome.org"><img src="http://www.gnome.org/wp-content/themes/gnome-grass/images/gnome-logo.png" alt="GNOME: The Free Software Desktop Project" /></a></h1>
+ <h1><a title="{% trans "Go to GNOME Project homepage" %}" href="http://www.gnome.org"><img src="http://www.gnome.org/wp-content/themes/gnome-grass/images/gnome-logo.png" alt="GNOME: {% trans "The Free Software Desktop Project" %}" /></a></h1>
 </div>
 
 
@@ -16,12 +17,12 @@
  <div class="left">
   <div class="menu-globalnav-container">
    <ul id="menu-globalnav" class="menu">
-    <li id="menu-item-1039" class="menu-item{% if current == "users" %} current-menu-item{% endif %}"><a href="{% url users-index %}">Users</a></li>
-    <li id="menu-item-1037" class="menu-item{% if current == "requests" %} current-menu-item{% endif %}"><a href="#">Account Requests</a></li>
-    <li id="menu-item-1040" class="menu-item{% if current == "modules" %} current-menu-item{% endif %}"><a href="#">VCS Modules</a></li>
-    <li id="menu-item-1038" class="menu-item{% if current == "mirrors" %} current-menu-item{% endif %}"><a href="#">Mirrors</a></li>
-    <li id="menu-item-1038" class="menu-item{% if current == "docs" %} current-menu-item{% endif %}"><a href="#">Documentation</a></li>
-    <li id="menu-item-1038" class="menu-item"><a href="#">Logout</a></li>
+    <li id="menu-item-1039" class="menu-item{% if current == "users" %} current-menu-item{% endif %}"><a href="{% url users-index %}">{% trans "Users" %}</a></li>
+    <li id="menu-item-1037" class="menu-item{% if current == "requests" %} current-menu-item{% endif %}"><a href="#">{% trans "Account Requests" %}</a></li>
+    <li id="menu-item-1040" class="menu-item{% if current == "modules" %} current-menu-item{% endif %}"><a href="#">{% trans "VCS Modules" %}</a></li>
+    <li id="menu-item-1038" class="menu-item{% if current == "mirrors" %} current-menu-item{% endif %}"><a href="#">{% trans "Mirrors" %}</a></li>
+    <li id="menu-item-1038" class="menu-item{% if current == "docs" %} current-menu-item{% endif %}"><a href="#">{% trans "Documentation" %}</a></li>
+    <li id="menu-item-1038" class="menu-item"><a href="#">{% trans "Logout" %}</a></li>
    </ul>
   </div>
  </div>

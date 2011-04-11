@@ -10,7 +10,6 @@ def index(request, template="users/index.html"):
     users = LdapUser.objects.all()
     # TODO: Error handling if the database flips out
     foundation_members = LdapGroup.objects.get(name="foundation").members
-    #pprint(request.META)
     return render_to_response(template, {
         "users": users,
         "current": "users",
