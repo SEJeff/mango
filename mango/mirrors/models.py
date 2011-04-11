@@ -24,6 +24,9 @@ class Ftpmirror(models.Model):
     def __unicode__(self):
         return "%s Ftpmirror (%s)" % (self.name.title(), self.url)
 
+    def is_active(self):
+        return self.active == 1
+
 class Webmirror(models.Model):
     name = models.CharField(max_length=60, blank=True)
     url = models.CharField(max_length=300, blank=True)

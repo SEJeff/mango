@@ -1,32 +1,20 @@
-import itertools
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth.decorators import login_required
 
+from forms import FtpmirrorForm
 from models import Ftpmirror, Webmirror
-#from forms import UserForm, UpdateUserForm
+from pprint import pprint
 
 def index(request, template="mirrors/index.html"):
-    mirrors = itertools.chain(Ftpmirror.objects.all(), Webmirror.objects.all())
+    #mirrors = itertools.chain(Ftpmirror.objects.order_by("-active", "name"), Webmirror.objects.order_by("-active", "name"))
+    mirrors = Ftpmirror.objects.order_by("-active")
     # TODO: Error handling if the database flips out
     return render_to_response(template, {
         "mirrors": mirrors,
-    }, context_instance=RequestContext(request))
+        "current": "mirrors",
 
-#def update(request, username, template="users/update-user.html"):
-#    user = get_object_or_404(LdapUser, username=username)
-#    # FIXME: REMOVE THIS DEBUG CRAP
-#    if request.method == "POST":
-#        form = UserForm(data=request.POST)
-#        import pdb; pdb.set_trace()
-#
-#    # TODO: Error handling if the database flips out
-#    groups = LdapGroup.objects.filter(members__contains=username).values_list('name', flat=True)
-#
-#    form = UserForm(instance=user)
-#
-#    return render_to_response(template, {
-#        "form": form,
-#        "user": user,
-#        "groups": groups,
-#    }, context_instance=RequestContext(request))
+        # For the datatables jquery plugin
+        #"disable_sorting": True,
+        "search_label": "Search Mirrors",
+    }, context_instance=RequestContext(request))

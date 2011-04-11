@@ -1,16 +1,19 @@
 {% extends "table-base.html" %}
+{% load i18n %}
 {% block breadcrumb %}{{ block.super }} &raquo; <a href="{% url mirrors-index %}">Mirrors</a>{% endblock %}
 {% block thead %}
  <th>Name</th>
  <th>Url</th>
  <th>Location</th>
+ <th>Active</th>
 {% endblock %}
 {% block tbody %}
   {% for mirror in mirrors %}
-  <tr>
-   <td>{{ mirror.name }}</td>
-   <td><a href="{{ mirror.url }}">{{ mirror.url }}</a></td>
-   <td>{{ mirror.location }}</td>
+  <tr{% if not mirror.is_active %} class="gradeX" title="Inactive mirror. Record last updated {{ mirror.last_update|date:"F d, Y: P" }}"{% endif %}>
+   <td{% if not mirror.is_active %} class="gradeX"{% endif %}>{{ mirror.name }}</td>
+   <td{% if not mirror.is_active %} class="gradeX"{% endif %}><a href="{{ mirror.url }}">{{ mirror.url }}</a></td>
+   <td{% if not mirror.is_active %} class="gradeX"{% endif %}>{{ mirror.location }}</td>
+   <td{% if not mirror.is_active %} class="gradeX"{% endif %}>{{ mirror.is_active }}</td>
   </tr>
   {% endfor %}
 {% endblock %}
