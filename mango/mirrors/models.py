@@ -10,6 +10,7 @@ LOCATION_CHOICES = (
     ('Other', 'Other'),
 )
 
+# TODO: When this goes to production, create a GNOMEMirror model and migrate to it
 class Ftpmirror(models.Model):
     name = models.CharField(max_length=60)
     url = models.URLField(verify_exists=False)
