@@ -5,9 +5,14 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <title>{% block title %}{{ title }}{% endblock %}</title>
   {% block css %}
+<link rel="stylesheet" href="{{ MEDIA_URL }}css/style.css" type="text/css" media="all">
+<link rel="stylesheet" href="{{ MEDIA_URL }}css/home.css" type="text/css" media="all">
+<link rel="stylesheet" href="{{ MEDIA_URL }}css/news.css" type="text/css" media="all">
+<!--
 <link rel="stylesheet" type="text/css" media="all" href="http://www.gnome.org/wp-content/themes/gnome-grass/style.css" />
 <link rel="stylesheet" type="text/css" media="all" href="http://www.gnome.org/wp-content/themes/gnome-grass/css/home.css" />
 <link rel="stylesheet" type="text/css" media="all" href="http://www.gnome.org/wp-content/themes/gnome-grass/css/news.css" />
+-->
 <link rel="icon" type="image/png" href="http://www.gnome.org/img/logo/foot-16.png">
 <link rel="SHORTCUT ICON" type="image/png" href="http://www.gnome.org/img/logo/foot-16.png">
     <link rel="stylesheet" href="{{ MEDIA_URL }}css/site.css" type="text/css" media="screen">
