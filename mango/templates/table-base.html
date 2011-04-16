@@ -5,10 +5,25 @@
 <link rel="stylesheet" href="{{ MEDIA_URL }}css/demo_table_jui.css" type="text/css" media="screen">
 <link rel="stylesheet" href="{{ MEDIA_URL }}css/jquery-ui.css" type="text/css" media="screen">
 <style>
+/* TODO: Split this out and deprecate the various datatables css files */
+.dataTables_length {
+  float: right;
+}
 .dataTables_filter {
- width: 50%;
  float: left;
  text-align: left;
+}
+tr.odd.gradeX td {
+  background-color: #ffc4c4;
+}
+tr.even.gradeX td {
+  background-color: #ffd5d5;
+}
+#usertable {
+  text-align: left;
+}
+.center {
+  text-align: center;
 }
 </style>
 {% endblock %}
@@ -17,37 +32,41 @@
 <script type="text/javascript" language="javascript" src="{{ MEDIA_URL }}js/jquery.dataTables.js"></script>
 
 <script type="text/javascript">
+var dataTable;
 $(document).ready(function() {
-  $('#usertable').dataTable({
+  dataTable = $('#usertable').dataTable({
     "iDisplayLength": {{ display_rows|default:25 }},
     "bJQueryUI": true,
-		{% if disable_sorting %}
-		//"bSort": false,
-		"aaSorting": [],
-		{% endif %}
+    //"bSortClasses": false,
+  {% if disable_sorting %}
+  "bSort": false,
+  "aaSorting": [],
+  {% endif %}
     "sPaginationType": "full_numbers",
     "sDom": '<"H"flr>t<"F"ip>',
     "oLanguage": {
       "sSearch": "{{ search_label }}",
     },
   });
+ {% block document_ready_extra %}{% endblock %}
   $("input:first").focus();
 });
 </script>
 {% endblock %}
 {% block content %}
 {{ block.super }}
+{% block above_table %}{% endblock %}
 <div style="width: 80%; margin: auto;">
 <table id="usertable" style="width: 100%;">
  <thead>
-	{% block thead %}
-	{# Put the <th> elements in here #}
+ {% block thead %}
+ {# Put the <th> elements in here #}
  </thead>
-	{% endblock %}
+ {% endblock %}
  <tbody>
-	{% block tbody %}
-	{# Put a <tr> here #}
-	{% endblock %}
+ {% block tbody %}
+ {# Put a <tr> here #}
+ {% endblock %}
  </tbody>
 </table>
 </div>
