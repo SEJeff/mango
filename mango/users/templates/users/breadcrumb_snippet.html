@@ -1,0 +1,3 @@
+{% extends "breadcrumb_snippet.html" %}
+{% load i18n %}
+{% block breadcrumb %}{{ block.super }} &raquo; {% if not users_index %}<a href="{% url users-index %}">{% endif %}{% trans "Users" %}{% if not users_index %}</a>{% endif %}{% endblock %}

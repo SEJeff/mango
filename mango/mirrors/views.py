@@ -13,8 +13,8 @@ def index(request, template="mirrors/index.html"):
     return render_to_response(template, {
         "mirrors": mirrors,
         "current": "mirrors",
+        "mirrors_index": True,
 
         # For the datatables jquery plugin
-        #"disable_sorting": True,
         "search_label": "Search Mirrors",
     }, context_instance=RequestContext(request))

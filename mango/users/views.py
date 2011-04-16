@@ -13,6 +13,7 @@ def index(request, template="users/index.html"):
     return render_to_response(template, {
         "users": users,
         "current": "users",
+        "users_index": True,
         "foundation_members": foundation_members,
         "search_label": "Search Users",
     }, context_instance=RequestContext(request))

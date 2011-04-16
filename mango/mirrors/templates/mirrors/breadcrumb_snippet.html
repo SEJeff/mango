@@ -1,0 +1,3 @@
+{% extends "breadcrumb_snippet.html" %}
+{% load i18n %}
+{% block breadcrumb %}{{ block.super }} &raquo; {% if not mirrors_index %}<a href="{% url mirrors-index %}">{% endif %}{% trans "Mirrors" %}{% if mirrors_index %}</a>{% endif %}{% endblock %}

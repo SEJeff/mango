@@ -1,5 +1,5 @@
 {% extends "table-base.html" %}
-{% block breadcrumb %}{{ block.super }} &raquo; <a href="{% url users-index %}">Users</a>{% endblock %}
+{% block breadcrumb %}{% include "users/breadcrumb_snippet.html" %}{% endblock %}
 {% block thead %}
  <th>Username</th>
  <th>Full Name</th>

@@ -5,7 +5,7 @@
 dataTable.fnSetColumnVis(3, false );
 dataTable.fnSort( [ [3,'desc'] ] );
 {% endblock %}
-{% block breadcrumb %}{{ block.super }} &raquo; <a href="{% url mirrors-index %}">{% trans "Mirrors" %}</a>{% endblock %}
+{% block breadcrumb %}{% include "mirrors/breadcrumb_snippet.html" %}{% endblock %}
 {% block thead %}
  <th>{% trans "Name" %}</th>
  <th>{% trans "Url" %}</th>
