@@ -1,16 +1,15 @@
 {% extends "table-base.html" %}
+{% load i18n %}
 {% block breadcrumb %}{% include "users/breadcrumb_snippet.html" %}{% endblock %}
 {% block thead %}
- <th>Username</th>
- <th>Full Name</th>
- <th>Email</th>
+ <th>{% trans "Username" %}</th>
+ <th>{% trans "Full Name" %}</th>
+ <th>{% trans "Email" %}</th>
+{% endblock %}
+{% block above_table %}
+<h2 class="center">{% trans "User Management" %}</h2>
 {% endblock %}
 {% block tbody %}
-	<hr>
-	user="{{ user }}"
-	debug="{{ debug }}"
-	request.META="{{ request.META.USER }}"
-	<hr>
   {% for user in users %}
   <tr>
    <td><a href="{% url users-update user.username %}">{{ user.username }}</a></td>
