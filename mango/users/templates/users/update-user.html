@@ -4,11 +4,10 @@
 {% block breadcrumb %}{{ block.super }} &raquo; {{ user }}{% endblock %}
 {% block content %}
 {{ block.super }}
-This is the page for {{ user }} who is a member of: {{ groups|join:", " }}
-<hr>
+<div style="width: 45%; margin: auto; border: 1px solid black; padding: 20px;">
 <form name="update_user_form" action="/users/jschroeder" method="post">
 {{ form.as_p }}
 <input type="submit">
 </form>
-<hr>
+</div>
 {% endblock %}
