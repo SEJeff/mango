@@ -13,6 +13,7 @@ LOCATION_CHOICES = (
 )
 
 # TODO: When this goes to production, create a GNOMEMirror model and migrate to it
+# TODO: Add a celerybeat daily task to check mirror freshness and set active accordingly
 class FtpMirror(models.Model):
     name = models.CharField(max_length=60)
     url = models.URLField(verify_exists=False)

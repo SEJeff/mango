@@ -1,0 +1,10 @@
+{% extends "mirrors/mirrors-base.html" %}
+{% block breadcrumb %}{{ block.super }} &raquo; {{ mirror.name }}{% endblock %}
+{% block content %}
+{{ block.super }}
+<div style="width: 45%; margin: auto; border: 1px solid black; padding: 20px;">
+<form name="update_mirror" action="{{ mirror.get_absolute_url }}" method="post">
+{{ form.as_p }}
+<input type="submit" value="Save Changes">
+</div>
+{% endblock %}

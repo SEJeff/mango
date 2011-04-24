@@ -1,4 +1,5 @@
 from django.template import RequestContext
+from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth.decorators import login_required
 
@@ -15,4 +16,23 @@ def index(request, template="mirrors/index.html"):
 
         # For the datatables jquery plugin
         "search_label": "Search Mirrors",
+    }, context_instance=RequestContext(request))
+
+def update(request, mirror_id, name="edit", template="mirrors/update.html"):
+    mirror = get_object_or_404(FtpMirror, pk=mirror_id)
+    if request.method == "POST":
+        form = FtpMirrorForm(request.POST, instance=mirror)
+        if form.is_valid():
+            if form.has_changed():
+                form.save()
+            return HttpResponse("Saved settings for mirror: %s" % mirror.name)
+        else:
+            return HttpResponse("ERROR: ", form.errors)
+
+    form = FtpMirrorForm(instance=mirror)
+
+    return render_to_response(template, {
+        "form": form,
+        "mirror": mirror,
+        "current": "mirrors",
     }, context_instance=RequestContext(request))
