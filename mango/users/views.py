@@ -27,7 +27,7 @@ def update(request, username, template="users/update-user.html"):
                 form.save()
             return HttpResponse("Saved settings for user: %s" % user.full_name)
         else:
-            return HttpResponse("ERROR: ", form.errors)
+            return HttpResponse("ERROR: %s" % form.errors)
 
     # TODO: Error handling if the database flips out
     groups = LdapGroup.objects.filter(members__contains=username).values_list('name', flat=True)
