@@ -1,0 +1,15 @@
+Django Mango TODO
+
+== Mango ==
+ - Integrate django-auth-ldap for logging in
+
+== Users ==
+ - Add &advanced=1 querystring for sysadmin team members to show hidden form properties
+ - Accounts team members who are not sysadmin team members should not be allowed
+   to add themselves to the sysadmin team or to some of the other groups
+ - Send token support for password reset functionality
+ - Finish ssh key widget and allow uploads
+
+== Mirrors ==
+ - "View Mirror" link in the update form?
+ - Celerybeat task to check the mirrors daily and set active / inactive flag
