@@ -13,3 +13,4 @@ Django Mango TODO
 == Mirrors ==
  - "View Mirror" link in the update form?
  - Celerybeat task to check the mirrors daily and set active / inactive flag
+ - Only sysadmin team members should be allowed to edit mirrors
