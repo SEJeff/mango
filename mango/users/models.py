@@ -4,6 +4,7 @@ from random import randrange
 from django.db import models
 from django.conf import settings
 from django.forms import ValidationError, Textarea
+from django.core.urlresolvers import reverse
 
 # LDAP orm with a django-like interface
 import ldapdb.models
@@ -91,6 +92,9 @@ class LdapUser(ldapdb.models.Model):
 
     def __unicode__(self):
         return self.full_name
+
+    def get_absolute_url(self):
+        return reverse("users-update", args=(self.username,))
 
 class LdapGroup(ldapdb.models.Model):
     """

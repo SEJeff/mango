@@ -15,10 +15,9 @@
 {% block content %}
 {{ block.super }}
 <div style="width: 45%; margin: auto; border: 1px solid black; padding: 20px;">
-<form name="update_user_form" action="/users/jschroeder" method="post" class="uniForm">
+{# TODO: Figure out how to set the uni-form action #}
 {% with form.helper as helper %}
     {% uni_form form helper %}
 {% endwith %}
-</form>
 </div>
 {% endblock %}
