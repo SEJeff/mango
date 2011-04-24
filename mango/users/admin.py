@@ -10,6 +10,20 @@ class LdapUserAdminForm(forms.ModelForm):
         }
 
 class LdapUserAdmin(admin.ModelAdmin):
+    fieldsets = (
+        ('Imortant', {
+            'fields': ('username', 'full_name', 'email', 'description'),
+        }),
+        ('Advanced options', {
+            #'classes': ('collapse',),
+            'fields': ('uid', 'gid')
+        }),
+        ('Extra Stuff', {
+            'classes': ('collapse',),
+            'fields': ('password', 'home_directory')
+        }),
+    )
+
     exclude = ('keys', 'login_shell')
     list_display = ('username', 'full_name', 'email')
     search_fields = ('username', 'full_name', 'email')
