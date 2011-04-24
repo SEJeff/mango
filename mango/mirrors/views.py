@@ -27,7 +27,7 @@ def update(request, mirror_id, name="edit", template="mirrors/update.html"):
                 form.save()
             return HttpResponse("Saved settings for mirror: %s" % mirror.name)
         else:
-            return HttpResponse("ERROR: ", form.errors)
+            return HttpResponse("ERROR: %s" % form.errors)
 
     form = FtpMirrorForm(instance=mirror)
 

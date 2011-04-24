@@ -1,7 +1,22 @@
+import re
 from django.db import models
 from django.conf import settings
 from django.core.urlresolvers import reverse
+from django.utils.encoding import smart_unicode
 from django.template.defaultfilters import slugify
+from django.core.exceptions import ValidationError
+
+def http_or_ftp_validator(uri):
+    """The default URLField/URLValidator won't accept ftp:// as a valid url"""
+    regex = re.compile(
+        r'^(http|ftp)s?://' # http://, https://, ftp://, or ftps://
+        r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+[A-Z]{2,6}\.?|' #domain...
+        r'localhost|' #localhost...
+        r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})' # ...or ip
+        r'(?::\d+)?' # optional port
+        r'(?:/?|[/?]\S+)$', re.IGNORECASE)
+    if not regex.match(smart_unicode(uri)):
+        raise ValidationError(u"%s is not a valid mirror url." % uri)
 
 LOCATION_CHOICES = (
     ('United States and Canada', 'United States and Canada'),
@@ -16,7 +31,7 @@ LOCATION_CHOICES = (
 # TODO: Add a celerybeat daily task to check mirror freshness and set active accordingly
 class FtpMirror(models.Model):
     name = models.CharField(max_length=60)
-    url = models.URLField(verify_exists=False)
+    url = models.CharField(max_length=254, validators=[http_or_ftp_validator])
     location = models.CharField(max_length=72, choices=LOCATION_CHOICES)
     email = models.EmailField()
     comments = models.TextField(blank=True)
@@ -36,6 +51,7 @@ class FtpMirror(models.Model):
 
 
 class Webmirror(models.Model):
+    """Deprecated model that will be removed eventually"""
     name = models.CharField(max_length=60, blank=True)
     url = models.CharField(max_length=300, blank=True)
     location = models.CharField(max_length=72, blank=True)
