@@ -99,6 +99,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'users',
     'mirrors',
+    'uni_form',
 )
 MANGO_USER_HOMEDIR_BASE = '/home/users'
 PROJECT_TITLE = _('GNOME Mango Accounts System')

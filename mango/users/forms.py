@@ -4,6 +4,8 @@ from models import LdapUser, LdapGroup
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 
+from uni_form.helpers import FormHelper, Submit, Reset
+
 from django.template.loader import render_to_string
 
 class SSHKeyWidget(forms.SelectMultiple):
@@ -32,6 +34,11 @@ class MultipleChoiceAnyField(forms.MultipleChoiceField):
 class UserForm(forms.ModelForm):
     # TODO: The magic to do the ssh keys is almost certainly using a MultiValueWidget
     # TODO: Use django.contrib.admin.helpers.AdminForm to group these together
+
+    # django-uni-form stuff to make the pretty
+    helper = FormHelper()
+    submit = Submit('submit', _('Submit Changes'))
+    helper.add_input(submit)
 
     # Developer Options
     gnomecvs = forms.BooleanField(label=_('Git account'), required=False)
