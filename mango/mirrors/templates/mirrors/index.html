@@ -1,6 +1,7 @@
 {% extends "table-base.html" %}
 {% load i18n %}
 {% block document_ready_extra %}
+{{ block.super }}
 // Hide the "Active" column and sort on it
 dataTable.fnSetColumnVis(3, false );
 dataTable.fnSort( [ [3,'desc'] ] );
