@@ -1,0 +1,10 @@
+{% load humanize_sshkey %}
+{% if value %}
+	<table style="text-align: left;">
+  {% for entry in value %}
+	  <tr><td>{{ entry|humanize_sshkey }}</td></tr>
+	{% endfor %}
+	</table>
+{% else %}
+NO VALUE!
+{% endif %}
