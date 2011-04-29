@@ -60,7 +60,6 @@ $(document).ready(function() {
   {% if add_text and add_url %}
     $('.dataTables_length').after('<div id="add-record"><a href="{{ add_url }}">{{ add_text }}</a></div>');
   {% endif %}
-  $("input:first").focus();
 });
 </script>
 {% endblock %}

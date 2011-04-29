@@ -45,4 +45,5 @@ def add(request, template="mirrors/add.html"):
     form = FtpMirrorForm()
     return render_to_response(template, {
         "form": form,
+        "current": "mirrors",
     }, context_instance=RequestContext(request))

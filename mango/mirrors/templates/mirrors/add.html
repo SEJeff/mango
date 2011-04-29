@@ -3,11 +3,6 @@
 {% load uni_form_tags %}
 {% block javascript %}
 {{ block.super }}
-<script type="text/javascript">
-$(document).ready(function() {
-  $('input:first').focus();
-});
-</script>
 <script src="{{ MEDIA_URL }}js/uni-form.jquery.js" type="text/javascript"></script>
 {% endblock %}
 {% block css %}

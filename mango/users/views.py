@@ -37,4 +37,5 @@ def update(request, username, template="users/update-user.html"):
         "form": form,
         "user": user,
         "groups": groups,
+        "current": "users",
     }, context_instance=RequestContext(request))

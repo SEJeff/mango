@@ -14,11 +14,16 @@
   {% endblock %}
   {% block javascript %}
     <script type="text/javascript" language="javascript" src="{{ MEDIA_URL }}js/jquery.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $('input:first').focus();
+      });
+    </script>
   {% endblock %}
 </head>
 <body id="{% block body_id %}{% endblock %}" class="{% block body_class %}{% endblock %}">
-	<!-- TODO: Put this in a stylesheet somewhere -->
-	<div id="breadcrumb" style="float: left; left: 10px; margin-top: 10px;">{% block breadcrumb %}{% include "breadcrumb_snippet.html" %}{% endblock %}</div>
+  <!-- TODO: Put this in a stylesheet somewhere -->
+  <div id="breadcrumb" style="float: left; left: 10px; margin-top: 10px;">{% block breadcrumb %}{% include "breadcrumb_snippet.html" %}{% endblock %}</div>
   <div id="body">
     {% block body %}
       <div class="content_title">
