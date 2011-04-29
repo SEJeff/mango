@@ -14,6 +14,8 @@
   {% endblock %}
   {% block javascript %}
     <script type="text/javascript" language="javascript" src="{{ MEDIA_URL }}js/jquery.js"></script>
+  {% endblock %}
+  {% block extra_javascript %}
     <script type="text/javascript">
       $(document).ready(function() {
         $('input:first').focus();
