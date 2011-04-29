@@ -1,0 +1,27 @@
+{% extends "mirrors/mirrors-base.html" %}
+{% load i18n %}
+{% load uni_form_tags %}
+{% block javascript %}
+{{ block.super }}
+<script type="text/javascript">
+$(document).ready(function() {
+  $('input:first').focus();
+});
+</script>
+<script src="{{ MEDIA_URL }}js/uni-form.jquery.js" type="text/javascript"></script>
+{% endblock %}
+{% block css %}
+{{ block.super }}
+<link rel="stylesheet" href="{{ MEDIA_URL }}css/uni-form.css" type="text/css" />
+<link rel="stylesheet" href="{{ MEDIA_URL }}css/default.uni-form.css" type="text/css" />
+{% endblock %}
+{% block breadcrumb %}{{ block.super }} &raquo; {% trans "Add New Mirror" %}{% endblock %}
+{% block content %}
+{{ block.super }}
+<div style="width: 45%; margin: auto; border: 1px solid black; padding: 20px;">
+{# TODO: Figure out how to set the uni-form action #}
+{% with form.helper as helper %}
+    {% uni_form form helper %}
+{% endwith %}
+</div>
+{% endblock %}

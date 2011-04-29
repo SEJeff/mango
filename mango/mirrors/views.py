@@ -1,7 +1,9 @@
 from django.template import RequestContext
 from django.http import HttpResponse
+from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.utils.translation import ugettext_lazy as _
 
 from forms import FtpMirrorForm
 from models import FtpMirror, Webmirror
@@ -35,4 +37,10 @@ def update(request, mirror_id, name="edit", template="mirrors/update.html"):
         "form": form,
         "mirror": mirror,
         "current": "mirrors",
+    }, context_instance=RequestContext(request))
+
+def add(request, template="mirrors/add.html"):
+    form = FtpMirrorForm()
+    return render_to_response(template, {
+        "form": form,
     }, context_instance=RequestContext(request))
