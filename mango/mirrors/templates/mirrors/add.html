@@ -18,6 +18,7 @@ $(document).ready(function() {
 {% block breadcrumb %}{{ block.super }} &raquo; {% trans "Add New Mirror" %}{% endblock %}
 {% block content %}
 {{ block.super }}
+<div class="center"><h2>{% trans "Add a New GNOME Mirror" %}</h2></div>
 <div style="width: 45%; margin: auto; border: 1px solid black; padding: 20px;">
 {# TODO: Figure out how to set the uni-form action #}
 {% with form.helper as helper %}
