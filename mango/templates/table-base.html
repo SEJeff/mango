@@ -7,11 +7,19 @@
 <style>
 /* TODO: Split this out and deprecate the various datatables css files */
 .dataTables_length {
-  float: right;
+  text-align: left;
+  padding-left: 10px;
+  float: left;
 }
 .dataTables_filter {
  float: left;
  text-align: left;
+ padding-left: 10px;
+ width: 260px;
+}
+#add-record {
+  padding-right: 10px;
+  text-align: right;
 }
 tr.odd.gradeX td {
   background-color: #ffc4c4;
@@ -49,6 +57,9 @@ $(document).ready(function() {
     },
   });
  {% block document_ready_extra %}{% endblock %}
+  {% if add_text and add_url %}
+    $('.dataTables_length').after('<div id="add-record"><a href="{{ add_url }}">{{ add_text }}</a></div>');
+  {% endif %}
   $("input:first").focus();
 });
 </script>

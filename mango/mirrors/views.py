@@ -18,6 +18,8 @@ def index(request, template="mirrors/index.html"):
 
         # For the datatables jquery plugin
         "search_label": "Search Mirrors",
+        "add_text": _("Add New Mirror"),
+        "add_url": reverse("mirrors-add"),
     }, context_instance=RequestContext(request))
 
 def update(request, mirror_id, name="edit", template="mirrors/update.html"):
