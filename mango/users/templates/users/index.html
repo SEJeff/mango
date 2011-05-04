@@ -13,7 +13,7 @@
 {% block tbody %}
   {% for user in users %}
   <tr>
-   <td><a href="{% url users-update user.username %}">{{ user.username }}</a></td>
+   <td class="center"><a href="{% url users-update user.username %}">{{ user.username }}</a></td>
    <td>{{ user.full_name }}</td>
    <td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
   </tr>
