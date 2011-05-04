@@ -6,6 +6,7 @@
 dataTable.fnSetColumnVis(3, false );
 dataTable.fnSort( [ [3,'desc'] ] );
 {% endblock %}
+{% block title %}GNOME Mango: {% trans "All Mirrors" %}{% endblock %}
 {% block breadcrumb %}{% include "mirrors/breadcrumb_snippet.html" %}{% endblock %}
 {% block thead %}
  <th>{% trans "Name" %}</th>
