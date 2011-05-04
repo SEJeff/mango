@@ -10,10 +10,11 @@
 <link rel="stylesheet" href="{{ MEDIA_URL }}css/uni-form.css" type="text/css" />
 <link rel="stylesheet" href="{{ MEDIA_URL }}css/default.uni-form.css" type="text/css" />
 {% endblock %}
+{% block title %}GNOME Mango: {% trans "Updating Mirror" %} {{ mirror.name }}{% endblock %}
 {% block breadcrumb %}{{ block.super }} &raquo; {{ mirror.name }}{% endblock %}
 {% block content %}
 {{ block.super }}
-<div class="center"><h2>{% blocktrans with mirror.name as name %}Updating {{ name }}{% endblocktrans %}</h2></div>
+<div class="center"><h2>{% blocktrans with mirror.name as name %}Updating Mirror {{ name }}{% endblocktrans %}</h2></div>
 <div id="outline">
 {# TODO: Figure out how to set the uni-form action #}
 {% with form.helper as helper %}
