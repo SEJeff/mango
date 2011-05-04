@@ -10,10 +10,11 @@
 <link rel="stylesheet" href="{{ MEDIA_URL }}css/uni-form.css" type="text/css" />
 <link rel="stylesheet" href="{{ MEDIA_URL }}css/default.uni-form.css" type="text/css" />
 {% endblock %}
-{% block title %}GNOME Mango: {% trans "Update user:" %} {{ user.username }}{% endblock %}
+{% block title %}GNOME Mango: {% trans "Updating:" %} {{ user }}{% endblock %}
 {% block breadcrumb %}{{ block.super }} &raquo; {{ user }}{% endblock %}
 {% block content %}
 {{ block.super }}
+<div class="center"><h2>{% trans "Updating:" %} {{ user }} ({{ user.username }})</h2></div>
 <div id="outline">
 {# TODO: Figure out how to set the uni-form action #}
 {% with form.helper as helper %}
