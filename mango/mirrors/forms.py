@@ -8,6 +8,8 @@ class FtpMirrorForm(ModelForm):
     # django-uni-form stuff to make the pretty
     helper = FormHelper()
     submit = Submit('submit', _('Submit Changes'))
+    # Add the pretty rounded button style
+    submit.field_classes += " action_button"
     helper.add_input(submit)
 
     class Meta:
