@@ -14,7 +14,7 @@
 {% block content %}
 {{ block.super }}
 <div class="center"><h2>{% blocktrans with mirror.name as name %}Updating {{ name }}{% endblocktrans %}</h2></div>
-<div style="width: 45%; margin: auto; border: 1px solid black; padding: 20px;">
+<div id="outline">
 {# TODO: Figure out how to set the uni-form action #}
 {% with form.helper as helper %}
     {% uni_form form helper %}
