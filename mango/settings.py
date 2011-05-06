@@ -22,9 +22,16 @@ DATABASES = {
     #    'USER'      : 'dbuser',
     #    'PASSWORD'  : 'dbpass',
     #},
+    # For the requests application
+    #'account_requests': {
+    #    'ENGINE'    : 'django.db.backends.mysql',
+    #    'NAME'      : 'mango',
+    #    'USER'      : 'dbuser',
+    #    'PASSWORD'  : 'dbpass',
+    #},
 }
 
-DATABASE_ROUTERS = [ "mango.mirrors.routers.MirrorRouter", ]
+DATABASE_ROUTERS = [ "mango.mirrors.routers.MirrorRouter", "mango.requests.routers.AccountRequestRouter"]
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -99,6 +106,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'users',
     'mirrors',
+    'requests',
     'uni_form',
 )
 MANGO_USER_HOMEDIR_BASE = '/home/users'
