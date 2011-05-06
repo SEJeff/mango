@@ -27,7 +27,7 @@ class AccountRequest(models.Model):
         db_table = u'account_request'
 
     def __unicode__(self):
-        return u"<%s %s from %s>" % (self.get_status_display(), self.__class__.__name__, self.uid)
+        return u"<%s %s from %s>" % (self.get_status_display().title(), self.__class__.__name__, self.uid)
 
 class AccountGroup(models.Model):
     request = models.ForeignKey(AccountRequest)
