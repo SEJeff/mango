@@ -1,13 +1,14 @@
 from django.db import models
 from django.conf import settings
+from django.utils.translation import ugettext_lazy as _
 
 REQUEST_VERDICTS = (
-  ('A', 'approved'),
-  ('R', 'rejected'),
-  ('M', 'mail_verification'),
-  ('V', 'awaiting_vouchers'),
-  ('S', 'awaiting_setup'),
-  ('P', 'pending'),
+  ('A', _('approved')),
+  ('R', _('rejected')),
+  ('M', _('mail_verification')),
+  ('V', _('awaiting_vouchers')),
+  ('S', _('awaiting_setup')),
+  ('P', _('pending')),
 )
 
 class AccountRequest(models.Model):
@@ -27,7 +28,7 @@ class AccountRequest(models.Model):
         db_table = u'account_request'
 
     def __unicode__(self):
-        return u"<%s %s from %s>" % (self.get_status_display().title(), self.__class__.__name__, self.uid)
+        return _("%s account request for %s") % (self.get_status_display().title(), self.uid)
 
 class AccountGroup(models.Model):
     request = models.ForeignKey(AccountRequest)
@@ -41,4 +42,4 @@ class AccountGroup(models.Model):
         db_table = u'account_groups'
 
     def __unicode__(self):
-        return u"<%s %s from %s for %s>" % (self.get_verdict_display().title(), self.__class__.__name__, self.request.uid, self.voucher_group)
+        return _("%s %s for %s") % (self.request.uid, self.get_verdict_display(), self.voucher_group or _("unknown"))
