@@ -16,6 +16,9 @@ class SSHKeyWidget(forms.SelectMultiple):
     def render(self, name, value, attrs=None):
         i = 0
         keys = {}
+        if isinstance(value, basestring):
+            value = [value]
+
         # TODO: Write code to show fingerprints and whatnot
         #for key in value:
         return render_to_string('users/sshkey_widget.html', {
