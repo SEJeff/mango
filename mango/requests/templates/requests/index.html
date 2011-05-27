@@ -1,0 +1,37 @@
+{% extends "table-base.html" %}
+{% load i18n %}
+{% block title %}GNOME Mango: {% trans "Account Requests" %}{% endblock %}
+{% block document_ready_extra %}
+$('.dataTables_length').after('<div id="filter_requests"><select id="filter_select">{% for choice in choices %}<option value="{{ choice }}">{{ choice|title }}</option>{% endfor %}</select></a></div>');
+// Select
+var select = $("select#filter_select");
+select.find("option[value='{% trans "awaiting setup" %}']").attr("selected", "selected")
+dataTable.fnFilter("{% trans "awaiting setup" %}",2,true,true,false);
+
+// Filter the requests
+select.change(function () {
+  var val = $(this).find("option:selected").val();
+  dataTable.fnFilter("",2,true,true,false);
+  if (val != "{% trans "all account requests" %}") {
+      dataTable.fnFilter(val,2,true,true,false);
+  }
+});
+{% endblock %}
+{% block breadcrumb %}{% include "requests/breadcrumb_snippet.html" %}{% endblock %}
+{% block thead %}
+ <th>{% trans "Username" %}</th>
+ <th>{% trans "Full Name" %}</th>
+ <th>{% trans "Status" %}</th>
+{% endblock %}
+{% block above_table %}
+<h2 class="center">{% trans "User Management" %}</h2>
+{% endblock %}
+{% block tbody %}
+  {% for request in requests %}
+  <tr>
+   <td class="center"><a href="#">{{ request.uid }}</a></td>
+   <td>{{ request.cn }}</td>
+   <td>{{ request.get_status_display|title }}</td>
+  </tr>
+  {% endfor %}
+{% endblock %}
