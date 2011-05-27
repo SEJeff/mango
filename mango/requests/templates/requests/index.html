@@ -3,8 +3,8 @@
 {% block title %}GNOME Mango: {% trans "Account Requests" %}{% endblock %}
 {% block document_ready_extra %}
 $('.dataTables_length').after('<div id="filter_requests"><select id="filter_select">{% for choice in choices %}<option value="{{ choice }}">{{ choice|title }}</option>{% endfor %}</select></a></div>');
-// Select
 var select = $("select#filter_select");
+// Setup the default filter
 select.find("option[value='{% trans "awaiting setup" %}']").attr("selected", "selected")
 dataTable.fnFilter("{% trans "awaiting setup" %}",2,true,true,false);
 
@@ -15,6 +15,8 @@ select.change(function () {
   if (val != "{% trans "all account requests" %}") {
       dataTable.fnFilter(val,2,true,true,false);
   }
+  // Focus the filter input because polish is sexy
+  $("input:visible:first").focus();
 });
 {% endblock %}
 {% block breadcrumb %}{% include "requests/breadcrumb_snippet.html" %}{% endblock %}
