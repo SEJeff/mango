@@ -42,6 +42,7 @@ tr.even.gradeX td {
 <script type="text/javascript">
 var dataTable;
 $(document).ready(function() {
+  var form = $("form#table_form");
   dataTable = $('#usertable').dataTable({
     "iDisplayLength": {{ display_rows|default:25 }},
     "bJQueryUI": true,
@@ -56,6 +57,29 @@ $(document).ready(function() {
       "sSearch": "{{ search_label }}",
     },
   });
+
+  /*
+   * As extra sauce, when there is only 1  result  in  the
+   * dataTable, and the user presses <ENTER> in the input,
+   * "just do the right thing TM" and go to the link  href
+   */
+  $("form input[type='text']").bind("keypress", function(e) {
+    // Is there a better way to do this?
+    var code=e.charCode || e.keyCode;
+    if (code == 13) {
+      $("form#table_form").submit();
+    };
+  });
+
+  // Don't actually submit the form if > 1 row is visible.
+  form.submit(function() {
+    var tr = form.find("table tbody tr:visible");
+    if (tr.length == 1) {
+      var url = tr.find("a").attr("href");
+      window.location = url;
+    }
+    return false;
+  });
  {% block document_ready_extra %}{% endblock %}
 });
 </script>
@@ -64,6 +88,7 @@ $(document).ready(function() {
 {{ block.super }}
 {% block above_table %}{% endblock %}
 <div style="width: 60%; margin: auto;">
+<form id="table_form">
 <table id="usertable" style="width: 100%;">
  <thead>
  {% block thead %}
@@ -76,5 +101,6 @@ $(document).ready(function() {
  {% endblock %}
  </tbody>
 </table>
+</form>
 </div>
 {% endblock %}
