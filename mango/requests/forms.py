@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
 from models import AccountRequest
-from mango.users.forms import SSHKeyWidget
+from mango.users.forms import SSHKeyWidget, MultipleChoiceAnyField
 
 from uni_form.helpers import FormHelper, Submit, Reset
 
@@ -24,13 +24,16 @@ class AccountRequestForm(forms.ModelForm):
     comment = forms.CharField(label=_('Comment'), widget=forms.Textarea(attrs=RO_ATTRS))
 
     confirm = forms.BooleanField(label=_('Confirm Request Deletion'), required=False)
+    authorizationkeys = MultipleChoiceAnyField(required=False, widget=SSHKeyWidget(attrs=RO_ATTRS))
 
     def clean_authorizationkeys(self):
         data = self.cleaned_data.get("authorizationkeys", "")
         return data
 
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        cleaned_data["authorizationkeys"] = "THIS IS NULL AND WILL NOT BE USED"
+        return cleaned_data
+
     class Meta:
         model = AccountRequest
-        widgets = {
-            'authorizationkeys': SSHKeyWidget(attrs=RO_ATTRS),
-        }
