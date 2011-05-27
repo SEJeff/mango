@@ -1,0 +1,1 @@
+../../../../../git/django-uni-form/uni_form/media/uni_form/uni-form.jquery.js
