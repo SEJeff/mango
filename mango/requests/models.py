@@ -5,9 +5,9 @@ from django.utils.translation import ugettext_lazy as _
 REQUEST_VERDICTS = (
   ('A', _('approved')),
   ('R', _('rejected')),
-  ('M', _('mail_verification')),
-  ('V', _('awaiting_vouchers')),
-  ('S', _('awaiting_setup')),
+  ('M', _('mail verification')),
+  ('V', _('awaiting vouchers')),
+  ('S', _('awaiting setup')),
   ('P', _('pending')),
 )
 

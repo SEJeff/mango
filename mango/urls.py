@@ -4,7 +4,6 @@ from django.conf.urls.defaults import *
 from django.contrib import admin
 admin.autodiscover()
 
-#from mango import views as view
 from django.conf import settings
 
 urlpatterns = patterns('',
@@ -16,9 +15,6 @@ urlpatterns = patterns('',
     #(r'^%susers/edit/(?P<user>\w+)/$' % mango.settings.SITE_ROOT, view.edit_user),
     #(r'^%srequests/$' % mango.settings.SITE_ROOT, view.list_accounts),
     #(r'^%srequests/add/$' % mango.settings.SITE_ROOT, view.add_account),
-    #(r'^%smirrors/$' % mango.settings.SITE_ROOT, view.list_mirrors),
-    #(r'^%smirrors/add/$' % mango.settings.SITE_ROOT, view.add_mirror),
-    #(r'^%smirrors/edit/(?P<pk>\d+)/$' % mango.settings.SITE_ROOT, view.edit_mirror),
     #(r'^%smodules/$' % mango.settings.SITE_ROOT, view.list_modules),
     #(r'^%smodules/edit/(?P<module>[\w.-]+)/$' % mango.settings.SITE_ROOT, view.edit_module),
     #(r'^%sfoundationmembers/$' % mango.settings.SITE_ROOT, view.list_foundationmembers),
@@ -27,9 +23,10 @@ urlpatterns = patterns('',
 
     url(r'^$',   'mango.views.index', name="index"),
 
-    (r'^admin/',   include(admin.site.urls)),
-    (r'^users/',   include('mango.users.urls')),
-    (r'^mirrors/', include('mango.mirrors.urls')),
+    (r'^admin/',    include(admin.site.urls)),
+    (r'^users/',    include('mango.users.urls')),
+    (r'^mirrors/',  include('mango.mirrors.urls')),
+    (r'^requests/', include('mango.requests.urls')),
 )
 
 # For convenience, let django serve media for developers
