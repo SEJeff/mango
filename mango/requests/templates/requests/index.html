@@ -29,11 +29,11 @@ select.change(function () {
 <h2 class="center">{% trans "User Management" %}</h2>
 {% endblock %}
 {% block tbody %}
-  {% for request in requests %}
+  {% for acct_request in requests %}
   <tr>
-   <td class="center"><a href="#">{{ request.uid }}</a></td>
-   <td>{{ request.cn }}</td>
-   <td>{{ request.get_status_display|title }}</td>
+   <td class="center"><a href="{% url requests-update acct_request.pk acct_request.cn|slugify %}">{{ acct_request.uid }}</a></td>
+   <td>{{ acct_request.cn }}</td>
+   <td>{{ acct_request.get_status_display|title }}</td>
   </tr>
   {% endfor %}
 {% endblock %}

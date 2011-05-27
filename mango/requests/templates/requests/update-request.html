@@ -1,0 +1,24 @@
+{% extends "requests/base.html" %}
+{% load i18n %}
+{% load uni_form_tags %}
+{% block javascript %}
+{{ block.super }}
+<script src="{{ MEDIA_URL }}js/uni-form.jquery.js" type="text/javascript"></script>
+{% endblock %}
+{% block css %}
+{{ block.super }}
+<link rel="stylesheet" href="{{ MEDIA_URL }}css/uni-form.css" type="text/css" />
+<link rel="stylesheet" href="{{ MEDIA_URL }}css/default.uni-form.css" type="text/css" />
+{% endblock %}
+{% block title %}GNOME Mango: {% trans "Account Request for " %} {{ acct_request.cn }}{% endblock %}
+{% block breadcrumb %}{{ block.super }} &raquo; {{ acct_request.cn }}{% endblock %}
+{% block content %}
+{{ block.super }}
+<div class="center"><h2>{% trans "Account Request from" %} {{ acct_request.cn }}</h2></div>
+<div id="outline">
+{# TODO: Figure out how to set the uni-form action #}
+{% with form.helper as helper %}
+    {% uni_form form helper %}
+{% endwith %}
+</div><br>
+{% endblock %}
