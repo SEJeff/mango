@@ -18,7 +18,7 @@
   <div class="menu-globalnav-container">
    <ul id="menu-globalnav" class="menu">
     <li id="menu-item-1039" class="menu-item{% if current == "users" %} current-menu-item{% endif %}"><a href="{% url users-index %}">{% trans "Users" %}</a></li>
-    <li id="menu-item-1037" class="menu-item{% if current == "requests" %} current-menu-item{% endif %}"><a href="#">{% trans "Account Requests" %}</a></li>
+    <li id="menu-item-1037" class="menu-item{% if current == "requests" %} current-menu-item{% endif %}"><a href="{% url requests-index %}">{% trans "Account Requests" %}</a></li>
     <li id="menu-item-1040" class="menu-item{% if current == "modules" %} current-menu-item{% endif %}"><a href="#">{% trans "VCS Modules" %}</a></li>
     <li id="menu-item-1038" class="menu-item{% if current == "mirrors" %} current-menu-item{% endif %}"><a href="{% url mirrors-index %}">{% trans "Mirrors" %}</a></li>
     <li id="menu-item-1038" class="menu-item"><a href="#">{% trans "Logout" %}</a></li>
