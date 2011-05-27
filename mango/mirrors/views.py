@@ -17,9 +17,7 @@ def index(request, template="mirrors/index.html"):
         "mirrors_index": True,
 
         # For the datatables jquery plugin
-        "search_label": "Search Mirrors",
-        "add_text": _("Add New Mirror"),
-        "add_url": reverse("mirrors-add"),
+        "search_label": _("Search Mirrors"),
     }, context_instance=RequestContext(request))
 
 def update(request, mirror_id, name="edit", template="mirrors/update.html"):
@@ -29,9 +27,9 @@ def update(request, mirror_id, name="edit", template="mirrors/update.html"):
         if form.is_valid():
             if form.has_changed():
                 form.save()
-            return HttpResponse("Saved settings for mirror: %s" % mirror.name)
+            return HttpResponse(_("Saved settings for mirror: %s") % mirror.name)
         else:
-            return HttpResponse("ERROR: %s" % form.errors)
+            return HttpResponse(_("ERROR: %s") % form.errors)
 
     form = FtpMirrorForm(instance=mirror)
 
