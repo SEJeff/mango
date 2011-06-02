@@ -4,7 +4,7 @@ from models import LdapUser, LdapGroup
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 
-from uni_form.helpers import FormHelper, Submit, Reset
+from uni_form.helpers import FormHelper, Submit, Reset, Layout, Fieldset, Row, HTML
 
 from django.template.loader import render_to_string
 
@@ -40,6 +40,38 @@ class UserForm(forms.ModelForm):
 
     # django-uni-form stuff to make the pretty
     helper = FormHelper()
+
+    # Add a pretty layout that mostly mimics the original mango interface
+    layout = Layout(Fieldset('',
+        'full_name',
+        'login_shell',
+        'description',
+        'keys',
+        HTML('<h3>Groups / Options</h3>'),
+        Fieldset(_('Developer Options'),
+            'gnomecvs',
+            'ftpadmin',
+        ),
+        Fieldset(_('Foundation Options'),
+            'foundation',
+            'mailusers',
+        ),
+        Fieldset(_('Shell Access'),
+            'bugzilla',
+            'gnomeweb',
+            'buildmaster',
+            'buildslave',
+            'artweb',
+            'gitadmin',
+        ),
+        Fieldset(_('Mango Related'),
+            'accounts',
+            'membctte',
+            'sysadmin',
+        ),
+        css_class="inlineLabels",
+    ))
+    helper.add_layout(layout)
     submit = Submit('submit', _('Submit Changes'))
     # Add the pretty rounded button style
     submit.field_classes += " action_button"
