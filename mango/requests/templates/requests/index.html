@@ -31,7 +31,7 @@ select.change(function () {
 {% block tbody %}
   {% for acct_request in requests %}
   <tr>
-   <td class="center"><a href="{% url requests-update acct_request.pk acct_request.cn|slugify %}">{{ acct_request.uid }}</a></td>
+   <td><a href="{% url requests-update acct_request.pk acct_request.cn|slugify %}">{{ acct_request.uid }}</a></td>
    <td>{{ acct_request.cn }}</td>
    <td>{{ acct_request.get_status_display|title }}</td>
   </tr>

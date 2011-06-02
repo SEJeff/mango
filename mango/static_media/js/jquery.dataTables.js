@@ -1,1 +1,1 @@
-../../users/static_media/js/jquery.dataTables.js
+jquery.dataTables-1.7.4.min.js

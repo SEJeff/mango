@@ -22,7 +22,7 @@ dataTable.fnSort( [ [3,'desc'] ] );
 {% block tbody %}
   {% for mirror in mirrors %}
   <tr{% if not mirror.is_active %} class="gradeX" title="{{ mirror.name }} {% trans "is inactive" %} " }}"{% endif %}>
-   <td class="center"><a href="{{ mirror.get_absolute_url }}">{{ mirror.name }}</a></td>
+   <td><a href="{{ mirror.get_absolute_url }}">{{ mirror.name }}</a></td>
    <td><a href="{{ mirror.url }}" target="_NEW">{{ mirror.url }}</a></td>
    <td>{{ mirror.location }}</td>
    <td>{{ mirror.is_active }}</td>

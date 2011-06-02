@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block css %}
 {{ block.super }}
-<link rel="stylesheet" href="{{ MEDIA_URL }}css/demo_page.css" type="text/css" media="screen">
 <link rel="stylesheet" href="{{ MEDIA_URL }}css/demo_table_jui.css" type="text/css" media="screen">
 <link rel="stylesheet" href="{{ MEDIA_URL }}css/jquery-ui.css" type="text/css" media="screen">
 <style>
@@ -27,11 +26,25 @@ tr.odd.gradeX td {
 tr.even.gradeX td {
   background-color: #ffd5d5;
 }
+.fullwidth {
+  width: 100%;
+}
 #usertable {
   text-align: left;
 }
+#usertable td:first-child {
+  text-align: center;
+}
+#usertable th {
+  text-align: center;
+  font-weight: bold;
+}
 .center {
   text-align: center;
+}
+.table_container {
+  width: 60%;
+  margin: auto;
 }
 </style>
 {% endblock %}
@@ -54,7 +67,7 @@ $(document).ready(function() {
     "sPaginationType": "full_numbers",
     "sDom": '<"H"flr>t<"F"ip>',
     "oLanguage": {
-      "sSearch": "{{ search_label }}",
+      "sSearch": "{{ search_label|default:"Search" }}",
     },
   });
 
@@ -65,7 +78,7 @@ $(document).ready(function() {
    */
   $("form input[type='text']").bind("keypress", function(e) {
     // Is there a better way to do this?
-    var code=e.charCode || e.keyCode;
+    var code = e.charCode || e.keyCode;
     if (code == 13) {
       $("form#table_form").submit();
     };
@@ -87,9 +100,9 @@ $(document).ready(function() {
 {% block content %}
 {{ block.super }}
 {% block above_table %}{% endblock %}
-<div style="width: 60%; margin: auto;">
+<div class="table_container">
 <form id="table_form">
-<table id="usertable" style="width: 100%;">
+<table id="usertable" class="fullwidth">
  <thead>
  {% block thead %}
  {# Put the <th> elements in here #}
