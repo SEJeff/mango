@@ -104,6 +104,8 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.auth',
     'django.contrib.admin',
+    # For natural days in account requests
+    'django.contrib.humanize',
     'users',
     'mirrors',
     'requests',

@@ -24,6 +24,14 @@ class AccountRequest(models.Model):
     is_new_account = models.CharField(max_length=1, default='Y', editable=False)
     is_mail_verified = models.CharField(max_length=1, default='N', editable=False)
 
+    def approved_for(self):
+        try:
+            ret = AccountGroup.objects.filter(request=self).values_list('voucher_group', flat=True)
+        except:
+            ret = []
+        # No point in returning a list with empty results
+        return filter(lambda name: name != u'', ret)
+
     class Meta:
         db_table = u'account_request'
 

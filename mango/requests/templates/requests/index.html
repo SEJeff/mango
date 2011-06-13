@@ -1,6 +1,20 @@
 {% extends "table-base.html" %}
 {% load i18n %}
+{% load truncate %}
+{% load humanize %}
 {% block title %}GNOME Mango: {% trans "Account Requests" %}{% endblock %}
+{% block css %}
+{{ block.super }}
+<style>
+.table_container {
+  width: 80%;
+  margin: auto;
+}
+.textcenter {
+  text-align: center;
+}
+</style>
+{% endblock %}
 {% block document_ready_extra %}
 $('.dataTables_length').after('<div id="filter_requests"><select id="filter_select">{% for choice in choices %}<option value="{{ choice }}">{{ choice|title }}</option>{% endfor %}</select></a></div>');
 var select = $("select#filter_select");
@@ -24,6 +38,9 @@ select.change(function () {
  <th>{% trans "Username" %}</th>
  <th>{% trans "Full Name" %}</th>
  <th>{% trans "Status" %}</th>
+ <th>{% trans "Approved For" %}</th>
+ <th>{% trans "Created" %}</th>
+ <th>{% trans "Action" %}</th>
 {% endblock %}
 {% block above_table %}
 <h2 class="center">{% trans "User Management" %}</h2>
@@ -33,7 +50,10 @@ select.change(function () {
   <tr>
    <td><a href="{% url requests-update acct_request.pk acct_request.cn|slugify %}">{{ acct_request.uid }}</a></td>
    <td>{{ acct_request.cn }}</td>
-   <td>{{ acct_request.get_status_display|title }}</td>
+   <td class="textcenter">{{ acct_request.get_status_display|title }}</td>
+   <td class="textcenter">{{ acct_request.approved_for|join:", "|truncate:25 }}</td>
+   <td class="textcenter">{{ acct_request.timestamp|naturalday:"SHORT_DATE_FORMAT" }}</td>
+   <td>New User / Reject</td>
   </tr>
   {% endfor %}
 {% endblock %}
