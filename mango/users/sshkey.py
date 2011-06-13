@@ -22,7 +22,7 @@ class SshKey(object):
         self.length = 0
         self.hash = ''
 
-        if len(key.split()) != 3:
+        if len(key.split()) < 3:
             raise ValueError("Key needs to have 3 arguments: ssh-rsa keydata.here user@email_or_comment")
 
     def validate_key(self):
@@ -138,4 +138,4 @@ class SshKey(object):
 
     @property
     def comment(self):
-        return self.key.split()[2]
+        return ' '.join(self.key.split()[2:])
