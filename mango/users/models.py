@@ -52,11 +52,11 @@ class LdapUser(ldapdb.models.Model):
     gid = IntegerField(db_column='gidNumber', unique=False)
 
     username       = CharField(db_column='uid', unique=True, primary_key=True, editable=True)
-    login_shell    = CharField(db_column='loginShell', choices=LOGIN_SHELLS, default="/bin/bash")
-    description    = CharField(db_column='description', blank=True)
+    login_shell    = CharField(db_column='loginShell',    choices=LOGIN_SHELLS, default="/bin/bash")
+    description    = CharField(db_column='description',   blank=True)
     home_directory = CharField(db_column='homeDirectory', blank=True)
-    password       = CharField(db_column='userPassword', max_length=100)
-    keys           = ListField(db_column="authorizedKey")
+    password       = CharField(db_column='userPassword',  max_length=100)
+    keys           = ListField(db_column="authorizedKey", blank=True)
     class Meta:
         ordering = ('full_name',)
         verbose_name = 'user'
