@@ -1,6 +1,10 @@
 {% extends "table-base.html" %}
 {% load i18n %}
 {% block title %}GNOME Mango: {% trans "All Users" %}{% endblock %}
+{% block document_ready_extra %}
+{{ block.super }}
+$('.dataTables_length').after('<div id="add-record"><a href="{% url users-add %}">{% trans "Add New User" %}</a></div>');
+{% endblock %}
 {% block breadcrumb %}{% include "users/breadcrumb_snippet.html" %}{% endblock %}
 {% block thead %}
  <th>{% trans "Username" %}</th>

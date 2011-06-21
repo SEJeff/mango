@@ -7,7 +7,6 @@
 {{ block.super }}
 <style>
 .table_container {
-  width: 80%;
   margin: auto;
 }
 .textcenter {
@@ -51,9 +50,13 @@ select.change(function () {
    <td><a href="{% url requests-update acct_request.pk acct_request.cn|slugify %}">{{ acct_request.uid }}</a></td>
    <td>{{ acct_request.cn }}</td>
    <td class="textcenter">{{ acct_request.get_status_display|title }}</td>
-   <td class="textcenter">{{ acct_request.approved_for|join:", "|truncate:25 }}</td>
+   <td>
+   {% for acct_group in acct_request.accountgroup_set.all %}
+   {{ acct_group.for_display }}<br>
+   {% endfor %}
+   </td>
    <td class="textcenter">{{ acct_request.timestamp|naturalday:"SHORT_DATE_FORMAT" }}</td>
-   <td>New User / Reject</td>
+   <td class="textcenter">{% if acct_request.status != "R" %}New User / Reject{% else %}<span style="color: gray;">{% trans "Account Rejected" %}</span>{% endif %}</td>
   </tr>
   {% endfor %}
 {% endblock %}
