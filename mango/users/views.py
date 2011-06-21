@@ -2,6 +2,7 @@ from pprint import pprint
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404, HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.utils.translation import ugettext_lazy as _
 
 from forms import UserForm
 from models import LdapUser, LdapGroup
@@ -37,5 +38,23 @@ def update(request, username, template="users/update-user.html"):
         "form": form,
         "user": user,
         "groups": groups,
+        "current": "users",
+    }, context_instance=RequestContext(request))
+
+def add(request, template="users/add.html"):
+    form = UserForm()
+    if request.method == "POST":
+        form = UserForm(request.POST)
+        if form.is_valid():
+            if form.has_changed():
+                form.save()
+            return HttpResponse(_("Saved settings for: %s") % mirror.username)
+        else:
+            return HttpResponse(_("ERROR: %s") % form.errors)
+
+    form = UserForm()
+
+    return render_to_response(template, {
+        "form": form,
         "current": "users",
     }, context_instance=RequestContext(request))
