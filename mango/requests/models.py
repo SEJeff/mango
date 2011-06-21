@@ -24,14 +24,6 @@ class AccountRequest(models.Model):
     is_new_account = models.CharField(max_length=1, default='Y', editable=False)
     is_mail_verified = models.CharField(max_length=1, default='N', editable=False)
 
-    def approved_for(self):
-        try:
-            ret = AccountGroup.objects.filter(request=self).values_list('voucher_group', flat=True)
-        except:
-            ret = []
-        # No point in returning a list with empty results
-        return filter(lambda name: name != u'', ret)
-
     class Meta:
         db_table = u'account_request'
 
@@ -45,6 +37,10 @@ class AccountGroup(models.Model):
     verdict = models.CharField(max_length=1, default='P', choices=REQUEST_VERDICTS, editable=False)
     voucher = models.CharField(max_length=15, blank=True, null=True)
     denial_message = models.CharField(max_length=255, blank=True, null=True)
+
+    def for_display(self):
+        if self.voucher:
+            return "%s on %s by %s" % (self.cn, self.voucher_group, self.voucher)
 
     class Meta:
         db_table = u'account_groups'
