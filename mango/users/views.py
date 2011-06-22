@@ -4,7 +4,8 @@ from django.shortcuts import render_to_response, get_object_or_404, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext_lazy as _
 
-from forms import UserForm
+#from forms import UserForm
+from forms import UserFormFactory
 from models import LdapUser, LdapGroup
 
 def index(request, template="users/index.html"):
@@ -20,6 +21,7 @@ def index(request, template="users/index.html"):
     }, context_instance=RequestContext(request))
 
 def update(request, username, template="users/update-user.html"):
+    UserForm = UserFormFactory()
     user = get_object_or_404(LdapUser, username=username)
     if request.method == "POST":
         form = UserForm(request.POST, instance=user)
@@ -42,6 +44,7 @@ def update(request, username, template="users/update-user.html"):
     }, context_instance=RequestContext(request))
 
 def add(request, template="users/add.html"):
+    UserForm = UserFormFactory(hide_username=False)
     form = UserForm()
     if request.method == "POST":
         form = UserForm(request.POST)
@@ -51,8 +54,6 @@ def add(request, template="users/add.html"):
             return HttpResponse(_("Saved settings for: %s") % mirror.username)
         else:
             return HttpResponse(_("ERROR: %s") % form.errors)
-
-    form = UserForm()
 
     return render_to_response(template, {
         "form": form,
