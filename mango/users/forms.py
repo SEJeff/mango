@@ -45,7 +45,6 @@ def UserFormFactory(hide_username=True):
         # Add a pretty layout that mostly mimics the original mango interface
         layout = Layout(Fieldset('',
             'full_name',
-            'username',
             'login_shell',
             'description',
             'keys',
@@ -73,8 +72,16 @@ def UserFormFactory(hide_username=True):
             ),
             css_class="inlineLabels",
         ))
+
+        # Add the username field as the 2nd entry  to  the  only
+        # FieldSet. This puts it right after full_name in the ui
+        if not hide_username:
+            layout.fields[0].fields.insert(1, 'username')
+
         helper.add_layout(layout)
+
         submit = Submit('submit', _('Submit Changes'))
+
         # Add the pretty rounded button style
         submit.field_classes= " action_button"
         helper.add_input(submit)
