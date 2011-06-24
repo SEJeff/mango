@@ -62,7 +62,7 @@ class LdapUser(ldapdb.models.Model):
         verbose_name = 'user'
         verbose_name_plural = 'users'
 
-    def save(self):
+    def save(self, *args, **kwargs):
         # Add the home directory if one doesn't exist already
         if not self.home_directory:
             self.home_directory = os.path.join(settings.MANGO_USER_HOMEDIR_BASE, self.username)
