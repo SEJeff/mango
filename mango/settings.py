@@ -31,7 +31,11 @@ DATABASES = {
     #},
 }
 
-DATABASE_ROUTERS = [ "mango.mirrors.routers.MirrorRouter", "mango.requests.routers.AccountRequestRouter"]
+DATABASE_ROUTERS = [
+    "ldapdb.router.Router",
+    "mango.mirrors.routers.MirrorRouter",
+    "mango.requests.routers.AccountRequestRouter",
+]
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
