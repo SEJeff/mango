@@ -31,6 +31,7 @@ class SSHKeyWidget(forms.SelectMultiple):
 
 
 # This is very much a W.I.P. to get the ssh key validation working
+# TODO: Fix this shit
 class MultipleChoiceAnyField(forms.MultipleChoiceField):
     """A MultipleChoiceField with no validation."""
 
@@ -39,8 +40,6 @@ class MultipleChoiceAnyField(forms.MultipleChoiceField):
 
 def UserFormFactory(hide_username=True):
     class UserForm(forms.ModelForm):
-        # TODO: The magic to do the ssh keys is almost certainly using a MultiValueWidget
-        # TODO: Use django.contrib.admin.helpers.AdminForm to group these together
 
         # django-uni-form stuff to make the pretty
         helper = FormHelper()
