@@ -1,7 +1,10 @@
 from django import forms
 from django.contrib import admin
 from models import LdapUser, LdapGroup
-from django.utils.translation import ugettext_lazy as _
+# See bug: https://github.com/pydanny/django-uni-form/issues/90
+# uni_form blows up with ugettext_lazy + python 2.7 + Fieldset
+#from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext as _
 from django.contrib.auth.models import User
 
 from uni_form.helpers import FormHelper, Submit, Reset, Layout, Fieldset, Row, HTML
