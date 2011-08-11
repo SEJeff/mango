@@ -1,0 +1,5 @@
+{{ object.full_name }}
+{{ object.description }}
+{{ object.username }}
+{{ object.email }}
+{{ object.groups }}
