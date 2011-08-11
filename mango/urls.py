@@ -24,6 +24,7 @@ urlpatterns = patterns('',
     url(r'^$',   'mango.views.index', name="index"),
 
     (r'^admin/',    include(admin.site.urls)),
+    (r'^search/',   include('haystack.urls')),
     (r'^users/',    include('mango.users.urls')),
     (r'^mirrors/',  include('mango.mirrors.urls')),
     (r'^requests/', include('mango.requests.urls')),

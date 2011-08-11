@@ -108,13 +108,25 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.auth',
     'django.contrib.admin',
+
     # For natural days in account requests
     'django.contrib.humanize',
     'users',
     'mirrors',
     'requests',
+
+    # For the pretty
     'uni_form',
+
+    # For the omni-search
+    'haystack',
 )
+
+# For the omni-search box to work
+HAYSTACK_SITECONF = 'mango.search_sites'
+HAYSTACK_SEARCH_ENGINE = 'whoosh'
+HAYSTACK_WHOOSH_PATH = os.path.join(os.path.dirname(__file__), "search_indexes.whoosh")
+
 MANGO_USER_HOMEDIR_BASE = '/home/users'
 PROJECT_TITLE = _('GNOME Mango Accounts System')
 
