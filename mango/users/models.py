@@ -93,6 +93,10 @@ class LdapUser(ldapdb.models.Model):
     def __unicode__(self):
         return self.full_name
 
+    def is_authenticated(self):
+        """ Dummy method to return true """
+        return True
+
     def get_absolute_url(self):
         return reverse("users-update", args=(self.username,))
 

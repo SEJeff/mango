@@ -4,12 +4,17 @@ from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
+from django.contrib.admin.models import User
+from mango.users.models import LdapUser
 
 def index(request):
     title = settings.PROJECT_TITLE
+    username = request.user
+    user = LdapUser.objects.get(username=username)
     return render_to_response("index.html", {
-        'title': title,
-        #'user': user,
+        'user'       : user,
+        'main_index' : True,
+        'title'      : title,
     }, context_instance=RequestContext(request))
 
 def logout_view(request):
