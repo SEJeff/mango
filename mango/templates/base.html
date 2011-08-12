@@ -18,7 +18,15 @@
   {% block extra_javascript %}
     <script type="text/javascript">
       $(document).ready(function() {
-        $('input:first').focus();
+        var num_inputs = $('input:visible').length;
+        if (num_inputs == 1) {
+          $('input:visible:first').focus();
+        } else if (num_inputs > 1) {
+          // The search box should be the very first
+          // and the dataTables filter input  should
+          // *ideally* be the very next  input  box.
+          $('input:visible')[1].focus();
+        }
       });
     </script>
   {% endblock %}
