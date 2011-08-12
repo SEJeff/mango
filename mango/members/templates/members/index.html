@@ -7,21 +7,19 @@ $('.dataTables_length').after('<div id="add-record"><a href="{% url users-add %}
 {% endblock %}
 {% block breadcrumb %}{% include "members/breadcrumb_snippet.html" %}{% endblock %}
 {% block thead %}
- <th>{% trans "Username" %}</th>
  <th>{% trans "Full Name" %}</th>
  <th>{% trans "Email" %}</th>
+ <th>{% trans "Last Renewed" %}</th>
 {% endblock %}
 {% block above_table %}
 <h2 class="center">{% trans "Foundation Member Management" %}</h2>
 {% endblock %}
 {% block tbody %}
-{% comment %}
-  {% for user in users %}
+  {% for member in members %}
   <tr>
-   <td class="center"><a href="{% url users-update user.username %}">{{ user.username }}</a></td>
-   <td>{{ user.full_name }}</td>
-   <td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
+   <td class="center"><a href="#">{{ member.full_name }}</a></td>
+   <td><a href="mailto:{{ member.email }}">{{ member.email }}</a></td>
+   <td> {{ member.last_renewed_on }}</td>
   </tr>
   {% endfor %}
-{% endcomment %}
 {% endblock %}

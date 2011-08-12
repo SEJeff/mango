@@ -67,4 +67,3 @@ class FoundationMember(models.Model):
         return " ".join([self.firstname, self.lastname])
     class Meta:
         db_table = u'foundationmembers'
-
