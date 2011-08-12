@@ -1,2 +1,2 @@
 {% load i18n %}
-{% block breadcrumb %}<a href="{% url index %}">{% trans "Home" %}</a>{% endblock %}
+{% block breadcrumb %}{% if not main_index %}<a href="{% url index %}">{% trans "Home" %}</a>{% endif %}{% endblock %}
