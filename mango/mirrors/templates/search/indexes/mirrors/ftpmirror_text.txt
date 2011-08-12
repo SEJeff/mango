@@ -1,0 +1,6 @@
+{{ object.url }}
+{{ object.name }}
+{{ object.email }}
+{{ object.comments }}
+{{ object.location }}
+{{ object.description }}

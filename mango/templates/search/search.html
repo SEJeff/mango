@@ -25,6 +25,9 @@
                 {% if result.content_type == "requests.accountrequest" %}
                 <span>Account request for <a href="{{ result.object.get_absolute_url }}">{{ result.cn|title }}</a></span><br>
                 {% endif %}
+                {% if result.content_type == "mirrors.ftpmirror" %}
+                <span>FTP Mirror <a href="{{ result.object.get_absolute_url }}">{{ result.name|title }}</a></span><br>
+                {% endif %}
             {% empty %}
                 No results found.<br>
             {% endfor %}
