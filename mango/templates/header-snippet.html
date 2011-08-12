@@ -22,7 +22,7 @@
     <li id="menu-item-1040" class="menu-item{% if current == "modules" %} current-menu-item{% endif %}"><a href="#">{% trans "VCS Modules" %}</a></li>
     <li id="menu-item-1038" class="menu-item{% if current == "mirrors" %} current-menu-item{% endif %}"><a href="{% url mirrors-index %}">{% trans "Mirrors" %}</a></li>
     {% if user.is_authenticated %}
-    <li id="menu-item-1038" class="menu-item"><a href="#">{% trans "User" %} {{ user.full_name }}</a></li>
+    <li id="menu-item-1038" class="menu-item{% if current == "members" %} current-menu-item{% endif %}"><a href="{% url members-index %}">{% trans "Foundation Members" %}</a></li>
     {% endif %}
    </ul>
   </div>

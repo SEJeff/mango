@@ -59,6 +59,12 @@ class FoundationMember(models.Model):
     last_update = models.DateTimeField()
     resigned_on = models.DateField(null=True, blank=True)
     userid = models.CharField(max_length=45, blank=True)
+
+    def full_name(self):
+        return str(self)
+
+    def __unicode__(self):
+        return " ".join([self.firstname, self.lastname])
     class Meta:
         db_table = u'foundationmembers'
 
