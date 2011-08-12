@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext_lazy as _
 
 REQUEST_VERDICTS = (
@@ -23,6 +24,10 @@ class AccountRequest(models.Model):
     # FIXME: Original schema designers were on crack. These should be BooleanFields
     is_new_account    = models.CharField(max_length=1, default='Y', editable=False)
     is_mail_verified  = models.CharField(max_length=1, default='N', editable=False)
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('requests-update', [], {'pk': self.pk, 'slug': slugify(self.cn)})
 
     class Meta:
         db_table = u'account_request'
