@@ -1,14 +1,12 @@
 from django.db import models
 
 class ElectionAnonTokens(models.Model):
-    id = models.IntegerField(primary_key=True)
     anon_token = models.CharField(max_length=600)
     election_id = models.IntegerField()
     class Meta:
         db_table = u'election_anon_tokens'
 
 class ElectionChoices(models.Model):
-    id = models.IntegerField(primary_key=True)
     election_id = models.IntegerField()
     choice = models.CharField(max_length=450)
     class Meta:
@@ -28,7 +26,6 @@ class ElectionTmpTokens(models.Model):
         db_table = u'election_tmp_tokens'
 
 class ElectionVotes(models.Model):
-    id = models.IntegerField(primary_key=True)
     choice_id = models.IntegerField()
     anon_id = models.IntegerField()
     preference = models.IntegerField()
@@ -36,7 +33,6 @@ class ElectionVotes(models.Model):
         db_table = u'election_votes'
 
 class Elections(models.Model):
-    id = models.IntegerField(primary_key=True)
     type = models.CharField(max_length=30)
     name = models.CharField(max_length=450)
     voting_start = models.DateTimeField(null=True, blank=True)
@@ -47,7 +43,6 @@ class Elections(models.Model):
         db_table = u'elections'
 
 class Electorate(models.Model):
-    id = models.IntegerField()
     firstname = models.CharField(max_length=150, blank=True)
     lastname = models.CharField(max_length=150, blank=True)
     email = models.CharField(max_length=300, blank=True)
@@ -55,7 +50,6 @@ class Electorate(models.Model):
         db_table = u'electorate'
 
 class FoundationMember(models.Model):
-    #id = models.IntegerField(primary_key=True)
     firstname = models.CharField(max_length=150, blank=True)
     lastname = models.CharField(max_length=150, blank=True)
     email = models.CharField(max_length=300, blank=True)
