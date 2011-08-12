@@ -1,0 +1,3 @@
+{{ object.uid }}
+{{ object.cn }}
+{{ object.comment }}

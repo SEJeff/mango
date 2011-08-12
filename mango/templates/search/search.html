@@ -19,9 +19,12 @@
             <h3>Results</h3>
 
             {% for result in page.object_list %}
-						    {% if result.content_type == "users.ldapuser" %}
+                {% if result.content_type == "users.ldapuser" %}
                 <span>User <a href="{{ result.object.get_absolute_url }}">{{ result.object.full_name|title }}</a></span><br>
-						    {% endif %}
+                {% endif %}
+                {% if result.content_type == "requests.accountrequest" %}
+                <span>Account request for <a href="{{ result.object.get_absolute_url }}">{{ result.cn|title }}</a></span><br>
+                {% endif %}
             {% empty %}
                 No results found.<br>
             {% endfor %}
