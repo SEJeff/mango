@@ -1,0 +1,27 @@
+{% extends "table-base.html" %}
+{% load i18n %}
+{% block title %}GNOME Mango: {% trans "All Foundation Members" %}{% endblock %}
+{% block document_ready_extra %}
+{{ block.super }}
+$('.dataTables_length').after('<div id="add-record"><a href="{% url users-add %}">{% trans "Add New Foundation Member" %}</a></div>');
+{% endblock %}
+{% block breadcrumb %}{% include "members/breadcrumb_snippet.html" %}{% endblock %}
+{% block thead %}
+ <th>{% trans "Username" %}</th>
+ <th>{% trans "Full Name" %}</th>
+ <th>{% trans "Email" %}</th>
+{% endblock %}
+{% block above_table %}
+<h2 class="center">{% trans "User Management" %}</h2>
+{% endblock %}
+{% block tbody %}
+{% comment %}
+  {% for user in users %}
+  <tr>
+   <td class="center"><a href="{% url users-update user.username %}">{{ user.username }}</a></td>
+   <td>{{ user.full_name }}</td>
+   <td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
+  </tr>
+  {% endfor %}
+{% endcomment %}
+{% endblock %}

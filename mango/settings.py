@@ -35,6 +35,7 @@ DATABASE_ROUTERS = [
     "ldapdb.router.Router",
     "mango.mirrors.routers.MirrorRouter",
     "mango.requests.routers.AccountRequestRouter",
+    "mango.members.routers.FoundationMemberRouter",
 ]
 
 # Local time zone for this installation. Choices can be found here:
@@ -111,8 +112,11 @@ INSTALLED_APPS = (
 
     # For natural days in account requests
     'django.contrib.humanize',
+
+    # Actual mango applications
     'users',
     'mirrors',
+    'members',
     'requests',
 
     # For the pretty
